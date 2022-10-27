@@ -1,0 +1,41 @@
+<div class="row pt-5">
+  <div class="col-12">
+    <form action="/update" method="post">
+      <div class="card w-50 m-auto ">
+        <div class="card-header">
+          <h3 class="card-title">
+            GİRİŞ EKRANI
+          </h3>
+        </div>
+
+        <div class="card-body">
+          <div id="example2_wrapper" class="dataTables_wrapper dt-bootstrap4">
+            <div class="row">
+              <div class="col-sm-12 col-md-12">{{#if fail}}
+                <div class="alert alert-warning alert-dismissible">
+                  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                  <h5><i class="icon fas fa-exclamation-triangle"></i> HATA!</h5>
+                  Lütfen Tekrar Deneyin. Sorunun devamı halinde bayiniz ile
+                  iletişime geçiniz.
+                </div> {{/if}}
+              </div>
+
+            </div>
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="form-group">
+                  <label for="licence">Lisan Anahtarı</label>
+                  <input type="text" name="token" id="licence" class="form-control">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer text-center">
+          <button type="submit" class="btn btn-primary w-25 ">Lisans Aktif Et</button>
+        </div>
+      </div>
+    </form>
+
+  </div>
+</div>

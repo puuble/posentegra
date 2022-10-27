@@ -1,0 +1,13 @@
+{
+    "token": "",
+    "userId": "",
+    "pos": {
+        "_id": "634f13adce54b03fe79a1506",
+        "host": "127.0.0.1",
+        "port": "9000",
+        "name": "İşletme Adı",
+        "username": "Entegrasyon",
+        "password": "73737373",
+        "client_id": "Entegrasyon"
+    }
+}
