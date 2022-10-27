@@ -62,6 +62,7 @@ class TY {
     if (result) {
       sonuc = JSON.parse(result)
       console.log(sonuc)
+
       if (sonuc.size > 0) {
         let env = await getEnvironment()
         let serverResult = null
@@ -87,6 +88,12 @@ class TY {
                 await asyncForEach(sonuc.content, async (data) => {
                   this.env
                   let pid = data.id
+                  if (process.env.LOG == true) {
+                    fs.writeFileSync(
+                      './logs/ty-' + pid + '.json',
+                      JSON.stringify(body)
+                    )
+                  }
                   if (this.option.otomatikOnay) {
                     await this.set500(pid)
                   }
