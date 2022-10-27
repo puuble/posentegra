@@ -1,0 +1,1 @@
+NET RESTART SambaPOS-MessagingServer
