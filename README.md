@@ -8,6 +8,8 @@
 
 [Posentegra Client İndirmek için tıklayınız. veya sağ üst koşeden Code Bölümünden indirebilirsiniz.](https://github.com/puuble/posentegra/archive/refs/heads/main.zip)
 
+[Github Kurulumu için tıklayınız.](https://git-scm.com/download/win)
+
 ```php
 /tmp/enviroment.json dosyayısını açın
 ```
