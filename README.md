@@ -1,6 +1,6 @@
 # POSENTEGRA
 
-##posentegra client
+## Posentegra client
 
 [NodeJS İndirip Kurunuz.](https://nodejs.org/en/).
 
