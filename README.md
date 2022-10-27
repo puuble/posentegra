@@ -11,6 +11,10 @@
 [Github Kurulumu için tıklayınız.](https://git-scm.com/download/win)
 
 ```php
+setup.bat dosyasını çalıştırınız.
+```
+
+```php
 /tmp/enviroment.json dosyayısını açın
 ```
 
@@ -39,4 +43,8 @@ Entegrasyon GraphQl bağlantısına ihtiyaç duyar.
 
 ```php
 setup.bat dosyasını çalıştırınız.
+```
+
+```text
+Chrome u açınız ve ardından http://localhost:7373 adres kısmına yazıp enter'a basınız.
 ```

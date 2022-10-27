@@ -61,7 +61,7 @@ class TY {
     let sonuc
     if (result) {
       sonuc = JSON.parse(result)
-
+      console.log(sonuc)
       if (sonuc.size > 0) {
         let env = await getEnvironment()
         let serverResult = null
