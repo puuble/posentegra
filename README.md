@@ -9,11 +9,11 @@
 ```php
 /tmp/enviroment.json dosyayısını açın
 ```
-```json
+```text
 Aşağıda örnekteki gibi, SambaPos ayarlarını yapınız. 
 //Aşağıda Örnek Verilmiştir.
 Kendi Ayarlarınızı girmeniz gerekmektedir.
-Entegrasyonun GraphQl bağlantısına ihtiyaç duyar. 
+Entegrasyon GraphQl bağlantısına ihtiyaç duyar. 
 ```
 
 ```js
