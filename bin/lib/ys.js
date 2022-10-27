@@ -423,18 +423,20 @@ class YS {
                       './logs/yemeksepeti-' + messageID + '.json',
                       JSON.stringify(body)
                     )
-                    await okudum(messageID, this.data, function (err, data) {
-                      console.log(err, data)
-                    })
                   }
+                  await okudum(messageID, this.data, function (err, data) {
+                    console.log(err, data)
+                  })
                 })
               }
             } else {
               let messageID = body['_attributes']['MessageId']
-              fs.writeFileSync(
-                './logs/yemeksepeti-' + messageID + '.json',
-                JSON.stringify(body)
-              )
+              if (process.env.LOG == true) {
+                fs.writeFileSync(
+                  './logs/yemeksepeti-' + messageID + '.json',
+                  JSON.stringify(body)
+                )
+              }
               await okudum(messageID, this.data, function (err, data) {
                 console.log(err, data)
               })
