@@ -37,26 +37,6 @@ Entegrasyon GraphQl bağlantısına ihtiyaç duyar.
 }
 ```
 
-```text
-Bayi Panelinden işletmeye özel TOKEN'ı ilgili satıra boşluksuz gelecek şekilde yazınız.
-```
-
-```js
-{
-    "token": "TOKEN BURAYA YAZILACAK",
-    "userId": "",
-    "pos": {
-
-        "host": "127.0.0.1",
-        "port": "9000",
-        "name": "İşletme Adı",
-        "username": "Entegrasyon",
-        "password": "73737373",
-        "client_id": "Entegrasyon"
-    }
-}
-```
-
 ```php
 setup.bat dosyasını çalıştırınız.
 ```
