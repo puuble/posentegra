@@ -9,7 +9,7 @@
 ```php
 /tmp/enviroment.json dosyayısını açın
 ```
-```php
+```json
 Aşağıda örnekteki gibi, SambaPos ayarlarını yapınız. 
 //Aşağıda Örnek Verilmiştir.
 Kendi Ayarlarınızı girmeniz gerekmektedir.
