@@ -1,4 +1,4 @@
 /node_modules/*
 /public/static/*
-/results/*
+/logs/*
 PosEntegra-out.log
