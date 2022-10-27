@@ -247,10 +247,6 @@ async function onayliyorum2(messageID, body, cb) {
     })
 }
 async function okudum(messageID, body, cb) {
-  fs.writeFileSync(
-    './results/yemeksepeti-' + messageID + '.json',
-    JSON.stringify(body)
-  )
   let xlms = `<?xml version="1.0" encoding="utf-8"?>
     <soap12:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope">
       <soap12:Header>
@@ -319,7 +315,7 @@ async function getOrder(body, count = 2, cb) {
     </soap12:Body>
   </soap12:Envelope>
   `
-  console.log(body, 'integration')
+
   axios
     .post(
       'http://messaging.yemeksepeti.com/messagingwebservice/integration.asmx',
@@ -422,14 +418,23 @@ class YS {
               if (body.length) {
                 await asyncForEach(body, async (data) => {
                   let messageID = data['_attributes']['MessageId']
-
-                  await okudum(messageID, this.data, function (err, data) {
-                    console.log(err, data)
-                  })
+                  if (process.env.LOG == true) {
+                    fs.writeFileSync(
+                      './logs/yemeksepeti-' + messageID + '.json',
+                      JSON.stringify(body)
+                    )
+                    await okudum(messageID, this.data, function (err, data) {
+                      console.log(err, data)
+                    })
+                  }
                 })
               }
             } else {
               let messageID = body['_attributes']['MessageId']
+              fs.writeFileSync(
+                './logs/yemeksepeti-' + messageID + '.json',
+                JSON.stringify(body)
+              )
               await okudum(messageID, this.data, function (err, data) {
                 console.log(err, data)
               })
