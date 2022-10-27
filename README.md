@@ -41,10 +41,6 @@ Entegrasyon GraphQl bağlantısına ihtiyaç duyar.
 }
 ```
 
-```php
-setup.bat dosyasını çalıştırınız.
-```
-
 ```text
-Chrome u açınız ve ardından http://localhost:7373 adres kısmına yazıp enter'a basınız.
+Chrome u açınız ve ardından http://localhost:3000 adres kısmına yazıp enter'a basınız.
 ```
