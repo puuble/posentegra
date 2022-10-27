@@ -11,7 +11,7 @@
 [Github Kurulumu için tıklayınız.](https://git-scm.com/download/win)
 
 ```php
-setup.bat dosyasını çalıştırınız.
+setup.bat dosyasını yönetici olarak çalıştırınız.
 ```
 
 ```php
