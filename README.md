@@ -31,7 +31,7 @@ Entegrasyon GraphQl bağlantısına ihtiyaç duyar.
     }
 }
 ```
-```php
+```text
 Bayi Panelinden işletmeye özel TOKEN'ı ilgili satıra boşluksuz gelecek şekilde yazınız.
 ```
 
