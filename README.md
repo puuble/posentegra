@@ -3,17 +3,20 @@
 ## Posentegra client
 
 ## Kurulum
- ## !! [NodeJS İndirip Kurunuz](https://nodejs.org/en/) !!
 
+## !! [NodeJS İndirip Kurunuz](https://nodejs.org/en/) !!
+
+[Posentegra Client İndirmek için tıklayınız. veya sağ üst koşeden Code Bölümünden indirebilirsiniz.](https://github.com/puuble/posentegra/archive/refs/heads/main.zip)
 
 ```php
 /tmp/enviroment.json dosyayısını açın
 ```
+
 ```text
-Aşağıda örnekteki gibi, SambaPos ayarlarını yapınız. 
+Aşağıda örnekteki gibi, SambaPos ayarlarını yapınız.
 //Aşağıda Örnek Verilmiştir.
 Kendi Ayarlarınızı girmeniz gerekmektedir.
-Entegrasyon GraphQl bağlantısına ihtiyaç duyar. 
+Entegrasyon GraphQl bağlantısına ihtiyaç duyar.
 ```
 
 ```js
@@ -21,7 +24,7 @@ Entegrasyon GraphQl bağlantısına ihtiyaç duyar.
     "token": "",
     "userId": "",
     "pos": {
-        
+
         "host": "127.0.0.1",
         "port": "9000",
         "name": "İşletme Adı",
@@ -31,6 +34,7 @@ Entegrasyon GraphQl bağlantısına ihtiyaç duyar.
     }
 }
 ```
+
 ```text
 Bayi Panelinden işletmeye özel TOKEN'ı ilgili satıra boşluksuz gelecek şekilde yazınız.
 ```
@@ -40,7 +44,7 @@ Bayi Panelinden işletmeye özel TOKEN'ı ilgili satıra boşluksuz gelecek şek
     "token": "TOKEN BURAYA YAZILACAK",
     "userId": "",
     "pos": {
-        
+
         "host": "127.0.0.1",
         "port": "9000",
         "name": "İşletme Adı",
@@ -54,5 +58,3 @@ Bayi Panelinden işletmeye özel TOKEN'ı ilgili satıra boşluksuz gelecek şek
 ```php
 setup.bat dosyasını çalıştırınız.
 ```
-
-
