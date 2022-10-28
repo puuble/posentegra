@@ -15,6 +15,10 @@ setup.bat dosyasını yönetici olarak çalıştırınız.
 ```
 
 ```text
+Kurulum C sürücüsüne peClient klasörü içerisinde gelir. Bu klasöre giderek aşağıdaki adımları takip ediniz.
+```
+
+```text
 C:/peClient/tmp/enviroment.json dosyayısını açın
 ```
 
