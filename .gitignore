@@ -3,3 +3,4 @@
 /logs/*
 PosEntegra-out.log
 /tmp/enviroment.backup
+/tmp/enviroment.json
