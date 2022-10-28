@@ -1,5 +1,5 @@
 cd "C:/"
-call git clone --branch posentegra https://github.com/puuble/posentegra.git peClient
+call git clone --branch posentegra --single-branch https://github.com/puuble/posentegra.git peClient
 cd peClient
 call npm install
 call npm install pm2 -g
