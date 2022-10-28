@@ -56,6 +56,9 @@ async function changeStatus(result) {
 /* GET home page. */
 router.get('/', async function (req, res, next) {
   let fail = req.session.fail
+  if (fail) {
+    req.session.fail = false
+  }
   let connected = true
   if (req.session.loggedin || (await fileExists('./tmp/enviroment.json'))) {
     let env = await getEnvironment()
@@ -103,16 +106,9 @@ router.get('/', async function (req, res, next) {
           orders: sonuc,
         })
       }
-    } else {
-      if (fail) {
-        fail = req.session.fail = false
-      }
-      res.render('login', { fail })
     }
+    res.render('login', { fail })
   } else {
-    if (fail) {
-      fail = req.session.fail = false
-    }
     res.render('login', { fail })
   }
 })
@@ -145,7 +141,6 @@ router.post('/update', async (req, res) => {
     //return res.redirect(301, '/')
   })
 
-  console.log(trigger, 'trigger')
   if (!trigger) {
     req.session.fail = true
   }

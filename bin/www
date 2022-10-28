@@ -14,6 +14,7 @@ const _ = require('lodash')
 const TY = require('./lib/ty')
 const YS = require('./lib/ys')
 const ORTAM = process.env.ORTAM
+const env = getEnvironment()
 /**
  * Get port from environment and store in Express.
  */
@@ -85,9 +86,8 @@ function onError(error) {
  * Event listener for HTTP server "listening" event.
  */
 async function run() {
-  let env = getEnvironment()
   if (env) {
-    let restaurants = env.restaurants
+    let restaurants = _.has(env, 'restaurants') ? env.restaurants : []
     restaurants = Object.keys(restaurants)
     if (Array.isArray(restaurants)) {
       if (restaurants.length > 0) {
@@ -114,16 +114,21 @@ function onListening() {
   var bind = typeof addr === 'string' ? 'pipe ' + addr : 'port ' + addr.port
   debug('Listening on ' + bind)
   try {
-    if (ORTAM != 'dev') {
-      signin()
-    }
-    let env = getEnvironment()
     if (env) {
       if (ORTAM != 'dev') {
-        cron.schedule('*/10 * * * * *', async () => {
-          console.log('10 saniye de bir run')
-          await run()
-        })
+        if (env) {
+          let restaurants = _.has(env, 'restaurants') ? env.restaurants : []
+          restaurants = Object.keys(restaurants)
+          if (Array.isArray(restaurants)) {
+            if (restaurants.length > 0) {
+              signin()
+              cron.schedule('*/10 * * * * *', async () => {
+                console.log('10 saniye de bir run')
+                await run()
+              })
+            }
+          }
+        }
       }
     } else {
       console.log('Token girilmesi gerekiyor. ')
