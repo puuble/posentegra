@@ -32,8 +32,7 @@ Entegrasyon GraphQl bağlantısına ihtiyaç duyar.
 
 ```js
 {
-    "token": "",
-    "userId": "",
+
     "pos": {
 
         "host": "127.0.0.1",
