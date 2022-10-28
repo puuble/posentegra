@@ -424,9 +424,6 @@ class YS {
                       JSON.stringify(body)
                     )
                   }
-                  await okudum(messageID, this.data, function (err, data) {
-                    console.log(err, data)
-                  })
                 })
               }
             } else {
@@ -437,9 +434,6 @@ class YS {
                   JSON.stringify(body)
                 )
               }
-              await okudum(messageID, this.data, function (err, data) {
-                console.log(err, data)
-              })
             }
           } // fs.writeFileSync('./sonuc3.json', JSON.stringify(serverResult))
         }
