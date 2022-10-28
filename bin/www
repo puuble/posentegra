@@ -96,7 +96,7 @@ async function run() {
 
           if (_.has(option, 'ty')) {
             const ty = new TY(option['ty'])
-            console.log('tyGetOrder update ettim burayi')
+            console.log('tyGetOrder')
             await ty.getOrder(true)
           }
           if (_.has(option, 'ys')) {

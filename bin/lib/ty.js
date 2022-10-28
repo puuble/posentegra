@@ -94,9 +94,6 @@ class TY {
                       JSON.stringify(body)
                     )
                   }
-                  if (this.option.otomatikOnay) {
-                    await this.set500(pid)
-                  }
                 })
               }
             }
@@ -205,26 +202,29 @@ class TY {
   }
   async set500(packageId) {
     try {
-      let { apiKey, apiSecretKey, supplierId } = this.data
-      var auth =
-        'Basic ' + Buffer.from(apiKey + ':' + apiSecretKey).toString('base64')
-      let url = `/mealgw/suppliers/${supplierId}/packages/picked`
-      let result = await _providerrequest(
-        url,
-        'PUT',
-        {
-          packageId,
-          preparationTime: 30,
-        },
-        {
-          'x-agentname': 'PosEntegra',
-          'x-executor-user': 'reseller@posentegra.com',
-          Authorization: auth,
-        }
-      ).catch((e) => {
-        console.log(e.error.message, 'SERVERDAN')
-      })
-      console.log(result)
+      if (this.option.otomatikOnay) {
+        let { apiKey, apiSecretKey, supplierId } = this.data
+        var auth =
+          'Basic ' + Buffer.from(apiKey + ':' + apiSecretKey).toString('base64')
+        let url = `/mealgw/suppliers/${supplierId}/packages/picked`
+        let result = await _providerrequest(
+          url,
+          'PUT',
+          {
+            packageId,
+            preparationTime: 30,
+          },
+          {
+            'x-agentname': 'PosEntegra',
+            'x-executor-user': 'reseller@posentegra.com',
+            Authorization: auth,
+          }
+        ).catch((e) => {
+          console.log(e.error.message, 'SERVERDAN')
+        })
+        console.log(result)
+      }
+
       return true
     } catch (error) {
       return false

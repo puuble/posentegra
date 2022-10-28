@@ -2,3 +2,4 @@
 /public/static/*
 /logs/*
 PosEntegra-out.log
+/tmp/enviroment.backup

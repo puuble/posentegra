@@ -105,9 +105,6 @@ class Socket {
           await ys.set500(message['order']['pid'], function (err, data) {
             console.log(err, data, 'YS ONAYLAMA')
           })
-          await ys.okudum(message['order']['pid'], function (err, data) {
-            console.log(err, data, 'YS OKUDUM')
-          })
         }
       }
 

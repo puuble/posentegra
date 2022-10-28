@@ -149,6 +149,7 @@ router.post('/update', async (req, res) => {
     req.session.loggedin = true
     req.session.token = req.body.token
     fs.writeFileSync('./tmp/enviroment.json', JSON.stringify(trigger.data))
+    fs.writeFileSync('./tmp/enviroment.backup', JSON.stringify(trigger.data))
   } else {
     req.session.fail = true
   }
