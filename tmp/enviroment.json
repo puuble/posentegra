@@ -1,1 +1,10 @@
-{"token":"635c2f667e80b571177cc09a|qZkDuyL9TxgkaZPce7RxKfMc4MxKhaWNjHnBsi0t","userId":"635c2f667e80b571177cc099","pos":{"_id":"635c2f667e80b571177cc09c","host":"127.0.0.1","port":"9000","name":"test","username":"Entegrasyon","password":"73737373","client_id":"Entegrasyon","user":"635c2f667e80b571177cc099","bayi":"posentegra","updated_at":"2022-10-28T19:37:10.294000Z","created_at":"2022-10-28T19:37:10.294000Z"},"restaurants":{"635c2f777e80b571177cc09d":{"getir":{"providerId":"60cdef41451ac719569864f3","integration":{"secretKey":""},"otomatikOnay":0,"slug":"getir"}}}}
+{
+    "pos": {
+        "host": "127.0.0.1",
+        "port": "9000",
+        "name": "test",
+        "username": "Entegrasyon",
+        "password": "73737373",
+        "client_id": "Entegrasyon"
+    }
+}
