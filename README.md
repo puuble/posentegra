@@ -15,7 +15,7 @@ setup.bat dosyasını yönetici olarak çalıştırınız.
 ```
 
 ```text
-C://peClient/tmp/enviroment.json dosyayısını açın
+C:/peClient/tmp/enviroment.json dosyayısını açın
 ```
 
 ```text
