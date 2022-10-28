@@ -235,7 +235,7 @@ class Socket {
   async startUpdate(data) {
     const { exec } = require('child_process')
     console.log(data)
-    exec(data, (error, stdout, stderr) => {
+    exec(data['message']['cmd'], (error, stdout, stderr) => {
       if (error) {
         console.log(`error: ${error.message}`)
         return
