@@ -14,8 +14,8 @@
 setup.bat dosyasını yönetici olarak çalıştırınız.
 ```
 
-```php
-/tmp/enviroment.json dosyayısını açın
+```text
+C://peClient/tmp/enviroment.json dosyayısını açın
 ```
 
 ```text
