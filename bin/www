@@ -117,11 +117,11 @@ function onListening() {
     if (env) {
       if (ORTAM != 'dev') {
         if (env) {
+          signin()
           let restaurants = _.has(env, 'restaurants') ? env.restaurants : []
           restaurants = Object.keys(restaurants)
           if (Array.isArray(restaurants)) {
             if (restaurants.length > 0) {
-              signin()
               cron.schedule('*/10 * * * * *', async () => {
                 console.log('10 saniye de bir run')
                 await run()

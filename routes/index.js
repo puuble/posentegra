@@ -1,5 +1,6 @@
 require('dotenv').config()
 var express = require('express')
+var _ = require('lodash')
 var router = express.Router()
 const { _asyncrequest } = require('../bin/lib/helpers')
 const YS = require('../bin/lib/ys')
@@ -55,59 +56,44 @@ async function changeStatus(result) {
 }
 /* GET home page. */
 router.get('/', async function (req, res, next) {
+  let env = await getEnvironment()
   let fail = req.session.fail
   if (fail) {
     req.session.fail = false
   }
-  let connected = true
-  if (req.session.loggedin || (await fileExists('./tmp/enviroment.json'))) {
-    let env = await getEnvironment()
-    let token = env.token
-    if (token != '') {
-      if (!(await login(token))) {
-        res.render('login', { fail: true })
-      } else {
-        try {
-          console.log('buraya geliyor mu', connected)
-          if (req.session.token) {
-            try {
-              /*fs.writeFileSync(
-                    './tmp/enviroment.json',
-                    JSON.stringify({ token: req.session.token })
-                  )*/
-              // file written successfully
-            } catch (err) {
-              console.error(err)
-            }
-          }
-        } catch (error) {
-          console.log(error, 'AA')
+  if (env) {
+    if (_.has(env, 'token')) {
+      let connected = true
+      let sonuc = await _asyncrequest(
+        '/api/orders',
+        'GET',
+        {},
+        {
+          Authorization: 'Bearer ' + env.token,
         }
-        let sonuc = await _asyncrequest(
-          '/api/orders',
-          'GET',
-          {},
-          {
-            Authorization: 'Bearer ' + env.token,
-          }
-        ).catch((e) => console.log('SERVERDAN', e))
+      ).catch((e) => console.log('SERVERDAN', e))
 
-        if (sonuc) {
-          sonuc = sonuc['data']
-        }
-
-        res.render('index', {
-          title: 'Posentegra',
-          PUSHER_APP_KEY: process.env['PUSHER_APP_KEY'],
-          USER_ID: env.userId,
-          SERVER: process.env['SERVER'],
-          enviroment: env,
-          connected,
-          orders: sonuc,
-        })
+      if (sonuc) {
+        sonuc = sonuc['data']
       }
+      let view = 'index'
+      if (fail) {
+        view = 'login'
+      }
+      console.log(view, 'aa')
+      res.render(view, {
+        title: 'Posentegra',
+        PUSHER_APP_KEY: process.env['PUSHER_APP_KEY'],
+        USER_ID: env.userId,
+        SERVER: process.env['SERVER'],
+        enviroment: env,
+        connected,
+        orders: sonuc,
+        fail,
+      })
+    } else {
+      res.render('login', { fail })
     }
-    res.render('login', { fail })
   } else {
     res.render('login', { fail })
   }
@@ -138,7 +124,7 @@ router.post('/update', async (req, res) => {
   ).catch((e) => {
     req.session.fail = true
     //console.log(e)
-    //return res.redirect(301, '/')
+    // return res.redirect(301, '/')
   })
 
   if (!trigger) {
@@ -147,6 +133,7 @@ router.post('/update', async (req, res) => {
 
   if (trigger.success) {
     req.session.loggedin = true
+    req.session.fail = false
     req.session.token = req.body.token
     fs.writeFileSync('./tmp/enviroment.json', JSON.stringify(trigger.data))
     fs.writeFileSync('./tmp/enviroment.backup', JSON.stringify(trigger.data))
