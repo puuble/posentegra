@@ -123,7 +123,9 @@ function onListening() {
           if (Array.isArray(restaurants)) {
             if (restaurants.length > 0) {
               cron.schedule('*/10 * * * * *', async () => {
-                console.log('10 saniye de bir run guncelleme geldi demek ')
+                console.log(
+                  '10 saniye de bir run ikinci guncelleme geldi enviromenti silmeden '
+                )
                 await run()
               })
             }
