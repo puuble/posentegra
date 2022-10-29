@@ -2,7 +2,22 @@ require('dotenv').config()
 const asyncrequest = require('request-promise')
 const fs = require('fs')
 const SERVER = process.env.SERVER
+const { exec } = require('child_process')
 
+function m_exec(cmd) {
+  exec(cmd, (error, stdout, stderr) => {
+    if (error) {
+      console.log(cmd)
+      console.log(`error: ${error.message}`)
+      return
+    }
+    if (stderr) {
+      console.log(`stderr: ${stderr}`)
+      return
+    }
+    console.log(`stdout: ${stdout}`)
+  })
+}
 const asyncFilter = async (arr, predicate) => {
   const results = await Promise.all(arr.map(predicate))
 
@@ -81,4 +96,5 @@ module.exports = {
   _providerrequest,
   _asyncrequest,
   asyncFilter,
+  m_exec,
 }

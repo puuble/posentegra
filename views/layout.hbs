@@ -16,7 +16,8 @@
 
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.1/js/bootstrap.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 
     <div class="modal fade" id="settingModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -29,6 +30,33 @@
                 </div>
                 <div class="modal-body">
 
+                    <div class="accordion accordion-flush" id="accordionExample">
+
+
+                        {{#each restaurants}}
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingOne{{this._id}}">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseOne{{this._id}}" aria-expanded="true"
+                                    aria-controls="collapseOne">
+                                    {{this.name}}
+                                </button>
+                            </h2>
+                            <div id="collapseOne{{this._id}}" class="accordion-collapse collapse "
+                                aria-labelledby="headingOne{{this._id}}" data-bs-parent="#accordionExample">
+                                <div class="accordion-body">
+                                    {{#each this.options}}
+                                    <ol class="list-group  options text-white list-group-numbered"
+                                        data-row="{{json this}}">
+
+                                    </ol>
+
+                                    {{/each}}
+                                </div>
+                            </div>
+                        </div>
+                        {{/each}}
+                    </div>
                 </div>
                 <div class="modal-footer">
 
@@ -38,7 +66,35 @@
         </div>
     </div>
     <script>
+        function addOption(row) {
+            let slug = 'Getir Yemek'
+            if (row.slug == 'ys') {
+                slug = 'Yemeksepeti'
+            } else if (slug == 'ty') {
+                slug = 'Trendyol Yemek'
+            }
+            let status = 'Açık'
+            if (!row.status) {
+                status = 'Kapalı'
+            }
+            let cls = row.status == false ? 'bg-danger' : 'bg-success'
+            let attr = row.status ? 'checked' : ''
 
+            let html = ` <li class="list-group-item d-flex justify-content-between optionTitle align-items-start">
+                                            <div class="ms-2 me-auto ">
+                                                <div class="fw-bold  ">${slug}</div>
+                                               <div class="form-check form-switch">
+        <input class="form-check-input" data-id="${row._id}" type="checkbox" ${attr}  role="switch" id="flexSwitchCheckDefault${row._id}">
+        <label class="form-check-label" for="flexSwitchCheckDefault${row._id}">Kapalı/Açık</label>
+    </div>
+                                            </div>
+                                            <span class="badge  ${cls} rounded - pill">${status}</span>
+                                        </li > `
+
+
+            return html
+
+        }
         function modalYukle(rowData) {
             let products = ``
             if (Array.isArray(rowData.products)) {
@@ -50,19 +106,19 @@
                                 if (Array.isArray(cat.options)) {
                                     let options = cat.options.map(x => x.name.tr);
                                     options = options.join(',')
-                                    optionCategories += `<li>${cat.name.tr}: ${options}</li>`
+                                    optionCategories += `< li > ${cat.name.tr}: ${options}</li > `
                                 } else {
-                                    optionCategories += `<li>${cat.name.tr}</li>`
+                                    optionCategories += `< li > ${cat.name.tr}</li > `
                                 }
                             } else {
-                                optionCategories += `<li>${cat.name.tr}</li>`
+                                optionCategories += `< li > ${cat.name.tr}</li > `
                             }
 
 
 
                         })
                     }
-                    products += `<tr style="border-bottom: 1px solid rgb(221, 221, 221);">
+                    products += `< tr style = "border-bottom: 1px solid rgb(221, 221, 221);" >
                             <td style="font-size: 15pt;">${element.name.tr}
                               <ul>
                                     ${optionCategories}
@@ -72,92 +128,92 @@
                             <td class="text-right" style="font-size: 15pt;">₺ ${element.priceWithOption}</td>
                             <td class="text-right" style="font-size: 15pt;">${element.count}</td>
                             <td class="text-right" style="font-size: 15pt;">₺ ${element.priceWithOption}</td>
-                </tr>`
+                </tr > `
 
                 });
 
             }
 
             let deliveryType = rowData.deliveryType == 2 ? 'Restoran Kuryesi Teslim Edecek!' : 'Entegrasyon Kuryesi Teslim Edecek! '
-            let html = `<div class="modal fade" id="modal${rowData._id}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Sipariş Özeti</h5>
-        <button type="button" class="close btn btn-danger btn-sm" data-id="${rowData._id}" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-       <div class="mb-4 flex-column">
-                    <div class="w-100 text-center">
-                        <h1>${rowData.provider.kaynak}</h1>
+            let html = `< div class="modal fade" id = "modal${rowData._id}" tabindex = "-1" role = "dialog" aria - labelledby="exampleModalLabel" aria - hidden="true" >
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Sipariş Özeti</h5>
+                        <button type="button" class="close btn btn-danger btn-sm" data-id="${rowData._id}" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
-                    <div class="mt-4 w-100 row">
-                        <div class="col">
-                            <div class="my-1 mx-1 row">
-                                <span class="my-1"
-                                    style="font-size: 15pt; color: red; font-weight: 600;">
-                                    Teslimat Tipi : ${deliveryType}
-                                    </span>
+                    <div class="modal-body">
+                        <div class="mb-4 flex-column">
+                            <div class="w-100 text-center">
+                                <h1>${rowData.provider.kaynak}</h1>
+                            </div>
+                            <div class="mt-4 w-100 row">
+                                <div class="col">
+                                    <div class="my-1 mx-1 row">
+                                        <span class="my-1"
+                                            style="font-size: 15pt; color: red; font-weight: 600;">
+                                            Teslimat Tipi : ${deliveryType}
+                                        </span>
+                                    </div>
+                                    <div class="my-1 mx-1 row"><span class="my-1"
+                                        style="font-size: 15pt; color: red; font-weight: 600;">
+                                        Ödeme Yöntemi : ${rowData.paymentMethodText ? rowData.paymentMethodText.tr : rowData.paymentMethod}</span>
+                                    </div>
+                                    <div class="my-1 mx-1 row"><span class="my-1" style="font-size: 15pt;">Restoran
+                                        : ${rowData.restaurant.name}</span></div>
+                                    <div class="my-1 mx-1 row"><span class="my-1" style="font-size: 15pt;">Onay Kodu
+                                        : ${rowData.confirmationId}</span></div>
+                                    <div class="my-1 mx-1 row"><span class="my-1" style="font-size: 15pt;">Sipariş Tarihi
+                                        : ${moment(rowData.created_at).format('H:mm DD.MM.YYYY')}</span>
+                                    </div>
                                 </div>
-                            <div class="my-1 mx-1 row"><span class="my-1"
-                                    style="font-size: 15pt; color: red; font-weight: 600;">
-                                    Ödeme Yöntemi : ${rowData.paymentMethodText ? rowData.paymentMethodText.tr : rowData.paymentMethod}</span>
-                                    </div>
-                            <div class="my-1 mx-1 row"><span class="my-1" style="font-size: 15pt;">Restoran
-                                    : ${rowData.restaurant.name}</span></div>
-                            <div class="my-1 mx-1 row"><span class="my-1" style="font-size: 15pt;">Onay Kodu
-                                    : ${rowData.confirmationId}</span></div>
-                            <div class="my-1 mx-1 row"><span class="my-1" style="font-size: 15pt;">Sipariş Tarihi
-                                    : ${moment(rowData.created_at).format('H:mm DD.MM.YYYY')}</span>
-                                    </div>
+                            </div>
+                        </div>
+                        <table width="100%">
+                            <thead>
+                                <tr style="border-bottom: 1px solid rgb(170, 170, 170);">
+                                    <th style="font-size: 15pt;">Ürün</th>
+                                    <th class="text-right" style="width: 90px; font-size: 15pt;">Fiyat</th>
+                                    <th class="text-right" style="width: 90px; font-size: 15pt;">Adet</th>
+                                    <th class="text-right" style="width: 90px; font-size: 15pt;">Tutar</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${products}
+
+                                <tr>
+                                    <td colspan="4" class="text-right" style="font-size: 15pt; font-weight: bold;">Toplam : ₺
+                                        ${rowData.totalPrice}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="mt-3"></div>
+                        <div class="mt-3" style="font-size: 15pt;">
+                            <p class="mb-1"><b>Müşteri:</b> ${rowData.client.name}</p>
+                            <p class="mb-1"><b>Adres:</b> ${rowData.client.deliveryAddress.address}</p>
+                            <div class="container">
+                                <div class="row">
+                                    <p class="mb-1 mr-2"><b>Apt No:</b>${rowData.client.deliveryAddress.aptNo}</p>
+                                    <p class="mb-1 mr-2"><b>Daire No:</b> ${rowData.client.deliveryAddress.doorNo}</p>
+                                    <p class="mb-1 mr-2"><b>Kat:</b> ${rowData.client.deliveryAddress.floor}</p>
+                                </div>
+                            </div>
+                            <p class="mb-1"><b>Adres Tarifi:</b> ${rowData.client.deliveryAddress.description}</p>
+                            <p class="mb-1 pb-1" style="border-bottom: 1px solid rgb(221, 221, 221);"><b>Müşteri İletişim:</b>
+                                ${rowData.client.clientPhoneNumber}</p>
+                            <p class="text-center">
+                                <button class="btn sendAgain mt-4 btn-info" data-pid="${rowData.pid}" >Yeniden Gönder</button>
+                            </p>
+
+
                         </div>
                     </div>
+
                 </div>
-                <table width="100%">
-                    <thead>
-                        <tr style="border-bottom: 1px solid rgb(170, 170, 170);">
-                            <th style="font-size: 15pt;">Ürün</th>
-                            <th class="text-right" style="width: 90px; font-size: 15pt;">Fiyat</th>
-                            <th class="text-right" style="width: 90px; font-size: 15pt;">Adet</th>
-                            <th class="text-right" style="width: 90px; font-size: 15pt;">Tutar</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        ${products}
-                        
-                        <tr>
-                            <td colspan="4" class="text-right" style="font-size: 15pt; font-weight: bold;">Toplam : ₺
-                                ${rowData.totalPrice}</td>
-                        </tr>
-                    </tbody>
-                </table>
-                <div class="mt-3"></div>
-                <div class="mt-3" style="font-size: 15pt;">
-                    <p class="mb-1"><b>Müşteri:</b> ${rowData.client.name}</p>
-                    <p class="mb-1"><b>Adres:</b> ${rowData.client.deliveryAddress.address}</p>
-                    <div class="container">
-                        <div class="row">
-                            <p class="mb-1 mr-2"><b>Apt No:</b>${rowData.client.deliveryAddress.aptNo}</p>
-                            <p class="mb-1 mr-2"><b>Daire No:</b> ${rowData.client.deliveryAddress.doorNo}</p>
-                            <p class="mb-1 mr-2"><b>Kat:</b> ${rowData.client.deliveryAddress.floor}</p>
-                        </div>
-                    </div>
-                    <p class="mb-1"><b>Adres Tarifi:</b> ${rowData.client.deliveryAddress.description}</p>
-                    <p class="mb-1 pb-1" style="border-bottom: 1px solid rgb(221, 221, 221);"><b>Müşteri İletişim:</b>
-                       ${rowData.client.clientPhoneNumber}</p>
-                    <p class="text-center">
-                      <button class="btn sendAgain mt-4 btn-info" data-pid="${rowData.pid}" >Yeniden Gönder</button>
-                    </p>   
-                   
-                   
-                </div>
-      </div>
-     
-    </div>
-  </div>
-</div>`
+            </div>
+</div > `
             return html;
         }
         $('#exampleModal').on('show.bs.modal', function (e) {
@@ -178,7 +234,7 @@
         }
         function socket() {
             let userId = '{{USER_ID}}'
-            let channel = `private-trigger.${userId}`
+            let channel = `private - trigger.${userId} `
             let event = 'Trigger'
 
             var channelUser = pusher.subscribe(channel)
@@ -231,6 +287,24 @@
             return status
         }
 
+        $('.options').each(function (index, el) {
+            let row = $(this).data('row')
+            $(this).html(addOption(row))
+            $('.form-check-input').on('change', function () {
+                let status = false
+                if (this.checked) {
+                    status = true;
+                }
+                $.ajax({
+                    method: "POST",
+                    url: "/changeRestaurantStatus",
+                    data: { status }
+                })
+                    .done(function (res) {
+                        console.log(res)
+                    })
+            })
+        })
         $('.moment').each(function (index, el) {
             let time = $(this).data('time')
             $(this).html(moment(time).format('YYYY-MM-DD HH:mm:ss'))
@@ -278,7 +352,7 @@
 
                 $.ajax({
                     method: "POST",
-                    url: `/changeStatus`,
+                    url: `/ changeStatus`,
                     data: {
                         status,
                         provider,

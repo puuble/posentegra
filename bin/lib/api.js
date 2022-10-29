@@ -34,6 +34,43 @@ class Api {
       console.log(error, 'api.send')
     }
   }
+  async getRestaurants() {
+    try {
+      let result = await _asyncrequest(
+        '/api/user/restaurants',
+        'GET',
+        {},
+        {
+          Authorization: 'Bearer ' + this.env.token,
+        }
+      ).catch((e) => console.log('SERVERDAN', e.message))
+      if (!result.success) {
+        return []
+      }
+      return result.data
+    } catch (error) {
+      console.log(error, 'api.send')
+    }
+  }
+  async getOrders() {
+    try {
+      let result = await _asyncrequest(
+        '/api/orders',
+        'GET',
+        {},
+        {
+          Authorization: 'Bearer ' + this.env.token,
+        }
+      ).catch((e) => console.log('SERVERDAN', e.message))
+
+      if (!result.success) {
+        return []
+      }
+      return result.data
+    } catch (error) {
+      console.log(error, 'api.send')
+    }
+  }
 }
 
 module.exports = Api

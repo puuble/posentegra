@@ -1,5 +1,5 @@
 const Api = require('./api')
-const { getEnvironment, asyncForEach } = require('./helpers')
+const { getEnvironment, asyncForEach, m_exec } = require('./helpers')
 const Query = require('./query')
 const _ = require('lodash')
 class Socket {
@@ -233,19 +233,7 @@ class Socket {
     }
   }
   async startUpdate(data) {
-    const { exec } = require('child_process')
-    console.log(data)
-    exec(data['message']['cmd'], (error, stdout, stderr) => {
-      if (error) {
-        console.log(`error: ${error.message}`)
-        return
-      }
-      if (stderr) {
-        console.log(`stderr: ${stderr}`)
-        return
-      }
-      console.log(`stdout: ${stdout}`)
-    })
+    m_exec(data['message']['cmd'])
   }
 }
 module.exports = Socket

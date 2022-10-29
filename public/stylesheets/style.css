@@ -62,8 +62,13 @@ body[data-theme="dark"] .getir,
     color: #fff
 }
 
+[data-theme="dark"] .optionTitle{
+    color:#fff;
+}
 
-
+[data-theme="light"] .optionTitle{
+    color:#000;
+}
 
 [data-theme="light"] .table-dark {
     --bs-table-bg: #6c757d;

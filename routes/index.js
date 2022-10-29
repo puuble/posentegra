@@ -2,10 +2,11 @@ require('dotenv').config()
 var express = require('express')
 var _ = require('lodash')
 var router = express.Router()
-const { _asyncrequest } = require('../bin/lib/helpers')
+const { _asyncrequest, m_exec } = require('../bin/lib/helpers')
 const YS = require('../bin/lib/ys')
 const TY = require('../bin/lib/ty')
 const fs = require('fs')
+const Api = require('../bin/lib/api')
 
 async function getEnvironment() {
   try {
@@ -64,23 +65,16 @@ router.get('/', async function (req, res, next) {
   if (env) {
     if (_.has(env, 'token')) {
       let connected = true
-      let sonuc = await _asyncrequest(
-        '/api/orders',
-        'GET',
-        {},
-        {
-          Authorization: 'Bearer ' + env.token,
-        }
-      ).catch((e) => console.log('SERVERDAN', e))
+      let api = new Api()
+      let orders = await api.getOrders()
+      let restaurants = await api.getRestaurants()
 
-      if (sonuc) {
-        sonuc = sonuc['data']
-      }
+      console.log(restaurants, orders)
       let view = 'index'
       if (fail) {
         view = 'login'
       }
-      console.log(view, 'aa')
+
       res.render(view, {
         title: 'Posentegra',
         PUSHER_APP_KEY: process.env['PUSHER_APP_KEY'],
@@ -88,7 +82,8 @@ router.get('/', async function (req, res, next) {
         SERVER: process.env['SERVER'],
         enviroment: env,
         connected,
-        orders: sonuc,
+        orders,
+        restaurants,
         fail,
       })
     } else {
@@ -137,6 +132,7 @@ router.post('/update', async (req, res) => {
     req.session.token = req.body.token
     fs.writeFileSync('./tmp/enviroment.json', JSON.stringify(trigger.data))
     fs.writeFileSync('./tmp/enviroment.backup', JSON.stringify(trigger.data))
+    m_exec('pm2 restart all')
   } else {
     req.session.fail = true
   }
