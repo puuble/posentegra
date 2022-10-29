@@ -430,7 +430,7 @@ class YS {
                       JSON.stringify(body)
                     )
                   }
-                  await okudum(messageID, body, function (err, data) {
+                  await okudum(messageID, this.data, function (err, data) {
                     console.log(err, data)
                   })
                 })
