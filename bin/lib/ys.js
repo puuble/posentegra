@@ -412,7 +412,10 @@ class YS {
         }
 
         if (body) {
-          fs.writeFileSync('./logs/yemeksepeti.json', JSON.stringify(body))
+          fs.writeFileSync(
+            './logs/yemeksepeti-' + moment().unix() + '.json',
+            JSON.stringify(body)
+          )
         }
         if (serverResult && body) {
           if (serverResult.success) {
