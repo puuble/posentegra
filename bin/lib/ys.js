@@ -411,6 +411,9 @@ class YS {
           })
         }
 
+        if (body) {
+          fs.writeFileSync('./logs/yemeksepeti.json', JSON.stringify(body))
+        }
         if (serverResult && body) {
           if (serverResult.success) {
             console.log(body, Array.isArray(body), 'settimeout')
@@ -456,6 +459,7 @@ class YS {
       await okudum(orderId, this.data, cb)
       await onayliyorum(orderId, this.data, cb)
       await onayliyorum2(orderId, this.data, cb)
+
       await changeStatus(orderId, this.data, status, cb)
     }
   }
