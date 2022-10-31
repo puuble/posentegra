@@ -95,20 +95,25 @@ async function run() {
           let option = env.restaurants[key]
 
           if (_.has(option, 'ty')) {
-            const ty = new TY(option['ty'])
-            console.log('tyGetOrder')
-            await ty.getOrder(true)
+            if (_.has(option['ys'], 'integration')) {
+              if (
+                option['ys']['integration']['apiKey'] != '' &&
+                option['ys']['integration']['apiSecretKey'] != '' &&
+                option['ys']['integration']['supplierId'] != ''
+              ) {
+                const ty = new TY(option['ty'])
+                console.log('tyGetOrder')
+                await ty.getOrder(true)
+              }
+            }
           }
           if (_.has(option, 'ys')) {
-            console.log('ysGetOrder')
-            if (
-              _.has(option['ys'], 'username') &&
-              _.has(option['ys'], 'password')
-            ) {
+            if (_.has(option['ys'], 'integration')) {
               if (
-                option['ys']['password'] != '' ||
-                option['ys']['username'] != ''
+                option['ys']['integration']['password'] != '' &&
+                option['ys']['integration']['username'] != ''
               ) {
+                console.log('ysGetOrder')
                 const ys = new YS(option['ys'], 2)
                 await ys.getOrder()
               }
