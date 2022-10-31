@@ -95,11 +95,11 @@ async function run() {
           let option = env.restaurants[key]
 
           if (_.has(option, 'ty')) {
-            if (_.has(option['ys'], 'integration')) {
+            if (_.has(option['ty'], 'integration')) {
               if (
-                option['ys']['integration']['apiKey'] != '' &&
-                option['ys']['integration']['apiSecretKey'] != '' &&
-                option['ys']['integration']['supplierId'] != ''
+                option['ty']['integration']['apiKey'] != '' &&
+                option['ty']['integration']['apiSecretKey'] != '' &&
+                option['ty']['integration']['supplierId'] != ''
               ) {
                 const ty = new TY(option['ty'])
                 console.log('tyGetOrder')
