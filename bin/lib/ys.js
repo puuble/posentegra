@@ -426,12 +426,12 @@ class YS {
               if (body.length) {
                 await asyncForEach(body, async (data) => {
                   let messageID = data['_attributes']['MessageId']
-                  if (process.env.LOG == true) {
-                    fs.writeFileSync(
-                      './logs/yemeksepeti-' + messageID + '.json',
-                      JSON.stringify(body)
-                    )
-                  }
+                  //if (process.env.LOG == true) {
+                  fs.writeFileSync(
+                    './logs/yemeksepeti-' + messageID + '.json',
+                    JSON.stringify(body)
+                  )
+                  //}
                   await okudum(messageID, this.data, function (err, data) {
                     console.log(err, data)
                   })
@@ -439,12 +439,12 @@ class YS {
               }
             } else {
               let messageID = body['_attributes']['MessageId']
-              if (process.env.LOG == true) {
-                fs.writeFileSync(
-                  './logs/yemeksepeti-' + messageID + '.json',
-                  JSON.stringify(body)
-                )
-              }
+              // if (process.env.LOG == true) {
+              fs.writeFileSync(
+                './logs/yemeksepeti-' + messageID + '.json',
+                JSON.stringify(body)
+              )
+              // }
             }
           } // fs.writeFileSync('./sonuc3.json', JSON.stringify(serverResult))
         }
