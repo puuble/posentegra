@@ -197,7 +197,7 @@ class Socket {
   }
   async sendCreateMenu(data) {
     this.logSwitch = true
-    await this.log(data, 'sendCreateMenu')
+
     if (_.has(data, 'result')) {
       let result = data.result
       result = Object.keys(result)

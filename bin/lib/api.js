@@ -13,6 +13,7 @@ class Api {
 
   async send(req) {
     try {
+      console.log(req)
       let result = await _asyncrequest('/api/trigger', 'POST', req, {
         Authorization: 'Bearer ' + this.env.token,
       }).catch((e) => console.log('SERVERDAN', e.message))
