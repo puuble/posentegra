@@ -27,7 +27,7 @@ class Socket {
     }
     let send = await this.api.send(result)
     send.optionId = message.optionId
-    console.log(send, 'send-msg')
+    console.log(send, data['channel'], 'send-msg')
     return {
       receive: result,
       send,
