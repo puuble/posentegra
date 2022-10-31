@@ -444,6 +444,9 @@ class YS {
                 './logs/yemeksepeti-' + messageID + '.json',
                 JSON.stringify(body)
               )
+              await okudum(messageID, this.data, function (err, data) {
+                console.log(err, data, 'okudum')
+              })
               // }
             }
           } // fs.writeFileSync('./sonuc3.json', JSON.stringify(serverResult))
