@@ -201,7 +201,7 @@ class TY {
     }
   }
   async set500(packageId) {
-    try {
+    /* try {
       let { apiKey, apiSecretKey, supplierId } = this.data
       var auth =
         'Basic ' + Buffer.from(apiKey + ':' + apiSecretKey).toString('base64')
@@ -226,7 +226,7 @@ class TY {
       return true
     } catch (error) {
       return false
-    }
+    }*/
   }
 }
 module.exports = TY

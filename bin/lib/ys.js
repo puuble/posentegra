@@ -464,10 +464,10 @@ class YS {
   async set500(orderId, cb) {
     let status = 'Approved'
     //if (this.data.otomatikOnay) {
-    await okudum(orderId, this.data, cb)
-    await onayliyorum(orderId, this.data, cb)
-    await onayliyorum2(orderId, this.data, cb)
-    await changeStatus(orderId, this.data, status, cb)
+    // await okudum(orderId, this.data, cb)
+    //await onayliyorum(orderId, this.data, cb)
+    // await onayliyorum2(orderId, this.data, cb)
+    // await changeStatus(orderId, this.data, status, cb)
     // }
   }
   async cancelOption() {
