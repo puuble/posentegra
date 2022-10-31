@@ -88,8 +88,8 @@
         <label class="form-check-label" for="flexSwitchCheckDefault${row._id}">Kapalı/Açık</label>
     </div>
                                             </div>
-                                            <span class="badge  ${cls} rounded - pill">${status}</span>
-                                        </li > `
+                                            <span class="badge  ${cls} rounded-pill">${status}</span>
+                                        </li> `
 
 
             return html
@@ -106,19 +106,19 @@
                                 if (Array.isArray(cat.options)) {
                                     let options = cat.options.map(x => x.name.tr);
                                     options = options.join(',')
-                                    optionCategories += `< li > ${cat.name.tr}: ${options}</li > `
+                                    optionCategories += `<li> ${cat.name.tr}: ${options}</li> `
                                 } else {
-                                    optionCategories += `< li > ${cat.name.tr}</li > `
+                                    optionCategories += `<li> ${cat.name.tr}</li> `
                                 }
                             } else {
-                                optionCategories += `< li > ${cat.name.tr}</li > `
+                                optionCategories += `<li> ${cat.name.tr}</li> `
                             }
 
 
 
                         })
                     }
-                    products += `< tr style = "border-bottom: 1px solid rgb(221, 221, 221);" >
+                    products += `<tr style ="border-bottom: 1px solid rgb(221, 221, 221);" >
                             <td style="font-size: 15pt;">${element.name.tr}
                               <ul>
                                     ${optionCategories}
@@ -128,7 +128,7 @@
                             <td class="text-right" style="font-size: 15pt;">₺ ${element.priceWithOption}</td>
                             <td class="text-right" style="font-size: 15pt;">${element.count}</td>
                             <td class="text-right" style="font-size: 15pt;">₺ ${element.priceWithOption}</td>
-                </tr > `
+                </tr> `
 
                 });
 
@@ -136,7 +136,7 @@
 
             let deliveryType = rowData.deliveryType == 2 ? 'Restoran Kuryesi Teslim Edecek!' : 'Entegrasyon Kuryesi Teslim Edecek! '
             let html = `
-        <div class="modal fade" id = "modal${rowData._id}" tabindex = "-1" role = "dialog" aria - labelledby="exampleModalLabel" aria - hidden="true" >
+        <div class="modal fade" id="modal${rowData._id}" tabindex="-1" role="dialog"  >
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
