@@ -1,6 +1,5 @@
 /node_modules/*
 /public/static/*
-/logs/*
 PosEntegra-out.log
 /tmp/enviroment.backup
 /tmp/enviroment.json
