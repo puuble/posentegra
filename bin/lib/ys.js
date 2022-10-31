@@ -433,7 +433,7 @@ class YS {
                   )
                   //}
                   await okudum(messageID, this.data, function (err, data) {
-                    console.log(err, data)
+                    console.log(err, data, 'okudum')
                   })
                 })
               }
