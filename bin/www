@@ -101,8 +101,18 @@ async function run() {
           }
           if (_.has(option, 'ys')) {
             console.log('ysGetOrder')
-            const ys = new YS(option['ys'], 2)
-            await ys.getOrder()
+            if (
+              _.has(option['ys'], 'username') &&
+              _.has(option['ys'], 'password')
+            ) {
+              if (
+                option['ys']['password'] != '' ||
+                option['ys']['username'] != ''
+              ) {
+                const ys = new YS(option['ys'], 2)
+                await ys.getOrder()
+              }
+            }
           }
         })
       }
