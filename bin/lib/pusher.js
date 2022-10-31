@@ -86,7 +86,7 @@ class PusherClient {
   async sendData(data) {
     let socket = new Socket()
     let channel = data.channel
-    console.log(channel)
+    console.log(channel, 'channelName')
     //if (channel != 'order') {
     let result = await socket[channel](data)
     if (_.has(result, 'send')) {
