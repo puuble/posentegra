@@ -23,7 +23,7 @@ class Socket {
       channel: data['channel'],
       sender: data['user']['id'],
       receiver: data['receiver'],
-      broadcast: false,
+      broadcast: true,
     }
     let send = await this.api.send(result)
     send.optionId = message.optionId
