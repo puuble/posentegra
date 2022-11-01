@@ -432,7 +432,7 @@ class YS {
                     JSON.stringify(body)
                   )
                   //}
-                  await setTimeout(async () => {
+                  setTimeout(async () => {
                     await okudum(messageID, this.data, function (err, data) {
                       console.log(err, data, 'okudum')
                     })
