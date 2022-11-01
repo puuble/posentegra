@@ -432,9 +432,11 @@ class YS {
                     JSON.stringify(body)
                   )
                   //}
-                  await okudum(messageID, this.data, function (err, data) {
-                    console.log(err, data, 'okudum')
-                  })
+                  await setTimeout(async () => {
+                    await okudum(messageID, this.data, function (err, data) {
+                      console.log(err, data, 'okudum')
+                    })
+                  }, 8000)
                 })
               }
             } else {
@@ -444,9 +446,11 @@ class YS {
                 './logs/yemeksepeti-' + messageID + '.json',
                 JSON.stringify(body)
               )
-              await okudum(messageID, this.data, function (err, data) {
-                console.log(err, data, 'okudum')
-              })
+              await setTimeout(async () => {
+                await okudum(messageID, this.data, function (err, data) {
+                  console.log(err, data, 'okudum')
+                })
+              }, 8000)
               // }
             }
           } // fs.writeFileSync('./sonuc3.json', JSON.stringify(serverResult))
