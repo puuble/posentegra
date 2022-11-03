@@ -102,7 +102,7 @@ async function run() {
                 option['ty']['integration']['supplierId'] != ''
               ) {
                 const ty = new TY(option['ty'])
-                console.log('tyGetOrder')
+                //console.log('tyGetOrder')
                 await ty.getOrder(true)
               }
             }
@@ -113,7 +113,7 @@ async function run() {
                 option['ys']['integration']['password'] != '' &&
                 option['ys']['integration']['username'] != ''
               ) {
-                console.log('ysGetOrder')
+                // console.log('ysGetOrder')
                 const ys = new YS(option['ys'], 2)
                 await ys.getOrder()
               }
@@ -138,7 +138,7 @@ function onListening() {
           if (Array.isArray(restaurants)) {
             if (restaurants.length > 0) {
               cron.schedule('*/12 * * * * *', async () => {
-                // console.log('12 saniye de bir run ')
+                console.log('12 saniye de bir run ')
                 await run()
               })
             }
