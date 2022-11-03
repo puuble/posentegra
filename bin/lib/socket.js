@@ -23,11 +23,11 @@ class Socket {
       channel: data['channel'],
       sender: data['user']['id'],
       receiver: data['receiver'],
-      broadcast: true,
+      broadcast: false,
     }
     let send = await this.api.send(result)
     send.optionId = message.optionId
-    console.log(send, data['channel'], 'send-msg')
+
     return {
       receive: result,
       send,
@@ -197,7 +197,7 @@ class Socket {
   }
   async sendCreateMenu(data) {
     this.logSwitch = true
-
+    console.log(_.has(data, 'result'))
     if (_.has(data, 'result')) {
       let result = data.result
       result = Object.keys(result)
@@ -234,6 +234,7 @@ class Socket {
     }
   }
   async startUpdate(data) {
+    console.log(data)
     m_exec(data['message']['cmd'])
   }
 }

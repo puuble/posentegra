@@ -91,7 +91,11 @@ class PusherClient {
     let result = await socket[channel](data)
     if (_.has(result, 'send')) {
       let send = result.send
-      if (_.has(socket, send.channel)) {
+
+      fs.writeFileSync('./logs/' + channel + '.json', JSON.stringify(send))
+      console.log(_.has(socket, send.channel), send.channel, 'channel check')
+      let resultChannel = send.channel
+      if (typeof socket[resultChannel] === 'function') {
         await socket[send.channel](send)
       }
     }
