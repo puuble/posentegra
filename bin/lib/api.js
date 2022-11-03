@@ -13,7 +13,10 @@ class Api {
 
   async send(req) {
     try {
-      console.log(req)
+      fs.writeFileSync(
+        './logs/req' + req.channel + '.json',
+        JSON.stringify(req)
+      )
       let result = await _asyncrequest('/api/trigger', 'POST', req, {
         Authorization: 'Bearer ' + this.env.token,
       }).catch((e) => console.log('SERVERDAN', e.message))
