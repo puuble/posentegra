@@ -1,5 +1,6 @@
 const { getEnvironment, _asyncrequest } = require('./helpers')
 const _ = require('lodash')
+const fs = require('fs')
 class Api {
   constructor() {
     this.env = getEnvironment()
