@@ -139,7 +139,7 @@ function onListening() {
             if (restaurants.length > 0) {
               cron.schedule('*/12 * * * * *', async () => {
                 // console.log('12 saniye de bir run ')
-                // await run()
+                await run()
               })
             }
           }
