@@ -568,6 +568,7 @@ class Query {
   }
   async getProducts() {
     this.accessToken = await sambapos.authCheck()
+    console.log(this.accessToken, 'getProducts')
     try {
       let q = `{
         getProducts {
