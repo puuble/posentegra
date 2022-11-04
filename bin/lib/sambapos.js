@@ -110,7 +110,7 @@ class Sambapos {
       })
 
       if (response) {
-        console.log(response)
+        console.log(response, 'login')
         if (_.has(response, 'refresh_token')) {
           fs.writeFileSync('./tmp/refresh_token', response.refresh_token)
         }
