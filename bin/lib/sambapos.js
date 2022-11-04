@@ -71,16 +71,16 @@ class Sambapos {
 
       if (response) {
         if (_.has(response, 'access_token')) {
-          localStorage.setItem('access_token', response.access_token)
+          fs.writeFileSync('./tmp/access_token', response.access_token)
           this.access_token = response.access_token
         }
         if (_.has(response, 'refresh_token')) {
-          localStorage.setItem('refresh_token', response.refresh_token)
+          fs.writeFileSync('./tmp/refresh_token', response.access_token)
         }
         if (_.has(response, 'expires_in')) {
-          localStorage.setItem(
-            'expires',
-            moment(response['.expires']).toISOString()
+          fs.writeFileSync(
+            './tmp/expires',
+            moment(response['expires_in']).toISOString()
           )
         }
       } else {
@@ -112,16 +112,16 @@ class Sambapos {
       if (response) {
         console.log(response)
         if (_.has(response, 'refresh_token')) {
-          localStorage.setItem('refresh_token', response.refresh_token)
+          fs.writeFileSync('./tmp/refresh_token', response.refresh_token)
         }
         if (_.has(response, 'access_token')) {
-          localStorage.setItem('access_token', response.access_token)
+          fs.writeFileSync('./tmp/access_token', response.access_token)
           this.access_token = response.access_token
         }
         if (_.has(response, 'expires_in')) {
-          localStorage.setItem(
-            'expires',
-            moment(response['.expires']).toISOString()
+          fs.writeFileSync(
+            './tmp/expires',
+            moment(response['expires_in']).toISOString()
           )
         }
       } else {
