@@ -66,6 +66,7 @@ class Sambapos {
         }),
         { 'Content-Type': 'application/x-www-form-urlencoded' }
       ).catch((err) => {
+        console.log(err)
         console.log('ERROR SAMBA REFRESG')
       })
 
@@ -80,7 +81,7 @@ class Sambapos {
         if (_.has(response, 'expires_in')) {
           fs.writeFileSync(
             './tmp/expires',
-            moment(response['expires_in']).toISOString()
+            moment(response['.expires']).toISOString()
           )
         }
       } else {
@@ -121,7 +122,7 @@ class Sambapos {
         if (_.has(response, 'expires_in')) {
           fs.writeFileSync(
             './tmp/expires',
-            moment(response['expires_in']).toISOString()
+            moment(response['.expires']).toISOString()
           )
         }
       } else {
