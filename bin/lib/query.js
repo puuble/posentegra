@@ -97,14 +97,10 @@ class Query {
       await this.updateTerminalTicket(terminalId)
       let addProduct = _.has(this.queries, 'addProduct')
       if (addProduct) {
-        let m = await this.addProduct(terminalId)
-        let count = await this.count('addOrderToTerminalTicket')
-        for (let index = m; index < count; index++) {
-          await this.addOrderToTerminalTicket(terminalId, 0, index)
-        }
-      } else {
-        await this.addOrderToTerminalTicket(terminalId, 0)
+        await this.addProduct(terminalId)
       }
+      await this.addOrderToTerminalTicket(terminalId, 0)
+
       //
       await this.addCalculationToTerminalTicket(terminalId)
       await this.changeEntityOfTerminalTicket(terminalId)
@@ -377,7 +373,7 @@ class Query {
             if (_.has(product, 'id')) {
               if (product.id) {
                 await this.postResetProductCacheMessage()
-                await this.addOrderToTerminalTicket(terminalId, product.id, i)
+                await this.addOrderToTerminalTicket(terminalId, product.id)
               }
             }
           })
