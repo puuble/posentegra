@@ -15,7 +15,7 @@ let queries = {
     updateTerminalTicket:
       'mutation m {  updateTerminalTicket(terminalId: "{terminalId}", note: "Servis plastik çatal, peçete vs İSTEMİYORUM | Temassız Teslimat İstiyorum", states: [{"stateName":"Kaynak","state":"Yemek Sepeti"},{"stateName":"Ödeme Şekli","state":""},{"stateName":"Teslimat Şekli","state":"2"}], tags: [{"tagName":"Yemek Sepeti Onay Kodu","tag":"68879992"},{"tagName":"Ödeme Şekli","tag":"Online Kredi\\/Banka Kartı - Sipariş tutarı internet üzerinden ÖDENMİŞTİR. - Lütfen fiş getiriniz."},{"tagName":"ID","tag":""},{"tagName":"Restoran","tag":"Nokta Pide Test"}]){id}}',
     addOrderToTerminalTicket: [
-      'mutation m {addOrderToTerminalTicket(terminalId:"{terminalId}",productId:6147,price:85.00,quantity:1,portion:"Normal",orderTags:"Yemeksepeti Etiketi=3 x Lahmacun,Yemeksepeti Etiketi=3 x Acısız"){orders{uid}}}',
+      'mutation m {addOrderToTerminalTicket(terminalId:"{terminalId}",productId:6147,price:85.00,quantity:1,portion:"Normal",orderTags:"Yemeksepeti Etiketi=3 x Lahmacun,Yemeksepeti Etiketi=2 x Acısız,Yemeksepeti Etiketi=Acılı"){orders{uid}}}',
     ],
     addCalculationToTerminalTicket:
       'mutation m { addCalculationToTerminalTicket(terminalId:"{terminalId}",calculationName:"Joker İskonto",amount:0.00){id}}',
