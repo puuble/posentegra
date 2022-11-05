@@ -362,7 +362,7 @@ class Query {
                 console.log(result, 'urun filtre')
                 if (Array.isArray(result)) {
                   if (result.length > 0) {
-                    await this.addOrderToTerminalTicket(
+                    await this.addOrderToTerminalTicketWithProduct(
                       terminalId,
                       result[0]['id'],
                       i
@@ -386,6 +386,57 @@ class Query {
       return d.length
     } catch (error) {
       console.log(error, 'addProduct')
+    }
+  }
+  async addOrderToTerminalTicketWithProduct(
+    terminalId,
+    productId,
+    key = false
+  ) {
+    try {
+      let d = this.queries.addOrderToTerminalTicketWithProduct
+      let maps = {
+        '{terminalId}': terminalId,
+        '{productId}': productId,
+      }
+      if (Array.isArray(d)) {
+        if (d.length > 0) {
+          if (key !== false) {
+            let c = d[key]
+            let q = await this.changeString(c, '{terminalId}|{productId}', maps)
+            console.log(q, 'else ici')
+            q = {
+              query: q,
+              variables: null,
+              operationName: 'm',
+            }
+            await sambapos.query(q).catch((err) => {
+              console.log('ERROR SAMBA Query', q.query)
+              return null
+            })
+          } else {
+            await asyncForEach(d, async (c, index) => {
+              let q = await this.changeString(
+                c,
+                '{terminalId}|{productId}',
+                maps
+              )
+              console.log(q, ' withproduct addorder')
+              q = {
+                query: q,
+                variables: null,
+                operationName: 'm',
+              }
+              await sambapos.query(q).catch((err) => {
+                console.log('ERROR SAMBA Query', q.query)
+                return null
+              })
+            })
+          }
+        }
+      }
+    } catch (error) {
+      console.log(error, 'addOrderToTerminalTicketWithProduct')
     }
   }
   async addOrderToTerminalTicket(terminalId, productId, key = false) {

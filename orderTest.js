@@ -23,7 +23,13 @@ let queries = {
     ],
     getProduct: [
       { name: 'Kıymalı Yumurtalı Pide - 1 Porsiyon' },
+      [],
       { name: 'Bozdoğan Peynirlisi - 1 Porsiyon' },
+      [],
+    ],
+    addOrderToTerminalTicketWithProduct: [
+      'mutation m {addOrderToTerminalTicket(terminalId:"{terminalId}",productId:{productId},price:53.00,quantity:2,portion:"Normal",orderTags:""){orders{uid}}}',
+      'mutation m {addOrderToTerminalTicket(terminalId:"{terminalId}",productId:{productId},price:52.00,quantity:1,portion:"Normal",orderTags:""){orders{uid}}}',
     ],
     addCalculationToTerminalTicket:
       'mutation m { addCalculationToTerminalTicket(terminalId:"{terminalId}",calculationName:"Joker İskonto",amount:0.00){id}}',
