@@ -23,9 +23,7 @@ let queries = {
     ],
     getProduct: [
       { name: 'Kıymalı Yumurtalı Pide - 1 Porsiyon' },
-      [],
       { name: 'Bozdoğan Peynirlisi - 1 Porsiyon' },
-      [],
     ],
     addOrderToTerminalTicketWithProduct: [
       'mutation m {addOrderToTerminalTicket(terminalId:"{terminalId}",productId:{productId},price:53.00,quantity:2,portion:"Normal",orderTags:""){orders{uid}}}',
