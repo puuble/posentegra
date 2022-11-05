@@ -5,7 +5,13 @@ const fs = require('fs')
 const _ = require('lodash')
 const moment = require('moment')
 const { asyncForEach, _asyncrequest, getEnvironment } = require('./helpers')
-
+function waiting(seconds) {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve('resolved')
+    }, seconds)
+  })
+}
 async function changeStatus(orderId, body, status = 'Approved', cb) {
   //Approved or Accepted or Rejected or Cancelled or OnDelivery or Delivered or TechnicalRejected
   let xlms = `<?xml version="1.0" encoding="utf-8"?>
@@ -432,11 +438,10 @@ class YS {
                     JSON.stringify(body)
                   )
                   //}
-                  setTimeout(async () => {
-                    await okudum(messageID, this.data, function (err, data) {
-                      console.log(err, data, 'okudum')
-                    })
-                  }, 8000)
+                  await waiting(11000)
+                  await okudum(messageID, this.data, function (err, data) {
+                    console.log(err, data, 'okudum')
+                  })
                 })
               }
             } else {
@@ -446,11 +451,10 @@ class YS {
                 './logs/yemeksepeti-' + messageID + '.json',
                 JSON.stringify(body)
               )
-              await setTimeout(async () => {
-                await okudum(messageID, this.data, function (err, data) {
-                  console.log(err, data, 'okudum')
-                })
-              }, 8000)
+              await waiting(11000)
+              await okudum(messageID, this.data, function (err, data) {
+                console.log(err, data, 'okudum')
+              })
               // }
             }
           } // fs.writeFileSync('./sonuc3.json', JSON.stringify(serverResult))
