@@ -46,6 +46,15 @@
 #messages>li {
     padding: 0.5rem 1rem;
 }
+.form-switch .form-check-input {
+    width: 6em;
+    height: 3em;
+}
+
+.form-check-input:checked {
+    background-color: #198754;
+    border-color: #198754;
+}
 
 #messages>li:nth-child(odd) {
     background: #efefef;
@@ -62,6 +71,9 @@ body[data-theme="dark"] .getir,
     color: #fff
 }
 
+[data-theme="dark"]  .offcanvas {
+    background-color: #000;
+}
 [data-theme="dark"] .optionTitle{
     color:#fff;
 }

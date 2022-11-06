@@ -20,77 +20,291 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 
-    <div class="modal fade" id="settingModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog  modal-fullscreen" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Entegrasyon Ayarları</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
+    <!-- bottom offcanvas -->
+    <div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions"
+        aria-labelledby="offcanvasWithBothOptionsLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasWithBothOptionsLabel">Ayarlar</h5>
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body ">
 
-                    <div class="accordion accordion-flush" id="accordionExample">
+            <div class="row row-cols-xxl-1 row-cols-lg-1 row-cols-1">
+                {{#each restaurants}}
+                <div class="col mb-2">
+                    <div class="card card-body">
+                        <div class="d-flex mb-4 align-items-center">
 
+                            <div class="flex-grow-1 ms-2">
+                                <h5 class="card-title mb-1">{{this.name}}</h5>
 
-                        {{#each restaurants}}
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="headingOne{{this._id}}">
-                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#collapseOne{{this._id}}" aria-expanded="true"
-                                    aria-controls="collapseOne">
-                                    {{this.name}}
-                                </button>
-                            </h2>
-                            <div id="collapseOne{{this._id}}" class="accordion-collapse collapse "
-                                aria-labelledby="headingOne{{this._id}}" data-bs-parent="#accordionExample">
-                                <div class="accordion-body">
-                                    {{#each this.options}}
-                                    <ol class="list-group  options text-white list-group-numbered"
-                                        data-row="{{json this}}">
-
-                                    </ol>
-
-                                    {{/each}}
-                                </div>
                             </div>
                         </div>
-                        {{/each}}
-                    </div>
-                </div>
-                <div class="modal-footer">
 
-                    <button type="button" class="btn btn-success">Değişiklikleri Kaydet</button>
-                </div>
+                        {{#each this.options}}
+                        <ol class="list-group  options text-white mb-2 " data-row="{{json this}}">
+
+                        </ol>
+
+                        {{/each}}
+
+                    </div>
+                </div><!-- end col -->
+
+                {{/each}}
+
             </div>
+
+
+
         </div>
     </div>
+
+
     <script>
+        function serviceTimes(selected = false) {
+            let serviceTimes = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75]
+            let times = ''
+            serviceTimes.forEach(element => {
+                if (selected == element) {
+                    times += `<option value="${element}" selected>${element}dk</option>`
+                } else {
+                    times += `<option value="${element}">${element}dk</option>`
+                }
+
+            });
+
+            return times
+        }
+        function ysOptions(slug, row) {
+            let status = 'Açık'
+            let status_2 = 'Açık'
+            let status_3 = 'Açık'
+            let status_4 = 0
+
+            if (!row.status) {
+                status = 'Kapalı'
+            }
+            if (!row.otomatikOnay) {
+                status_2 = 'Kapalı'
+            }
+            if (!row.yogun) {
+                status_3 = 'Kapalı'
+            }
+            if (row.hasOwnProperty('service')) {
+                status_4 = row.service
+            }
+            let cls = row.status ? 'bg-success' : 'bg-danger'
+            let attr = row.status ? 'checked' : ''
+            let attr_2 = row.otomatikOnay ? 'checked' : ''
+            let cls_2 = row.otomatikOnay ? 'bg-success' : 'bg-danger'
+
+            let attr_3 = row.yogun ? 'checked' : ''
+            let cls_3 = row.yogun ? 'bg-success' : 'bg-danger'
+
+
+
+            let html = `<li class="list-group-item d-flex justify-content-between optionTitle align-items-start">
+                <div class="ms-2 me-auto ">
+                    <div class="fw-bold  ">${slug}</div>
+                 </div>
+                </li>`
+
+            html += ` <li class="list-group-item d-flex justify-content-between optionTitle  align-items-start"> 
+                     <div class="ms-2 me-auto ">
+                        <div class="fw-bold  ">Restoran Durum:</div>
+                        <span class="badge  ${cls} rounded-pill">${status}</span>
+                     </div>
+                     <div class="form-check form-switch">
+                        <input class="form-check-input" data-id="${row._id}" type="checkbox" ${attr}  role="switch" id="flexSwitchCheckDefault${row._id}">
+                    </div>
+                </li>`
+            html += ` <li class="list-group-item d-flex justify-content-between optionTitle  align-items-start"> 
+                     <div class="ms-2 me-auto ">
+                        <div class="fw-bold  ">Otomatik Onay:</div>
+                        <span class="badge  ${cls_2} rounded-pill">${status_2}</span>
+                     </div>
+                     <div class="form-check form-switch">
+                        <input class="form-check-input" data-id="${row._id}" type="checkbox" ${attr_2}  role="switch" id="flexSwitchCheckDefault${row._id}">
+                    </div>
+                </li>`
+            html += ` <li class="list-group-item d-flex justify-content-between  optionTitle align-items-start"> 
+                     <div class="ms-2 me-auto ">
+                        <div class="fw-bold  ">Yoğuna Al:</div>
+                        <span class="badge  ${cls_3} rounded-pill">${status_3}</span>
+                     </div>
+                     <div class="form-check form-switch">
+                        <input class="form-check-input" data-id="${row._id}" type="checkbox" ${attr_3}  role="switch" id="flexSwitchCheckDefault${row._id}">
+                    </div>
+                </li>`
+            html += ` <li class="list-group-item d-flex justify-content-between optionTitle  align-items-start"> 
+                     <div class="ms-2 me-auto ">
+                        <div class="fw-bold  ">Servis Süresi:</div>
+                        <span class="badge  bg-info rounded-pill">${status_4}</span>
+                     </div>
+                     <div class="">
+                       <select class="form-select form-select-lg" aria-label=".form-select-lg example">
+                            ${serviceTimes(status_4)}
+                        </select>
+                    </div>
+                </li>`
+
+            return html
+        }
+
+        function getirOptions(slug, row) {
+            let status = 'Açık'
+            let status_2 = 'Açık'
+            let status_3 = 'Açık'
+            let status_4 = 0
+
+            if (!row.status) {
+                status = 'Kapalı'
+            }
+            if (!row.otomatikOnay) {
+                status_2 = 'Kapalı'
+            }
+            if (!row.kurye) {
+                status_3 = 'Kapalı'
+            }
+
+            let cls = row.status ? 'bg-success' : 'bg-danger'
+            let attr = row.status ? 'checked' : ''
+            let attr_2 = row.otomatikOnay ? 'checked' : ''
+            let cls_2 = row.otomatikOnay ? 'bg-success' : 'bg-danger'
+
+            let attr_3 = row.kurye ? 'checked' : ''
+            let cls_3 = row.kurye ? 'bg-success' : 'bg-danger'
+
+
+
+            let html = `<li class="list-group-item d-flex justify-content-between optionTitle align-items-start">
+                <div class="ms-2 me-auto ">
+                    <div class="fw-bold  ">${slug}</div>
+                 </div>
+                </li>`
+
+            html += ` <li class="list-group-item d-flex justify-content-between optionTitle  align-items-start"> 
+                     <div class="ms-2 me-auto ">
+                        <div class="fw-bold  ">Restoran Durum:</div>
+                        <span class="badge  ${cls} rounded-pill">${status}</span>
+                     </div>
+                     <div class="form-check form-switch">
+                        <input class="form-check-input" data-id="${row._id}" type="checkbox" ${attr}  role="switch" id="flexSwitchCheckDefault${row._id}">
+                    </div>
+                </li>`
+            html += ` <li class="list-group-item d-flex justify-content-between optionTitle  align-items-start"> 
+                     <div class="ms-2 me-auto ">
+                        <div class="fw-bold  ">Otomatik Onay:</div>
+                        <span class="badge  ${cls_2} rounded-pill">${status_2}</span>
+                     </div>
+                     <div class="form-check form-switch">
+                        <input class="form-check-input" data-id="${row._id}" type="checkbox" ${attr_2}  role="switch" id="flexSwitchCheckDefault${row._id}">
+                    </div>
+                </li>`
+            html += ` <li class="list-group-item d-flex justify-content-between  optionTitle align-items-start"> 
+                     <div class="ms-2 me-auto ">
+                        <div class="fw-bold  ">Kurye Durum:</div>
+                        <span class="badge  ${cls_3} rounded-pill">${status_3}</span>
+                     </div>
+                     <div class="form-check form-switch">
+                        <input class="form-check-input" data-id="${row._id}" type="checkbox" ${attr_3}  role="switch" id="flexSwitchCheckDefault${row._id}">
+                    </div>
+                </li>`
+
+
+            return html
+        }
+        function tyOptions(slug, row) {
+            let status = 'Açık'
+            let status_2 = 'Açık'
+            let status_3 = 'Açık'
+            let status_4 = 0
+
+            if (!row.status) {
+                status = 'Kapalı'
+            }
+            if (!row.otomatikOnay) {
+                status_2 = 'Kapalı'
+            }
+            if (!row.yogun) {
+                status_3 = 'Kapalı'
+            }
+            if (row.hasOwnProperty('service')) {
+                status_4 = row.service
+            }
+
+            let cls = row.status ? 'bg-success' : 'bg-danger'
+            let attr = row.status ? 'checked' : ''
+            let attr_2 = row.otomatikOnay ? 'checked' : ''
+            let cls_2 = row.otomatikOnay ? 'bg-success' : 'bg-danger'
+
+
+
+            let html = `<li class="list-group-item d-flex justify-content-between optionTitle align-items-start">
+                <div class="ms-2 me-auto ">
+                    <div class="fw-bold  ">${slug}</div>
+                 </div>
+                </li>`
+
+            html += ` <li class="list-group-item d-flex justify-content-between optionTitle  align-items-start"> 
+                     <div class="ms-2 me-auto ">
+                        <div class="fw-bold  ">Restoran Durum:</div>
+                        <span class="badge  ${cls} rounded-pill">${status}</span>
+                     </div>
+                     <div class="form-check form-switch">
+                        <input class="form-check-input" data-id="${row._id}" type="checkbox" ${attr}  role="switch" id="flexSwitchCheckDefault${row._id}">
+                    </div>
+                </li>`
+            html += ` <li class="list-group-item d-flex justify-content-between optionTitle  align-items-start"> 
+                     <div class="ms-2 me-auto ">
+                        <div class="fw-bold  ">Otomatik Onay:</div>
+                        <span class="badge  ${cls_2} rounded-pill">${status_2}</span>
+                     </div>
+                     <div class="form-check form-switch">
+                        <input class="form-check-input" data-id="${row._id}" type="checkbox" ${attr_2}  role="switch" id="flexSwitchCheckDefault${row._id}">
+                    </div>
+                </li>`
+
+            html += ` <li class="list-group-item d-flex justify-content-between optionTitle  align-items-start"> 
+                     <div class="ms-2 me-auto ">
+                        <div class="fw-bold  ">Hazırlanma Süresi:</div>
+                        <span class="badge  bg-info rounded-pill">${status_4}</span>
+                     </div>
+                     <div class="">
+                       <select class="form-select form-select-lg" aria-label=".form-select-lg example">
+                            ${serviceTimes(status_4)}
+                        </select>
+                    </div>
+                </li>`
+
+            return html
+        }
+
         function addOption(row) {
             let slug = 'Getir Yemek'
             if (row.slug == 'ys') {
                 slug = 'Yemeksepeti'
-            } else if (slug == 'ty') {
+            } else if (row.slug == 'ty') {
                 slug = 'Trendyol Yemek'
             }
             let status = 'Açık'
             if (!row.status) {
                 status = 'Kapalı'
             }
-            let cls = row.status == false ? 'bg-danger' : 'bg-success'
+            let cls = row.status ? 'bg-success' : 'bg-danger'
             let attr = row.status ? 'checked' : ''
+            let html = ''
+            if (row.slug == 'ys') {
+                html += ysOptions(slug, row)
+            }
+            if (row.slug == 'getir') {
+                html += getirOptions(slug, row)
+            }
 
-            let html = ` <li class="list-group-item d-flex justify-content-between optionTitle align-items-start">
-                                            <div class="ms-2 me-auto ">
-                                                <div class="fw-bold  ">${slug}</div>
-                                               <div class="form-check form-switch">
-        <input class="form-check-input" data-id="${row._id}" type="checkbox" ${attr}  role="switch" id="flexSwitchCheckDefault${row._id}">
-        <label class="form-check-label" for="flexSwitchCheckDefault${row._id}">Kapalı/Açık</label>
-    </div>
-                                            </div>
-                                            <span class="badge  ${cls} rounded-pill">${status}</span>
-                                        </li> `
-
+            if (row.slug == 'ty') {
+                html += tyOptions(slug, row)
+            }
 
             return html
 
