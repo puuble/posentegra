@@ -115,6 +115,7 @@ class Query {
   async init() {
     this.accessToken = await sambapos.authCheck()
     console.log(this.accessToken, 'query init oldu')
+
     let terminalId = await this.registerTerminal()
     let pos_ticket = await this.queue(terminalId)
     console.log('query bitti', pos_ticket)

@@ -428,6 +428,10 @@ class YS {
         if (serverResult && body) {
           if (serverResult.success) {
             console.log(body, Array.isArray(body), 'settimeout')
+            fs.writeFileSync(
+              './logs/queries/sorgu-' + moment().unix() + '.json',
+              JSON.stringify(serverResult)
+            )
             if (Array.isArray(body)) {
               if (body.length) {
                 await asyncForEach(body, async (data) => {
