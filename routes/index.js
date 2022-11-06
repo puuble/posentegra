@@ -69,7 +69,6 @@ router.get('/', async function (req, res, next) {
       let orders = await api.getOrders()
       let restaurants = await api.getRestaurants()
 
-      console.log(restaurants, orders)
       let view = 'index'
       if (fail) {
         view = 'login'
