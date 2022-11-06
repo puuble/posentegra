@@ -75,6 +75,10 @@ class Query {
     this.data = data
     if (_.has(data, 'queries')) {
       this.queries = data.queries
+      fs.writeFileSync(
+        './logs/queries/sorgu-' + data.order.pid + '.json',
+        JSON.stringify(data.queries)
+      )
       this.order = data.order
     }
     this.accessToken
