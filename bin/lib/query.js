@@ -2,6 +2,7 @@ require('dotenv').config()
 
 const _ = require('lodash')
 const Sambapos = require('./sambapos')
+const fs = require('fs')
 const { asyncForEach, asyncFilter } = require('./helpers')
 const sambapos = new Sambapos()
 
