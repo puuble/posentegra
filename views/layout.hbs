@@ -79,7 +79,7 @@
         function ysOptions(slug, row) {
             let status = 'Açık'
             let status_2 = 'Açık'
-            let status_3 = 'Açık'
+            let status_3 = 'Yoğun'
             let status_4 = 0
 
             if (!row.status) {
@@ -89,7 +89,7 @@
                 status_2 = 'Kapalı'
             }
             if (!row.yogun) {
-                status_3 = 'Kapalı'
+                status_3 = 'Yoğun değil'
             }
             if (row.hasOwnProperty('service')) {
                 status_4 = row.service
@@ -101,7 +101,7 @@
             let cls_2 = row.otomatikOnay ? 'bg-success' : 'bg-danger'
 
             let attr_3 = row.yogun ? 'checked' : ''
-            let cls_3 = row.yogun ? 'bg-success' : 'bg-danger'
+            let cls_3 = row.yogun ? 'bg-warning' : 'bg-success'
 
 
 
@@ -529,9 +529,19 @@
                         let ob = $(`.bd-${id}-${type}`)
                         if (type != 'service') {
                             if (result.request.status == "false") {
-                                ob.removeClass('bg-success').removeClass('bg-danger').addClass('bg-danger').html('Kapalı');
+                                if (type == 'yogun') {
+                                    ob.removeClass('bg-warning').addClass('bg-success').html('Yoğun Değil');
+                                } else {
+                                    ob.removeClass('bg-success').removeClass('bg-danger').addClass('bg-danger').html('Kapalı');
+                                }
+
                             } else if (result.request.status == "true") {
-                                ob.removeClass('bg-success').removeClass('bg-danger').addClass('bg-success').html('Açık');
+                                if (type == 'yogun') {
+                                    ob.removeClass('bg-success').addClass('bg-warning').html('Yoğun');
+                                } else {
+                                    ob.removeClass('bg-success').removeClass('bg-danger').addClass('bg-success').html('Açık');
+                                }
+
                             }
 
                         }
