@@ -6,6 +6,7 @@ const sambapos = new Sambapos()
 async function signin() {
   let env = getEnvironment()
   if (env) {
+    console.log('sambapos check ')
     await sambapos.authCheck()
     await pusher.connect()
   }
