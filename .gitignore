@@ -4,3 +4,4 @@ PosEntegra-out.log
 /tmp/enviroment.backup
 /tmp/enviroment.json
 /logs/yemeksepeti-*.json
+.DS_Store
