@@ -117,6 +117,20 @@ router.post('/changeRestaurantStatus', async (req, res) => {
   if (sonuc.success) {
     let request = sonuc.request
     let provider = request.provider
+    let env = await getEnvironment()
+    let trigger = await _asyncrequest(
+      '/api/authenticateWithToken',
+      'POST',
+      { token: env.token },
+      {}
+    ).catch((e) => {
+      req.session.fail = true
+      //console.log(e)
+      // return res.redirect(301, '/')
+    })
+    if (trigger) {
+      fs.writeFileSync('./tmp/enviroment.json', JSON.stringify(trigger.data))
+    }
   }
   return res.json(sonuc)
 })
