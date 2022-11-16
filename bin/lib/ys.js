@@ -439,7 +439,7 @@ class YS {
                     JSON.stringify(body)
                   )
                   //}
-                  await waiting(11000)
+                  await waiting(1000)
                   await okudum(messageID, this.data, function (err, data) {
                     console.log(err, data, 'okudum')
                   })
@@ -452,7 +452,7 @@ class YS {
                 './logs/yemeksepeti-' + messageID + '.json',
                 JSON.stringify(body)
               )
-              await waiting(11000)
+              await waiting(1000)
               await okudum(messageID, this.data, function (err, data) {
                 console.log(err, data, 'okudum')
               })
@@ -465,6 +465,7 @@ class YS {
       }
     })
   }
+  async updateRestaurantWorkingStatus(status) {}
   async set700(orderId, cb) {
     let status = 'OnDelivery'
     await changeStatus(orderId, this.data, status, cb)
@@ -475,12 +476,12 @@ class YS {
   }
   async set500(orderId, cb) {
     let status = 'Approved'
-    //if (this.data.otomatikOnay) {
-    // await okudum(orderId, this.data, cb)
-    //await onayliyorum(orderId, this.data, cb)
-    // await onayliyorum2(orderId, this.data, cb)
-    // await changeStatus(orderId, this.data, status, cb)
-    // }
+    if (this.data.otomatikOnay) {
+      //await okudum(orderId, this.data, cb)
+      await onayliyorum(orderId, this.data, cb)
+      await onayliyorum2(orderId, this.data, cb)
+      await changeStatus(orderId, this.data, status, cb)
+    }
   }
   async cancelOption() {
     try {

@@ -11,7 +11,20 @@ class Api {
       console.log(data, key)
     }
   }
-
+  async sendRequest(route, req) {
+    //
+    try {
+      let result = await _asyncrequest(route, 'POST', req, {
+        Authorization: 'Bearer ' + this.env.token,
+      }).catch((e) => console.log('SERVERDAN', e.message))
+      if (!result) {
+        console.log('undefined result')
+      }
+      return result
+    } catch (error) {
+      console.log(error, 'api.sendRequest')
+    }
+  }
   async send(req) {
     try {
       fs.writeFileSync(

@@ -103,6 +103,33 @@ class TY {
     }
     return sonuc
   }
+  async updateRestaurantWorkingStatus(status) {
+    let { apiKey, apiSecretKey, supplierId } = this.data
+    let { restaurantId } = this.option
+    var auth =
+      'Basic ' + Buffer.from(apiKey + ':' + apiSecretKey).toString('base64')
+
+    let url = `https://api.trendyol.com/mealgw/suppliers/${supplierId}/restaurants/${restaurantId}/status`
+    console.log(url)
+    let result = await sendFormData(
+      url,
+      'PUT',
+      {
+        status,
+      },
+      {
+        Authorization: auth,
+        'x-agentname': 'PosEntegra',
+        'x-executor-user': 'reseller@posentegra.com',
+      }
+    ).catch((err) => {
+      console.log(err.message, 'hata')
+    })
+
+    if (result) {
+      console.log(result)
+    }
+  }
   async set700(packageId) {
     try {
       let { apiKey, apiSecretKey, supplierId } = this.data
@@ -201,7 +228,7 @@ class TY {
     }
   }
   async set500(packageId) {
-    /* try {
+    try {
       let { apiKey, apiSecretKey, supplierId } = this.data
       var auth =
         'Basic ' + Buffer.from(apiKey + ':' + apiSecretKey).toString('base64')
@@ -226,7 +253,7 @@ class TY {
       return true
     } catch (error) {
       return false
-    }*/
+    }
   }
 }
 module.exports = TY

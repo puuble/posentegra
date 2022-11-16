@@ -108,6 +108,18 @@ router.get('/sendAgain', async function (req, res) {
 
   return res.json(sonuc)
 })
+router.post('/changeRestaurantStatus', async (req, res) => {
+  let api = new Api()
+  let sonuc = await api.sendRequest(
+    '/api/user/changeRestaurantStatus',
+    req.body
+  )
+  if (sonuc.success) {
+    let request = sonuc.request
+    let provider = request.provider
+  }
+  return res.json(sonuc)
+})
 router.post('/update', async (req, res) => {
   console.log(req.body.token)
   let trigger = await _asyncrequest(

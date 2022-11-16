@@ -94,6 +94,7 @@
             if (row.hasOwnProperty('service')) {
                 status_4 = row.service
             }
+
             let cls = row.status ? 'bg-success' : 'bg-danger'
             let attr = row.status ? 'checked' : ''
             let attr_2 = row.otomatikOnay ? 'checked' : ''
@@ -113,37 +114,37 @@
             html += ` <li class="list-group-item d-flex justify-content-between optionTitle  align-items-start"> 
                      <div class="ms-2 me-auto ">
                         <div class="fw-bold  ">Restoran Durum:</div>
-                        <span class="badge  ${cls} rounded-pill">${status}</span>
+                        <span class="badge bd-${row._id}-status  ${cls} rounded-pill">${status}</span>
                      </div>
                      <div class="form-check form-switch">
-                        <input class="form-check-input" data-id="${row._id}" type="checkbox" ${attr}  role="switch" id="flexSwitchCheckDefault${row._id}">
+                        <input class="form-check-input" data-id="${row._id}" data-type="status" data-provider="ys" type="checkbox" ${attr}  role="switch" id="flexSwitchCheckDefault${row._id}">
                     </div>
                 </li>`
             html += ` <li class="list-group-item d-flex justify-content-between optionTitle  align-items-start"> 
                      <div class="ms-2 me-auto ">
                         <div class="fw-bold  ">Otomatik Onay:</div>
-                        <span class="badge  ${cls_2} rounded-pill">${status_2}</span>
+                        <span class="badge  bd-${row._id}-otomatikOnay ${cls_2} rounded-pill">${status_2}</span>
                      </div>
                      <div class="form-check form-switch">
-                        <input class="form-check-input" data-id="${row._id}" type="checkbox" ${attr_2}  role="switch" id="flexSwitchCheckDefault${row._id}">
+                        <input class="form-check-input" data-id="${row._id}" data-type="otomatikOnay" data-provider="ys" type="checkbox" ${attr_2}  role="switch" id="flexSwitchCheckDefault${row._id}">
                     </div>
                 </li>`
             html += ` <li class="list-group-item d-flex justify-content-between  optionTitle align-items-start"> 
                      <div class="ms-2 me-auto ">
                         <div class="fw-bold  ">Yoğuna Al:</div>
-                        <span class="badge  ${cls_3} rounded-pill">${status_3}</span>
+                        <span class="badge  bd-${row._id}-yogun ${cls_3} rounded-pill">${status_3}</span>
                      </div>
                      <div class="form-check form-switch">
-                        <input class="form-check-input" data-id="${row._id}" type="checkbox" ${attr_3}  role="switch" id="flexSwitchCheckDefault${row._id}">
+                        <input class="form-check-input" data-id="${row._id}" data-type="yogun"  data-provider="ys" type="checkbox" ${attr_3}  role="switch" id="flexSwitchCheckDefault${row._id}">
                     </div>
                 </li>`
             html += ` <li class="list-group-item d-flex justify-content-between optionTitle  align-items-start"> 
                      <div class="ms-2 me-auto ">
                         <div class="fw-bold  ">Servis Süresi:</div>
-                        <span class="badge  bg-info rounded-pill">${status_4}</span>
+                        <span class="badge  bd-${row._id}-service bg-info rounded-pill">${status_4}dk</span>
                      </div>
                      <div class="">
-                       <select class="form-select form-select-lg" aria-label=".form-select-lg example">
+                       <select class="form-select form-select-lg" aria-label=".form-select-lg example"   data-provider="ys"  data-id="${row._id}" data-type="service">
                             ${serviceTimes(status_4)}
                         </select>
                     </div>
@@ -187,28 +188,28 @@
             html += ` <li class="list-group-item d-flex justify-content-between optionTitle  align-items-start"> 
                      <div class="ms-2 me-auto ">
                         <div class="fw-bold  ">Restoran Durum:</div>
-                        <span class="badge  ${cls} rounded-pill">${status}</span>
+                        <span class="badge bd-${row._id}-status ${cls} rounded-pill">${status}</span>
                      </div>
                      <div class="form-check form-switch">
-                        <input class="form-check-input" data-id="${row._id}" type="checkbox" ${attr}  role="switch" id="flexSwitchCheckDefault${row._id}">
+                        <input class="form-check-input"  data-id="${row._id}" data-type="status"  data-provider="getir" type="checkbox" ${attr}  role="switch" id="flexSwitchCheckDefault${row._id}">
                     </div>
                 </li>`
             html += ` <li class="list-group-item d-flex justify-content-between optionTitle  align-items-start"> 
                      <div class="ms-2 me-auto ">
                         <div class="fw-bold  ">Otomatik Onay:</div>
-                        <span class="badge  ${cls_2} rounded-pill">${status_2}</span>
+                        <span class="badge  bd-${row._id}-otomatikOnay ${cls_2} rounded-pill">${status_2}</span>
                      </div>
                      <div class="form-check form-switch">
-                        <input class="form-check-input" data-id="${row._id}" type="checkbox" ${attr_2}  role="switch" id="flexSwitchCheckDefault${row._id}">
+                        <input class="form-check-input"  data-id="${row._id}" data-type="otomatikOnay" data-provider="getir" type="checkbox" ${attr_2}  role="switch" id="flexSwitchCheckDefault${row._id}">
                     </div>
                 </li>`
             html += ` <li class="list-group-item d-flex justify-content-between  optionTitle align-items-start"> 
                      <div class="ms-2 me-auto ">
                         <div class="fw-bold  ">Kurye Durum:</div>
-                        <span class="badge  ${cls_3} rounded-pill">${status_3}</span>
+                        <span class="badge  bd-${row._id}-kurye ${cls_3} rounded-pill">${status_3}</span>
                      </div>
                      <div class="form-check form-switch">
-                        <input class="form-check-input" data-id="${row._id}" type="checkbox" ${attr_3}  role="switch" id="flexSwitchCheckDefault${row._id}">
+                        <input class="form-check-input"  data-id="${row._id}" data-type="kurye" data-provider="getir" type="checkbox" ${attr_3}  role="switch" id="flexSwitchCheckDefault${row._id}">
                     </div>
                 </li>`
 
@@ -227,9 +228,7 @@
             if (!row.otomatikOnay) {
                 status_2 = 'Kapalı'
             }
-            if (!row.yogun) {
-                status_3 = 'Kapalı'
-            }
+
             if (row.hasOwnProperty('service')) {
                 status_4 = row.service
             }
@@ -250,29 +249,29 @@
             html += ` <li class="list-group-item d-flex justify-content-between optionTitle  align-items-start"> 
                      <div class="ms-2 me-auto ">
                         <div class="fw-bold  ">Restoran Durum:</div>
-                        <span class="badge  ${cls} rounded-pill">${status}</span>
+                        <span class="badge bd-${row._id}-status  ${cls} rounded-pill">${status}</span>
                      </div>
                      <div class="form-check form-switch">
-                        <input class="form-check-input" data-id="${row._id}" type="checkbox" ${attr}  role="switch" id="flexSwitchCheckDefault${row._id}">
+                        <input class="form-check-input"  data-id="${row._id}" data-type="status" data-provider="ty" type="checkbox" ${attr}  role="switch" id="flexSwitchCheckDefault${row._id}">
                     </div>
                 </li>`
             html += ` <li class="list-group-item d-flex justify-content-between optionTitle  align-items-start"> 
                      <div class="ms-2 me-auto ">
                         <div class="fw-bold  ">Otomatik Onay:</div>
-                        <span class="badge  ${cls_2} rounded-pill">${status_2}</span>
+                        <span class="badge bd-${row._id}-otomatikOnay  ${cls_2} rounded-pill">${status_2}</span>
                      </div>
                      <div class="form-check form-switch">
-                        <input class="form-check-input" data-id="${row._id}" type="checkbox" ${attr_2}  role="switch" id="flexSwitchCheckDefault${row._id}">
+                        <input class="form-check-input"  data-id="${row._id}" data-type="otomatikOnay" data-provider="ty" type="checkbox" ${attr_2}  role="switch" id="flexSwitchCheckDefault${row._id}">
                     </div>
                 </li>`
 
             html += ` <li class="list-group-item d-flex justify-content-between optionTitle  align-items-start"> 
                      <div class="ms-2 me-auto ">
                         <div class="fw-bold  ">Hazırlanma Süresi:</div>
-                        <span class="badge  bg-info rounded-pill">${status_4}</span>
+                        <span class="badge  bd-${row._id}-service  bg-info rounded-pill">${status_4}dk</span>
                      </div>
                      <div class="">
-                       <select class="form-select form-select-lg" aria-label=".form-select-lg example">
+                       <select  data-id="${row._id}" data-type="service" data-provider="ty" class="form-select form-select-lg" aria-label=".form-select-lg example">
                             ${serviceTimes(status_4)}
                         </select>
                     </div>
@@ -505,20 +504,59 @@
         $('.options').each(function (index, el) {
             let row = $(this).data('row')
             $(this).html(addOption(row))
-            $('.form-check-input').on('change', function () {
-                let status = false
-                if (this.checked) {
-                    status = true;
-                }
-                $.ajax({
-                    method: "POST",
-                    url: "/changeRestaurantStatus",
-                    data: { status }
-                })
-                    .done(function (res) {
-                        console.log(res)
-                    })
+
+        })
+        $('.form-check-input').on('change', function () {
+            let status = false
+            if (this.checked) {
+                status = true;
+            }
+            let id = $(this).data('id')
+            let type = $(this).data('type')
+            let provider = $(this).data('provider')
+
+            console.log(provider);
+
+            $.ajax({
+                method: "POST",
+                url: "/changeRestaurantStatus",
+                data: { status, id, type, provider }
             })
+                .done(function (result) {
+
+                    if (result.success) {
+
+                        let ob = $(`.bd-${id}-${type}`)
+                        if (type != 'service') {
+                            if (result.request.status == "false") {
+                                ob.removeClass('bg-success').removeClass('bg-danger').addClass('bg-danger').html('Kapalı');
+                            } else if (result.request.status == "true") {
+                                ob.removeClass('bg-success').removeClass('bg-danger').addClass('bg-success').html('Açık');
+                            }
+
+                        }
+                    }
+                })
+        })
+        $('.form-select').on('change', function () {
+
+            let id = $(this).data('id')
+            let type = $(this).data('type')
+            let status = $(this).val();
+            $.ajax({
+                method: "POST",
+                url: "/changeRestaurantStatus",
+                data: { status, id, type }
+            })
+                .done(function (result) {
+                    if (result.success) {
+
+                        let ob = $(`.bd-${id}-${type}`)
+                        if (type == 'service') {
+                            ob.html(status + 'dk')
+                        }
+                    }
+                })
         })
         $('.moment').each(function (index, el) {
             let time = $(this).data('time')
