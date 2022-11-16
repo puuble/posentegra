@@ -238,7 +238,7 @@ class TY {
         'PUT',
         {
           packageId,
-          preparationTime: 30,
+          preparationTime: this.option.service,
         },
         {
           'x-agentname': 'PosEntegra',
