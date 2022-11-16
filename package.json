@@ -23,6 +23,7 @@
         "node-fetch": "^3.2.10",
         "node-localstorage": "^2.2.1",
         "pusher-js": "^7.4.0",
+        "request": "^2.88.2",
         "request-promise": "^4.2.6",
         "xml-js": "^1.6.11"
     },
