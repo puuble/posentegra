@@ -161,6 +161,7 @@ class TY {
       var auth =
         'Basic ' + Buffer.from(apiKey + ':' + apiSecretKey).toString('base64')
       let url = `/mealgw/suppliers/${supplierId}/packages/${packageId}/invoiced`
+      console.log(url, 600)
       let result = await _providerrequest(
         url,
         'PUT',
@@ -185,6 +186,7 @@ class TY {
       var auth =
         'Basic ' + Buffer.from(apiKey + ':' + apiSecretKey).toString('base64')
       let url = `/mealgw/suppliers/${supplierId}/packages/${packageId}/manual-delivered`
+      console.log(url, 600)
       let result = await _providerrequest(
         url,
         'PUT',
@@ -209,6 +211,7 @@ class TY {
       var auth =
         'Basic ' + Buffer.from(apiKey + ':' + apiSecretKey).toString('base64')
       let url = `/mealgw/suppliers/${supplierId}/packages/invoiced`
+      console.log(url, 550)
       await _providerrequest(
         url,
         'PUT',
@@ -234,6 +237,7 @@ class TY {
       var auth =
         'Basic ' + Buffer.from(apiKey + ':' + apiSecretKey).toString('base64')
       let url = `/mealgw/suppliers/${supplierId}/packages/picked`
+      console.log(url, 500)
       let result = await _providerrequest(
         url,
         'PUT',
