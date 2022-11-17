@@ -137,8 +137,9 @@ class Socket {
       let { slug, restaurantId, action, pid, id, status } = data.message
 
       let restaurant = this.env.restaurants[restaurantId][slug]
-      console.log(slug, action, status)
+
       if (slug == 'ty') {
+        console.log(slug, action, pid, status, 'tyChange')
         const TY = require('./ty')
         const ty = new TY(restaurant.integration)
         if (action == 'handover') {
