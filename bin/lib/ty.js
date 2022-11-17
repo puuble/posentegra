@@ -136,6 +136,7 @@ class TY {
       var auth =
         'Basic ' + Buffer.from(apiKey + ':' + apiSecretKey).toString('base64')
       let url = `/mealgw/suppliers/${supplierId}/packages/${packageId}/manual-shipped`
+      console.log(`https://api.trendyol.com` + url)
       let result = await _providerrequest(
         url,
         'PUT',
