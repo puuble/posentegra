@@ -136,7 +136,7 @@ class TY {
       var auth =
         'Basic ' + Buffer.from(apiKey + ':' + apiSecretKey).toString('base64')
       let url = `/mealgw/suppliers/${supplierId}/packages/${packageId}/manual-shipped`
-      console.log(url)
+      console.log(url, 700)
       let result = await _providerrequest(
         url,
         'PUT',
@@ -149,7 +149,7 @@ class TY {
       ).catch((e) => {
         console.log(e.error.message, 'SERVERDAN')
       })
-      console.log(result)
+      console.log(result, ' 700 tyonay')
       return true
     } catch (error) {
       return false
@@ -173,7 +173,7 @@ class TY {
       ).catch((e) => {
         console.log(e.error.message, 'SERVERDAN')
       })
-      console.log(result)
+      console.log(result, ' 600 tyonay')
       return true
     } catch (error) {
       return false
@@ -197,7 +197,7 @@ class TY {
       ).catch((e) => {
         console.log(e.error.message, 'SERVERDAN')
       })
-      console.log(result)
+      console.log(result, ' 900 tyonay')
       return true
     } catch (error) {
       return false
@@ -249,7 +249,7 @@ class TY {
       ).catch((e) => {
         console.log(e.error.message, 'SERVERDAN')
       })
-      console.log(result)
+      console.log(result, ' 500 tyonay')
 
       return true
     } catch (error) {

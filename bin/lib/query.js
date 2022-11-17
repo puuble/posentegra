@@ -339,7 +339,7 @@ class Query {
         if (d.length > 0) {
           await asyncForEach(d, async (c, i) => {
             c = removeSpecialChar(c)
-            console.log(c)
+
             c = {
               query: c,
               variables: null,
@@ -347,7 +347,7 @@ class Query {
             }
             let product = await sambapos.query(c).catch(async (err) => {
               await this.postResetProductCacheMessage()
-              console.log(i, 'urun satir sayisi')
+
               let findProduct = this.queries.getProduct[i]
               console.log(findProduct, 'FIND PRODUCT')
               let productName = findProduct['name']
@@ -361,7 +361,6 @@ class Query {
               })
 
               if (result) {
-                console.log(result, 'urun filtre')
                 if (Array.isArray(result)) {
                   if (result.length > 0) {
                     await this.addOrderToTerminalTicketWithProduct(
