@@ -141,7 +141,7 @@ class Socket {
       if (slug == 'ty') {
         console.log(slug, action, pid, status, 'tyChange')
         const TY = require('./ty')
-        const ty = new TY(restaurant.integration)
+        const ty = new TY(restaurant)
         if (action == 'handover') {
           await ty.set600(pid)
           await this.api.changeStatusOnServer({ id, status })
