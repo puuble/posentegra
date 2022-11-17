@@ -379,7 +379,7 @@ class Query {
             if (_.has(product, 'id')) {
               if (product.id) {
                 await this.postResetProductCacheMessage()
-                await this.addOrderToTerminalTicket(terminalId, product.id, i)
+                await this.addOrderToTerminalTicket(terminalId, product.id)
               }
             }
           })
