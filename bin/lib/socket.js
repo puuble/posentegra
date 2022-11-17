@@ -142,19 +142,19 @@ class Socket {
         const TY = require('./ty')
         const ty = new TY(restaurant.integration)
         if (action == 'handover') {
-          ty.set600(pid)
+          await ty.set600(pid)
           await this.api.changeStatusOnServer({ id, status })
         }
         if (action == 'prepare_1') {
-          ty.set550(pid)
+          await ty.set550(pid)
           await this.api.changeStatusOnServer({ id, status })
         }
         if (action == 'prepare_2') {
-          ty.set700(pid)
+          await ty.set700(pid)
           await this.api.changeStatusOnServer({ id, status })
         }
         if (action == 'deliver') {
-          ty.set900(pid)
+          await ty.set900(pid)
           await this.api.changeStatusOnServer({ id, status })
         }
       } else if (slug == 'ys') {
