@@ -374,14 +374,14 @@ class Query {
               }
             })
 
-            product = await this.getMessage(product, 'addProduct')
+            /* product = await this.getMessage(product, 'addProduct')
             console.log(product, 'PRODUCT')
             if (_.has(product, 'id')) {
               if (product.id) {
                 await this.postResetProductCacheMessage()
                 await this.addOrderToTerminalTicket(terminalId, product.id)
               }
-            }
+            }*/
           })
         }
       }
