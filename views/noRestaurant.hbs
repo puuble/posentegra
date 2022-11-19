@@ -10,7 +10,7 @@
                         <thead>
                             <tr>
 
-                                <th class="col-1 restoran">Restoran </th>
+
                                 <th>Tarih</th>
                                 <th>Müşteri</th>
                                 <th class="col-1">Adisyon No</th>
@@ -25,20 +25,15 @@
                         <tbody>
                             {{#each orders}}
                             <tr class="{{this.provider.slug}}">
-                                <td class="restoran">
 
-                                    <div class="fw-medium  text-truncate">{{this.restaurantName}}</div>
-
-
-                                </td>
                                 <td class="moment" data-time="{{this.created_at}}"></td>
-                                <td>{{this.client.name}}</td>
+                                <td>{{client.name}}</td>
                                 <td>{{pos_ticket}}</td>
-                                <td>{{this.confirmationId}}</td>
+                                <td>{{confirmationId}}</td>
                                 {{#if this.client.location}}
                                 <td>
-                                    {{this.client.deliveryAddress.district}} <a target="_blank" class="text-secondary"
-                                        href="https://www.google.com/maps/dir/{{this.client.location.lat}},{{this.client.location.lon}}/@{{this.client.location.lat}},{{this.client.location.lon}},15.75z?hl=en">
+                                    {{client.deliveryAddress.district}} <a target="_blank" class="text-secondary"
+                                        href="https://www.google.com/maps/dir/{{client.location.lat}},{{client.location.lon}}/@{{this.client.location.lat}},{{this.client.location.lon}},15.75z?hl=en">
                                         <i class="fas fa-map-marker-alt text-warning"></i> </a>
                                 </td>
                                 {{else}}

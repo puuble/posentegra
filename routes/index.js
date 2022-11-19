@@ -70,6 +70,13 @@ router.get('/', async function (req, res, next) {
       let restaurants = await api.getRestaurants()
 
       let view = 'index'
+      if (Array.isArray(restaurants)) {
+        console.log(restaurants.length, 'len')
+        if (restaurants.length == 1) {
+          view = 'noRestaurant'
+        }
+      }
+
       if (fail) {
         view = 'login'
       }

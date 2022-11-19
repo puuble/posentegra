@@ -399,7 +399,7 @@
 
                                 <tr>
                                     <td colspan="4" class="text-right" style="font-size: 15pt; font-weight: bold;">Toplam : ₺
-                                        ${rowData.totalPrice}</td>
+                                        ${rowData.totalDiscountedPrice}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -515,7 +515,7 @@
             let type = $(this).data('type')
             let provider = $(this).data('provider')
 
-            console.log(provider);
+
 
             $.ajax({
                 method: "POST",
