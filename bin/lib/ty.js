@@ -46,8 +46,8 @@ class TY {
       'GET',
       {
         packageStatuses: this.status,
-        size: this.data.size ?? 1,
-        page: this.data.page ?? 0,
+        size: this.data.size ? this.data.size : 1,
+        page: this.data.page ? this.data.page : 0,
       },
       {
         Authorization: auth,
