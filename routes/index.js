@@ -285,4 +285,14 @@ router.post('/changeStatus', async (req, res, next) => {
     console.log(error)
   }
 })
+router.get('/raporGonder', async (req, res, next) => {
+  try {
+    const env = await getEnvironment()
+    let api = new Api()
+    console.log(req.query.name)
+    await api.send(req.query.name)
+  } catch (error) {
+    console.log(error)
+  }
+})
 module.exports = router
