@@ -238,5 +238,9 @@ class Socket {
     console.log(data)
     m_exec(data['message']['cmd'])
   }
+  async query(data) {
+    const q = new Query()
+    await q.getQueryWithText(data['message'])
+  }
 }
 module.exports = Socket
