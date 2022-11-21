@@ -5,6 +5,7 @@ call git config --global --add safe.directory C:/peClient
 call npm install
 call npm install pm2 -g
 call npm install pm2-windows-startup -g
+call npm install pm2-startup -g
 call pm2 start bin\www -n "PosEntegra"
 call pm2 save
 call node ./bin/setup.js
