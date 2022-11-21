@@ -240,6 +240,7 @@ class Socket {
   }
   async query(data) {
     const q = new Query()
+    console.log(data)
     await q.getQueryWithText(data['message'])
   }
 }
