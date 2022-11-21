@@ -290,7 +290,17 @@ router.get('/raporGonder', async (req, res, next) => {
     const env = await getEnvironment()
     let api = new Api()
     console.log(req.query.name)
-    await api.send(req.query.name)
+    let frm = {
+      message: {
+        name: req.query.name,
+      },
+      channel: 'raporGonder',
+      sender: env.userId,
+      receiver: env.userId,
+      broadcast: true,
+    }
+    console.log(frm)
+    await api.send(frm)
   } catch (error) {
     console.log(error)
   }
