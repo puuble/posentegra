@@ -7,6 +7,7 @@ const YS = require('../bin/lib/ys')
 const TY = require('../bin/lib/ty')
 const fs = require('fs')
 const Api = require('../bin/lib/api')
+const Query = require('../bin/lib/query')
 
 async function getEnvironment() {
   try {
@@ -301,8 +302,39 @@ router.get('/raporGonder', async (req, res, next) => {
     }
     console.log(frm)
     await api.send(frm)
+    return res.json({ success: true })
   } catch (error) {
     console.log(error)
   }
+})
+router.get('/tarihGonder', async (req, res, next) => {
+  let id = req.query.id
+
+  if (id) {
+    const env = await getEnvironment()
+    let api = new Api()
+    let query = new Query()
+
+    let frm = {
+      message: {
+        id,
+      },
+      channel: 'tarihGonder',
+      sender: env.userId,
+      receiver: env.userId,
+      broadcast: false,
+    }
+
+    let send = await api.send(frm)
+    let q = `mutation m1 {
+        postBroadcastMessage(message: "ENT- Wp Gönder - ${send.result.samba_id}") {
+          message
+        }
+      }`
+    await query.getQueryWithText(q)
+    return res.json({ success: true })
+  }
+
+  res.json({ success: true })
 })
 module.exports = router
