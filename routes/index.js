@@ -327,7 +327,7 @@ router.get('/tarihGonder', async (req, res, next) => {
 
     let send = await api.send(frm)
     let q = `mutation m1 {
-        postBroadcastMessage(message: "ENT-Wp Gönder-${send.result.samba_id}") {
+        postBroadcastMessage(message: "ENT- Wp Gönder - ${send.result.samba_id}") {
           message
         }
       }`
