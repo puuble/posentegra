@@ -51,8 +51,8 @@ class Socket {
         channel: data.channel,
       }
 
-      let send = await this.api.send(result)
-      console.log(result, send)
+      await this.api.send(result)
+
       return {
         receive: result,
       }
@@ -241,7 +241,18 @@ class Socket {
   async query(data) {
     const q = new Query()
     console.log(data)
-    await q.getQueryWithText(data['message'])
+    let res = await q.getQueryWithText(data['message']['query'])
+    let result = {
+      message: {
+        result: res,
+        option: data['message']['option'],
+      },
+      sender: data['user']['id'],
+      receiver: data.receiver,
+      channel: data.channel,
+    }
+    console.log(result, 'resultoquery')
+    await this.api.send(result)
   }
 }
 module.exports = Socket
