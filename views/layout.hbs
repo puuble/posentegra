@@ -117,7 +117,7 @@
                         <span class="badge bd-${row._id}-status  ${cls} rounded-pill">${status}</span>
                      </div>
                      <div class="form-check form-switch">
-                        <input class="form-check-input" data-id="${row._id}" data-type="status" data-provider="ys" type="checkbox" ${attr}  role="switch" id="flexSwitchCheckDefault${row._id}">
+                        <input class="form-check-input" data-id="${row._id}" data-restaurant="${row.restaurant_id}" data-type="status" data-provider="ys" type="checkbox" ${attr}  role="switch" id="flexSwitchCheckDefault${row._id}">
                     </div>
                 </li>`
             html += ` <li class="list-group-item d-flex justify-content-between optionTitle  align-items-start"> 
@@ -304,6 +304,7 @@
             if (row.slug == 'ty') {
                 html += tyOptions(slug, row)
             }
+
 
             return html
 
@@ -514,13 +515,15 @@
             let id = $(this).data('id')
             let type = $(this).data('type')
             let provider = $(this).data('provider')
+            let restaurantId = $(this).data('restaurant')
 
 
+            console.log(restaurantId)
 
             $.ajax({
                 method: "POST",
                 url: "/changeRestaurantStatus",
-                data: { status, id, type, provider }
+                data: { status, id, type, provider, restaurantId }
             })
                 .done(function (result) {
 

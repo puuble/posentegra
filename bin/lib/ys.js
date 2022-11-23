@@ -73,6 +73,71 @@ async function changeStatus(orderId, body, status = 'Approved', cb) {
       cb(true, null)
     })
 }
+async function updateRestaurantWorkingStatus(body, status = 'Open', cb) {
+  //Approved or Accepted or Rejected or Cancelled or OnDelivery or Delivered or TechnicalRejected
+  let xlms = `<?xml version="1.0" encoding="utf-8"?>
+      <soap12:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope">
+        <soap12:Header>
+          <AuthHeader xmlns="http://tempuri.org/">
+          <UserName>${body.integration['username']}</UserName>
+          <Password>${body.integration['password']}</Password>
+          </AuthHeader>
+        </soap12:Header>
+        <soap12:Body>
+        <UpdateRestaurantState xmlns="http://tempuri.org/">
+            <catalogName>${body.integration['catalogName']}</catalogName>
+            <categoryName>${body.integration['categoryName']}</categoryName>
+            <restaurantState>${status}</restaurantState>
+        </UpdateRestaurantState>
+   
+        </soap12:Body>
+      </soap12:Envelope>`
+  console.log(xlms)
+  axios
+    .post(
+      'http://messaging.yemeksepeti.com/messagingwebservice/integration.asmx',
+      xlms,
+      {
+        headers: { 'Content-Type': 'text/xml' },
+      }
+    )
+    .then(async (res) => {
+      let xmlString = res.data
+      let p = convert.xml2json(xmlString, { compact: true, spaces: 4 })
+      let item = JSON.parse(p)
+
+      let body = item['soap:Envelope']
+
+      body = body['soap:Body']['UpdateRestaurantStateResponse']
+      console.log(body, 'body')
+      if (body) {
+        body = body['UpdateRestaurantStateResult']
+
+        cb(null, body)
+      } else {
+        cb(null, null)
+      }
+    })
+    .catch((error) => {
+      if (error.response) {
+        // The request was made and the server responded with a status code
+        // that falls out of the range of 2xx
+        console.log(error.response.data)
+        console.log(error.response.status)
+        //console.log(error.response.headers)
+      } else if (error.request) {
+        // The request was made but no response was received
+        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+        // http.ClientRequest in node.js
+        //console.log(error.request)
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        console.log('Error', error.message)
+      }
+
+      cb(true, null)
+    })
+}
 async function getMenu(body, cb) {
   let xmls = `<?xml version="1.0" encoding="utf-8"?>
 <soap12:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope">
@@ -465,7 +530,11 @@ class YS {
       }
     })
   }
-  async updateRestaurantWorkingStatus(status) {}
+  async openRestaurant(status, cb) {
+    console.log(this.data, 'cjun')
+    await updateRestaurantWorkingStatus(this.data, status, cb)
+  }
+
   async set700(orderId, cb) {
     let status = 'OnDelivery'
     await changeStatus(orderId, this.data, status, cb)

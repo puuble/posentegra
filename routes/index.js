@@ -126,6 +126,24 @@ router.post('/changeRestaurantStatus', async (req, res) => {
     let request = sonuc.request
     let provider = request.provider
     let env = await getEnvironment()
+
+    console.log(request)
+    if (provider == 'ys') {
+      let ysData = env['restaurants'][request.restaurantId]['ys']
+      let ys = new YS(ysData)
+      console.log(request.status, 'status')
+      let stat = 'Open'
+      if (request.status == 'false') {
+        stat = 'Closed'
+      }
+
+      await ys.openRestaurant(stat, function (res) {
+        console.log(res)
+      })
+      //let ty = new TY()
+      //await ty.changeStatus()
+    }
+
     let trigger = await _asyncrequest(
       '/api/authenticateWithToken',
       'POST',
