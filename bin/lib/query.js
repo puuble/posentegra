@@ -330,22 +330,18 @@ class Query {
   async addProduct(terminalId) {
     try {
       let d = this.queries.addProduct
-      console.log(Array.isArray(d), 'urunler listemi')
 
       if (Array.isArray(d)) {
-        console.log('urunler liste uzunluk => ', d.length)
         if (d.length > 0) {
-          console.log('buraya geldimi')
           await asyncForEach(d, async (c, i) => {
             c = removeSpecialChar(c)
-            console.log(c, 'add product query')
+
             c = {
               query: c,
               variables: null,
               operationName: 'm',
             }
             let product = await sambapos.query(c).catch(async (err) => {
-              console.log('product yok')
               await this.postResetProductCacheMessage()
 
               let findProduct = this.queries.getProduct[i]
