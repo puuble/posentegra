@@ -99,6 +99,7 @@ class Query {
       let pos_ticket = await this.createTerminalTicket(terminalId)
       await this.updateTerminalTicket(terminalId)
       let addProduct = _.has(this.queries, 'addProduct')
+      console.log('addProduct varmi', addProduct)
       if (addProduct) {
         await this.addProduct(terminalId)
       }
@@ -329,18 +330,22 @@ class Query {
   async addProduct(terminalId) {
     try {
       let d = this.queries.addProduct
+      console.log(Array.isArray(d), 'urunler listemi')
 
       if (Array.isArray(d)) {
+        console.log('urunler liste uzunluk => ', d.length)
         if (d.length > 0) {
+          console.log('buraya geldimi')
           await asyncForEach(d, async (c, i) => {
             c = removeSpecialChar(c)
-
+            console.log(c, 'add product query')
             c = {
               query: c,
               variables: null,
               operationName: 'm',
             }
             let product = await sambapos.query(c).catch(async (err) => {
+              console.log('product yok')
               await this.postResetProductCacheMessage()
 
               let findProduct = this.queries.getProduct[i]
@@ -369,11 +374,15 @@ class Query {
             })
 
             product = await this.getMessage(product, 'addProduct')
-            console.log(product, 'PRODUCT')
+
             if (_.has(product, 'id')) {
               if (product.id) {
                 await this.postResetProductCacheMessage()
-                await this.addOrderToTerminalTicket(terminalId, product.id)
+                await this.addOrderToTerminalTicketWithProduct(
+                  terminalId,
+                  product.id,
+                  i
+                )
               }
             }
           })
@@ -442,7 +451,7 @@ class Query {
         '{productId}': productId,
       }
       let d = this.queries.addOrderToTerminalTicket
-
+      console.log(d, 'addTerminal')
       if (Array.isArray(d)) {
         if (d.length > 0) {
           if (key !== false) {
