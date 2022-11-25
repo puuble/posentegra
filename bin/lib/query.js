@@ -61,7 +61,6 @@ async function changeNote(text) {
   return newString
 }
 function removeSpecialChar(text) {
-  console.log(text, 'texte gelen')
   text = text.replace(/\\\\,/g, '\\,')
   return text.replace(/[&\/\\#,+$~%*?<>]/g, '')
 }
@@ -98,7 +97,6 @@ class Query {
       await this.addEntity()
       await this.updateEntityCustomData()
       let pos_ticket = await this.createTerminalTicket(terminalId)
-      console.log(pos_ticket, 'burada pos ticket var')
       await this.updateTerminalTicket(terminalId)
       let addProduct = _.has(this.queries, 'addProduct')
       if (addProduct) {
@@ -119,7 +117,6 @@ class Query {
   }
   async init() {
     this.accessToken = await sambapos.authCheck()
-    console.log(this.accessToken, 'query init oldu')
 
     let terminalId = await this.registerTerminal()
     let pos_ticket = await this.queue(terminalId)
@@ -136,10 +133,8 @@ class Query {
     }
     if (key) {
       if (key != 'getProducts') {
-        console.log(key, 'query')
       }
     } else {
-      console.log(key, 'query')
     }
 
     return result
@@ -204,7 +199,7 @@ class Query {
   async registerTerminal() {
     try {
       let q = this.queries.registerTerminal
-      console.log(q)
+
       q = {
         query: q,
         variables: null,
@@ -222,7 +217,7 @@ class Query {
   async addEntity() {
     try {
       let q = this.queries.addEntity
-      console.log(q)
+
       q = {
         query: q,
         variables: null,
@@ -247,7 +242,7 @@ class Query {
         '{terminalId}',
         maps
       )
-      console.log(q)
+
       q = {
         query: q,
         variables: null,
@@ -275,7 +270,7 @@ class Query {
       queryString = removeSpecialChar(queryString)
       queryString = queryString.replace(/(^"|"$)/g, '')
       let q = await this.changeString(queryString, '{terminalId}', maps)
-      console.log(q)
+
       q = {
         query: await changeNote(q),
         variables: null,
@@ -299,7 +294,7 @@ class Query {
         if (d.length > 0) {
           await asyncForEach(d, async (c) => {
             c = await cleanTextWhileUndefined(c)
-            console.log(c)
+
             c = {
               query: c,
               variables: null,
@@ -325,7 +320,7 @@ class Query {
       operationName: 'm',
     }
     let product = await sambapos.query(c).catch(async (err) => {
-      //console.log('urun eklemedi', c)
+      console.log('urun eklemedi', c)
     })
     if (product) {
       console.log(product)
@@ -373,14 +368,14 @@ class Query {
               }
             })
 
-            /* product = await this.getMessage(product, 'addProduct')
+            product = await this.getMessage(product, 'addProduct')
             console.log(product, 'PRODUCT')
             if (_.has(product, 'id')) {
               if (product.id) {
                 await this.postResetProductCacheMessage()
                 await this.addOrderToTerminalTicket(terminalId, product.id)
               }
-            }*/
+            }
           })
         }
       }
@@ -405,7 +400,7 @@ class Query {
           if (key !== false) {
             let c = d[key]
             let q = await this.changeString(c, '{terminalId}|{productId}', maps)
-            console.log(q, 'else ici')
+
             q = {
               query: q,
               variables: null,
@@ -422,7 +417,7 @@ class Query {
                 '{terminalId}|{productId}',
                 maps
               )
-              console.log(q, ' withproduct addorder')
+
               q = {
                 query: q,
                 variables: null,
@@ -453,7 +448,7 @@ class Query {
           if (key !== false) {
             let c = d[key]
             let q = await this.changeString(c, '{terminalId}|{productId}', maps)
-            console.log(q, 'else ici')
+
             q = {
               query: q,
               variables: null,
@@ -465,13 +460,12 @@ class Query {
             })
           } else {
             await asyncForEach(d, async (c, index) => {
-              console.log(c, 'addOrderTerminal')
               let q = await this.changeString(
                 c,
                 '{terminalId}|{productId}',
                 maps
               )
-              console.log(q, 'elseten sonra addorder')
+
               q = {
                 query: q,
                 variables: null,
@@ -502,7 +496,7 @@ class Query {
         '{terminalId}',
         maps
       )
-      console.log(q)
+
       q = {
         query: q,
         variables: null,
@@ -527,7 +521,7 @@ class Query {
         '{terminalId}',
         maps
       )
-      console.log(q)
+
       q = {
         query: q,
         variables: null,
@@ -552,7 +546,7 @@ class Query {
         '{terminalId}',
         maps
       )
-      console.log(q)
+
       q = {
         query: q,
         variables: null,
@@ -577,7 +571,7 @@ class Query {
         '{terminalId}',
         maps
       )
-      console.log(q)
+
       q = {
         query: q,
         variables: null,
@@ -603,7 +597,7 @@ class Query {
         }
       }`
       let q = await this.changeString(textQuery, '{name}', maps)
-      console.log(q)
+
       q = {
         query: q,
         variables: null,
@@ -631,7 +625,7 @@ class Query {
           }
         }
       }`
-      console.log(q)
+
       q = {
         query: q,
         variables: null,
@@ -649,7 +643,7 @@ class Query {
   async postTicketRefreshMessage() {
     try {
       let q = this.queries.postTicketRefreshMessage
-      console.log(q)
+
       q = {
         query: q,
         variables: null,
@@ -667,7 +661,7 @@ class Query {
   async postBroadcastMessage() {
     try {
       let q = this.queries.postBroadcastMessage
-      console.log(q)
+
       q = {
         query: q,
         variables: null,
@@ -685,7 +679,7 @@ class Query {
   async getTerminalTickets(terminalId, pos_ticket) {
     try {
       let q = `query m {getTerminalTickets (terminalId:"${terminalId}"){id,uid}}`
-      console.log(q)
+
       q = {
         query: q,
         variables: null,
@@ -698,12 +692,10 @@ class Query {
       let ticketIds = await this.getMessage(message, 'getTerminalTickets')
 
       if (Array.isArray(ticketIds)) {
-        console.log(ticketIds, 'ticketid')
         const asyncRes = await asyncFilter(ticketIds, async (i) => {
           return i.uid == pos_ticket['uid']
         })
 
-        console.log(asyncRes)
         if (Array.isArray(asyncRes)) {
           if (asyncRes.length > 0) {
             pos_ticket = asyncRes[0]['id']
@@ -745,7 +737,7 @@ class Query {
       let q = `mutation m {postResetProductCacheMessage {
         id
       }}`
-      console.log(q)
+
       q = {
         query: q,
         variables: null,
