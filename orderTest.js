@@ -42,6 +42,12 @@ let queries = {
     postBroadcastMessage:
       'mutation m { postBroadcastMessage(message: "ENT-YeniSiparis-ys") {\n                              message\n                            }\n                          }',
   },
+  order: {
+    id: '1554483686',
+    pid: '1554483686',
+    slug: 'ys',
+    restaurantId: '63617059d55d1a6201061679',
+  },
 }
 const Query = require('./bin/lib/query')
 async function main() {
