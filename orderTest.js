@@ -14,7 +14,7 @@ let queries = {
     updateTerminalTicket:
       'mutation m {  updateTerminalTicket(terminalId: "{terminalId}", note: "Servis plastik çatal, peçete vs İSTEMİYORUM[ - Teslimat Saati: null]", states: [{"stateName":"Kaynak","state":"Yemek Sepeti"},{"stateName":"Ödeme Şekli","state":"Kredi Kartı"}], tags: [{"tagName":"Ödeme Şekli","tag":"Kredi Kartı (Sipariş tesliminde kredi kartı \\/ banka kartı ile ödeme) - Lütfen fiş getiriniz."},{"tagName":"ID","tag":"637fa607cd453680560f5ec6"}]){id}}',
     addOrderToTerminalTicket: [
-      'mutation m {addOrderToTerminalTicket(terminalId:"{terminalId}",productId:115,price:54.00,quantity:1,portion:"Normal",orderTags:""){orders{uid}}}',
+      'mutation m {addOrderToTerminalTicket(terminalId:"{terminalId}",productId:19,price:54.00,quantity:1,portion:"Normal",orderTags:""){orders{uid}}}',
     ],
     addProduct: [
       'mutation m {\n                addProduct(name: "Muzlu Mualla - 425 cc.", groupCode: "Entegrasyon", portions: {name: "Normal", price:1}) {\n                  id\n                }\n              }',
