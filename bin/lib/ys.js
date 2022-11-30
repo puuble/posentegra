@@ -504,27 +504,24 @@ class YS {
                     JSON.stringify(body)
                   )
                   //}
-                  if (_.has(serverResult, 'data')) {
+                  await waiting(1000)
+                  await okudum(messageID, this.data, function (err, data) {
+                    console.log(err, data, 'okudum')
+                  })
+                  /* if (_.has(serverResult, 'data')) {
                     if (_.has(serverResult.data, 'restaurantIds')) {
                       if (Array.isArray(serverResult.data['restaurantIds'])) {
                         await asyncForEach(
                           serverResult.data['restaurantIds'],
                           async (d) => {
                             if (d == this.data.restaurantId) {
-                              await waiting(1000)
-                              await okudum(
-                                messageID,
-                                this.data,
-                                function (err, data) {
-                                  console.log(err, data, 'okudum')
-                                }
-                              )
+                             
                             }
                           }
                         )
                       }
                     }
-                  }
+                  }*/
                 })
               }
             } else {
