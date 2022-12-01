@@ -68,7 +68,13 @@ async function _asyncrequest(
 
   return asyncrequest(options)
 }
-async function sendFileWithBody(url, formData, body = {}, headers = {}) {
+async function sendFileWithBody(
+  url,
+  method = 'POST',
+  formData,
+  body = {},
+  headers = {}
+) {
   let options = {
     method,
     formData,
