@@ -252,7 +252,7 @@ class Socket {
       channel: data.channel,
       broadcast: false,
     }
-    console.log(result, 'resultoquery')
+    console.log(res, 'resultoquery')
     await this.api.send(result)
   }
 }
