@@ -255,5 +255,28 @@ class Socket {
     console.log(res, 'resultoquery')
     await this.api.send(result)
   }
+  async reportHistory(data) {
+    let folder = './logs/' + data['user']['id'] + '.txt'
+    if (fs.existsSync(folder)) {
+      // ...
+      const stream = fs.readFileSync(folder, {
+        encoding: 'utf8',
+        flag: 'r',
+      })
+      let result = {
+        message: {
+          result: stream,
+          option: data['message']['option'],
+        },
+        sender: data['user']['id'],
+        receiver: data.receiver,
+        channel: data.channel,
+        broadcast: false,
+      }
+      console.log(stream, 'okuma')
+      await this.api.send(result)
+    }
+  }
 }
+
 module.exports = Socket
