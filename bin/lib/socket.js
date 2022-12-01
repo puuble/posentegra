@@ -258,7 +258,7 @@ class Socket {
   }
   async reportHistory(data) {
     let folder = './logs/' + data.receiver + '.txt'
-    console.log(folder)
+    console.log(folder, fs.existsSync(folder))
     if (fs.existsSync(folder)) {
       // ...
       const stream = fs.readFileSync(folder, {
