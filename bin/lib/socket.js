@@ -2,6 +2,7 @@ const Api = require('./api')
 const { getEnvironment, asyncForEach, m_exec } = require('./helpers')
 const Query = require('./query')
 const _ = require('lodash')
+const fs = require('fs')
 class Socket {
   constructor() {
     this.api = new Api()
