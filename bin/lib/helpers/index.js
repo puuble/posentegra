@@ -68,6 +68,16 @@ async function _asyncrequest(
 
   return asyncrequest(options)
 }
+async function sendFileWithBody(url, formData, body = {}, headers = {}) {
+  let options = {
+    method,
+    formData,
+    body,
+    url,
+    headers,
+  }
+  return asyncrequest(options)
+}
 async function _providerrequest(
   url,
   method = 'POST',
@@ -93,6 +103,7 @@ module.exports = {
   asyncForEach,
   getEnvironment,
   sendFormData,
+  sendFileWithBody,
   _providerrequest,
   _asyncrequest,
   asyncFilter,

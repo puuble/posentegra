@@ -276,7 +276,18 @@ class Socket {
         broadcast: false,
       }
       console.log(stream, 'okuma')
-      await this.api.send(result)
+      await this.api.sendFile(
+        {
+          file: {
+            value: stream,
+            options: {
+              filename: folder,
+              contentType: 'text/plain',
+            },
+          },
+        },
+        result
+      )
     }
   }
 }

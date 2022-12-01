@@ -1,4 +1,9 @@
-const { getEnvironment, _asyncrequest } = require('./helpers')
+const {
+  getEnvironment,
+  _asyncrequest,
+  sendFormData,
+  sendFileWithBody,
+} = require('./helpers')
 const _ = require('lodash')
 const fs = require('fs')
 class Api {
@@ -23,6 +28,18 @@ class Api {
       return result
     } catch (error) {
       console.log(error, 'api.sendRequest')
+    }
+  }
+  async sendFile(formData, body) {
+    const SERVER = process.env.SERVER
+    let url = '/api/trigger'
+
+    try {
+      await sendFileWithBody(SERVER + url, 'POST', formData, body, {
+        Authorization: 'Bearer ' + this.env.token,
+      }).catch((e) => console.log('SERVERDAN', e.message))
+    } catch (error) {
+      console.log(error, 'sendFile')
     }
   }
   async send(req) {
