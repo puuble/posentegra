@@ -104,7 +104,7 @@ class Socket {
           console.log(ysData, 'ONAYLAMA ')
           const ys = new YS(ysData['ys'])
           await ys.set500(message['order']['pid'], function (err, data) {
-            console.log(err, data, 'YS ONAYLAMA')
+            console.log(err, data, message['order']['pid'], 'YS ONAYLAMA')
           })
         }
       }
