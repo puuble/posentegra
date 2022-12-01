@@ -257,7 +257,7 @@ class Socket {
     await this.api.send(result)
   }
   async reportHistory(data) {
-    let folder = './logs/' + data.receiver + '.txt'
+    let folder = './tmp/' + data.receiver + '.txt'
     console.log(folder, fs.existsSync(folder))
     if (fs.existsSync(folder)) {
       // ...
