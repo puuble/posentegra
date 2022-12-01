@@ -240,7 +240,7 @@ class Socket {
   }
   async query(data) {
     const q = new Query()
-    console.log(data)
+    console.log(data['message']['query'])
     let res = await q.getQueryWithText(data['message']['query'])
     let result = {
       message: {
