@@ -548,9 +548,9 @@
                         if (request.readyState === 4) {
                             let response = JSON.parse(request.response)
                             if (response.success) {
-                                $("#formIt > label").html('<div class="alert alert-success" >Başarılı bir şekilde yüklendi</div>')
+                                $("#formIt > label").html('<div class="alert alert-success"  style="width:100%" >Başarılı bir şekilde yüklendi</div>')
                             } else {
-                                $("#formIt > label").html('<div class="alert alert-danger" >Bir Sorun Oluştu</div>')
+                                $("#formIt > label").html('<div class="alert alert-danger"  style="width:100%" >Bir Sorun Oluştu</div>')
 
                             }
                         }
