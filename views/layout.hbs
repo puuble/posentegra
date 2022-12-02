@@ -7,8 +7,15 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.2/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />
     <link rel="stylesheet" href="/stylesheets/style.css" />
+    <meta name="csrf-token" content="{{ enviroment.token }}">
+    <style>
+        #upload-photo {
+            opacity: 0;
+            position: absolute;
+            z-index: -1;
+        }
 
-
+    </style>
 </head>
 
 <body data-theme="dark">
@@ -29,8 +36,9 @@
         </div>
         <div class="offcanvas-body ">
 
-            <div class="row row-cols-xxl-1 row-cols-lg-1 row-cols-1">
+            <div id="server" class="row row-cols-xxl-1 row-cols-lg-1 row-cols-1" data-server="{{SERVER}}">
                 {{#each restaurants}}
+
                 <div class="col mb-2">
                     <div class="card card-body">
                         <div class="d-flex mb-4 align-items-center">
@@ -216,6 +224,21 @@
 
             return html
         }
+        function bossOptions(slug, row, server) {
+            let html = `<li class="list-group-item d-flex justify-content-between optionTitle align-items-start">
+                <div class="ms-2 me-auto ">
+                    <div class="fw-bold  ">${row.name}</div>
+                    <form id="formIt" action="" enctype="multipart/form-data" method="post">
+                    <label for="upload-photo">Arşiv Dosyası Seçiniz</label>
+                    <input type="file" name="file" id="upload-photo" />
+                        
+                     <button type="submit" class="btn btn-success  d-none btn-sm" style="width:100%">Yükle</button>
+                     </form>
+                 </div>
+                </li> `
+
+            return html
+        }
         function tyOptions(slug, row) {
             let status = 'Açık'
             let status_2 = 'Açık'
@@ -281,6 +304,7 @@
         }
 
         function addOption(row) {
+            console.log(row, "row")
             let slug = 'Getir Yemek'
             if (row.slug == 'ys') {
                 slug = 'Yemeksepeti'
@@ -303,6 +327,10 @@
 
             if (row.slug == 'ty') {
                 html += tyOptions(slug, row)
+            }
+
+            if (row.slug == 'bossentegra') {
+                html += bossOptions(slug, row)
             }
 
 
@@ -504,7 +532,37 @@
 
         $('.options').each(function (index, el) {
             let row = $(this).data('row')
+            let server = $("#server").data('server')
+
             $(this).html(addOption(row))
+            $("#upload-photo").on('change', function () {
+                $("#formIt > button").removeClass('d-none')
+                $("#formIt > label").html('Seçildi! Lütfen Yükle Düğmesine basınız')
+                $("#formIt").submit(function (event) {
+                    event.preventDefault();
+                    const formElement = document.querySelector("form");
+                    const formData = new FormData(formElement);
+
+                    const request = new XMLHttpRequest();
+                    request.onreadystatechange = () => {
+                        if (request.readyState === 4) {
+                            let response = JSON.parse(request.response)
+                            if (response.success) {
+                                $("#formIt > label").html('<div class="alert alert-success" >Başarılı bir şekilde yüklendi</div>')
+                            } else {
+                                $("#formIt > label").html('<div class="alert alert-danger" >Bir Sorun Oluştu</div>')
+
+                            }
+                        }
+                    }
+                    request.open("POST", server + '/api/file-upload');
+                    request.setRequestHeader("Authorization", 'Bearer ' + $('meta[name="csrf-token"]').attr('content'));
+
+                    request.send(formData);
+                    $("#formIt > label").html('Yükleniyor Lütfen Bekleyiniz.')
+                    $("#formIt > button").addClass('d-none')
+                });
+            })
 
         })
         $('.form-check-input').on('change', function () {

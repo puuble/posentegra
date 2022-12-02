@@ -1,6 +1,7 @@
 require('dotenv').config()
 var express = require('express')
 var _ = require('lodash')
+const busboy = require('busboy')
 var router = express.Router()
 const { _asyncrequest, m_exec } = require('../bin/lib/helpers')
 const YS = require('../bin/lib/ys')
@@ -8,6 +9,7 @@ const TY = require('../bin/lib/ty')
 const fs = require('fs')
 const Api = require('../bin/lib/api')
 const Query = require('../bin/lib/query')
+const path = require('path')
 
 async function getEnvironment() {
   try {
@@ -81,7 +83,7 @@ router.get('/', async function (req, res, next) {
       if (fail) {
         view = 'login'
       }
-
+      console.log(process.env['SERVER'])
       res.render(view, {
         title: 'Posentegra',
         PUSHER_APP_KEY: process.env['PUSHER_APP_KEY'],
@@ -159,6 +161,53 @@ router.post('/changeRestaurantStatus', async (req, res) => {
     }
   }
   return res.json(sonuc)
+})
+router.post('/upload', async (req, res) => {
+  let env = await getEnvironment()
+  let trigger = await _asyncrequest(
+    '/api/authenticateWithToken',
+    'POST',
+    { token: env.token },
+    {}
+  ).catch((e) => {
+    req.session.fail = true
+    //console.log(e)
+    // return res.redirect(301, '/')
+  })
+
+  if (!trigger) {
+    req.session.fail = true
+  }
+
+  if (trigger.success) {
+    let api = new Api()
+    let filename = ''
+    const bb = busboy({ headers: req.headers })
+    bb.on('file', async (name, file, info) => {
+      filename = info.filename
+      const saveTo = path.join(__dirname, filename)
+      file.pipe(fs.createWriteStream(saveTo))
+      console.log(filename)
+      await api.sendFile(
+        {
+          file: {
+            value: req.file,
+            options: {
+              filename: filename,
+              contentType: 'text/plain',
+            },
+          },
+        },
+        {}
+      )
+    })
+
+    req.pipe(bb)
+  } else {
+    req.session.fail = true
+  }
+
+  return res.redirect(301, '/')
 })
 router.post('/update', async (req, res) => {
   console.log(req.body.token)

@@ -257,9 +257,14 @@ class Socket {
     await this.api.send(result)
   }
   async reportHistory(data) {
+    const fs2 = require('fs/promises')
+
     let folder = './tmp/' + data.receiver + '.txt'
+
+    const stuffReturned = await fs2.readFile(folder)
+    console.log(stuffReturned) // the contents of the file
     console.log(folder, fs.existsSync(folder))
-    if (fs.existsSync(folder)) {
+    /* if (fs.existsSync(folder)) {
       // ...
       const stream = fs.readFileSync(folder, {
         encoding: 'utf8',
@@ -267,7 +272,7 @@ class Socket {
       })
       let result = {
         message: {
-          result: stream,
+          result: {},
           option: data['message']['option'],
         },
         sender: data['user']['id'],
@@ -275,7 +280,7 @@ class Socket {
         channel: data.channel,
         broadcast: false,
       }
-      console.log(stream, 'okuma')
+
       await this.api.sendFile(
         {
           file: {
@@ -288,7 +293,7 @@ class Socket {
         },
         result
       )
-    }
+    }*/
   }
 }
 
