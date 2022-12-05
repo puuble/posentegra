@@ -256,45 +256,6 @@ class Socket {
     console.log(res, 'resultoquery')
     await this.api.send(result)
   }
-  async reportHistory(data) {
-    const fs2 = require('fs/promises')
-
-    let folder = './tmp/' + data.receiver + '.txt'
-
-    const stuffReturned = await fs2.readFile(folder)
-    console.log(stuffReturned) // the contents of the file
-    console.log(folder, fs.existsSync(folder))
-    /* if (fs.existsSync(folder)) {
-      // ...
-      const stream = fs.readFileSync(folder, {
-        encoding: 'utf8',
-        flag: 'r',
-      })
-      let result = {
-        message: {
-          result: {},
-          option: data['message']['option'],
-        },
-        sender: data['user']['id'],
-        receiver: data.receiver,
-        channel: data.channel,
-        broadcast: false,
-      }
-
-      await this.api.sendFile(
-        {
-          file: {
-            value: stream,
-            options: {
-              filename: folder,
-              contentType: 'text/plain',
-            },
-          },
-        },
-        result
-      )
-    }*/
-  }
 }
 
 module.exports = Socket
