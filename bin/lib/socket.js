@@ -199,8 +199,8 @@ class Socket {
         if (ticket) {
           last.send = await this.api.send(result)
         }
+        return last
       }
-      return {}
     } catch (err) {
       console.error(err)
       return null
