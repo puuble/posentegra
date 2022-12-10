@@ -25,14 +25,12 @@ async function test() {
               t['tagName'] == 'ID' && t['tag'] == '6394dc9557fdecdfff3331e5'
             )
           })
-          console.log(filter, 'filter')
+
           result['filter'] = filter
         }
-
         return result
       })
-
-      console.log(filtered)
+      console.log(filtered, 'filtered')
     }
   }
 }
