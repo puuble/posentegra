@@ -137,8 +137,9 @@ class Socket {
     try {
       let message = JSON.parse(data['message'])
       const q = new Query(message)
-      console.log(message, 'aa')
+      console.log(message, message.order._id, 'aa')
       let ticket = q.ticketExists(message.order._id)
+      console.log(ticket, 'ticketcheck')
       if (!ticket) {
         let pos_ticket = await q.init()
 
