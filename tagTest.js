@@ -37,7 +37,7 @@ async function test(checkTag) {
 }
 async function main() {
   let checkTag = `{
-        getTickets(start: "2022-12-10 22:20", end: "2022-12-10 23:45", isClosed: false) {
+        getTickets(orderBy:idDesc,take:100, isClosed: false) {
           id
           tags {
             tagName
