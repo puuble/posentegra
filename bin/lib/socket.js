@@ -136,59 +136,52 @@ class Socket {
   async orderNoPos(data) {
     try {
       let message = JSON.parse(data['message'])
-
       const q = new Query(message)
-      let checkTag = `{
-        getTickets(start: "2022-12-06 20:30", end: "2022-12-06 21:30", isClosed: false) {
-          id
-          tags {
-            tagName
-            tag
-          }
-        }
-      }`
+      let ticket = q.ticketExists()
+      if (!ticket) {
+        let pos_ticket = await q.init()
 
-      let pos_ticket = await q.init()
-
-      let slug = message['order']['slug']
-      let restaurantId = message['order']['restaurantId']
-      if (_.has(this.env.restaurants, restaurantId)) {
-        if (slug == 'ty') {
-          const TY = require('./ty')
-          let tyData = this.env.restaurants[restaurantId]
-          console.log(tyData, 'TY ONAYLAMA')
-          const ty = new TY(tyData['ty'])
-          await ty.set500(message['order']['pid'])
+        let slug = message['order']['slug']
+        let restaurantId = message['order']['restaurantId']
+        if (_.has(this.env.restaurants, restaurantId)) {
+          if (slug == 'ty') {
+            const TY = require('./ty')
+            let tyData = this.env.restaurants[restaurantId]
+            console.log(tyData, 'TY ONAYLAMA')
+            const ty = new TY(tyData['ty'])
+            await ty.set500(message['order']['pid'])
+          }
+          if (slug == 'ys') {
+            const YS = require('./ys')
+            let ysData = this.env.restaurants[restaurantId]
+            console.log(ysData, 'ONAYLAMA ')
+            const ys = new YS(ysData['ys'])
+            await ys.set500(message['order']['pid'], function (err, data) {
+              console.log(err, data, message['order']['pid'], 'YS ONAYLAMA')
+            })
+          }
         }
-        if (slug == 'ys') {
-          const YS = require('./ys')
-          let ysData = this.env.restaurants[restaurantId]
-          console.log(ysData, 'ONAYLAMA ')
-          const ys = new YS(ysData['ys'])
-          await ys.set500(message['order']['pid'], function (err, data) {
-            console.log(err, data, message['order']['pid'], 'YS ONAYLAMA')
-          })
+
+        let result = {
+          message: {
+            pos_ticket,
+            orderId: message['order']['pid'],
+          },
+          channel: data['channel'],
+          sender: data['user']['id'],
+          receiver: data['receiver'],
+          broadcast: false,
         }
-      }
+        let last = {
+          receive: result,
+        }
+        if (pos_ticket) {
+          last.send = await this.api.send(result)
+        }
 
-      let result = {
-        message: {
-          pos_ticket,
-          orderId: message['order']['pid'],
-        },
-        channel: data['channel'],
-        sender: data['user']['id'],
-        receiver: data['receiver'],
-        broadcast: false,
+        return last
       }
-      let last = {
-        receive: result,
-      }
-      if (pos_ticket) {
-        last.send = await this.api.send(result)
-      }
-
-      return last
+      return {}
     } catch (err) {
       console.error(err)
       return null
