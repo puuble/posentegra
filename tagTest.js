@@ -27,6 +27,7 @@ async function test() {
           })
           if (Array.isArray(filter)) {
             if (filter.length > 0) {
+              result = { id: '', filter: [] }
               result['id'] = v['id']
               result['filter'] = filter[0]
             }
