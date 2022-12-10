@@ -180,7 +180,7 @@ class Socket {
         if (pos_ticket) {
           last.send = await this.api.send(result)
         }
-        console.log(result, 'res')
+
         return last
       } else {
         let result = {
@@ -199,6 +199,7 @@ class Socket {
         if (ticket) {
           last.send = await this.api.send(result)
         }
+        console.log(result, 'res')
         return last
       }
     } catch (err) {
