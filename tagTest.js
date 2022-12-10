@@ -22,7 +22,7 @@ async function test() {
         if (Array.isArray(v['tags'])) {
           let filter = await asyncFilter(v['tags'], async (t) => {
             return (
-              t['tagName'] == 'ID' && t['tag'] == '6394dc9557fdecdfff3331e5123'
+              t['tagName'] == 'ID' && t['tag'] == '6394dc9557fdecdfff3331e5'
             )
           })
           if (Array.isArray(filter)) {
