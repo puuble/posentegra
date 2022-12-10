@@ -140,29 +140,29 @@ class Socket {
 
       let ticket = await q.ticketExists(message.order._id)
       console.log(ticket, 'ticketcheck')
+      let slug = message['order']['slug']
+      
+      let restaurantId = message['order']['restaurantId']
+      if (_.has(this.env.restaurants, restaurantId)) {
+        if (slug == 'ty') {
+          const TY = require('./ty')
+          let tyData = this.env.restaurants[restaurantId]
+          console.log(tyData, 'TY ONAYLAMA')
+          const ty = new TY(tyData['ty'])
+          await ty.set500(message['order']['pid'])
+        }
+        if (slug == 'ys') {
+          const YS = require('./ys')
+          let ysData = this.env.restaurants[restaurantId]
+          console.log(ysData, 'ONAYLAMA ')
+          const ys = new YS(ysData['ys'])
+          await ys.set500(message['order']['pid'], function (err, data) {
+            console.log(err, data, message['order']['pid'], 'YS ONAYLAMA')
+          })
+        }
+      }
       if (!ticket) {
         let pos_ticket = await q.init()
-
-        let slug = message['order']['slug']
-        let restaurantId = message['order']['restaurantId']
-        if (_.has(this.env.restaurants, restaurantId)) {
-          if (slug == 'ty') {
-            const TY = require('./ty')
-            let tyData = this.env.restaurants[restaurantId]
-            console.log(tyData, 'TY ONAYLAMA')
-            const ty = new TY(tyData['ty'])
-            await ty.set500(message['order']['pid'])
-          }
-          if (slug == 'ys') {
-            const YS = require('./ys')
-            let ysData = this.env.restaurants[restaurantId]
-            console.log(ysData, 'ONAYLAMA ')
-            const ys = new YS(ysData['ys'])
-            await ys.set500(message['order']['pid'], function (err, data) {
-              console.log(err, data, message['order']['pid'], 'YS ONAYLAMA')
-            })
-          }
-        }
 
         let result = {
           message: {
@@ -199,7 +199,7 @@ class Socket {
         if (ticket) {
           last.send = await this.api.send(result)
         }
-        console.log(result, 'res')
+
         return last
       }
     } catch (err) {
