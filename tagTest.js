@@ -30,7 +30,7 @@ async function test() {
         }
         return result
       })
-      console.log(filtered, 'filtered')
+      console.dir(filtered, 'filtered')
     }
   }
 }
