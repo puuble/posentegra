@@ -2,18 +2,10 @@ const Query = require('./bin/lib/query')
 const _ = require('lodash')
 const { asyncFilter, asyncForEach } = require('./bin/lib/helpers')
 
-async function test() {
-  let checkTag = `{
-    getTickets(start: "2022-12-10 22:20", end: "2022-12-10 22:45", isClosed: false) {
-      id
-      tags {
-        tagName
-        tag
-      }
-    }
-  }`
+async function test(checkTag) {
   const q = new Query()
   let tags = await q.getQueryWithText(checkTag)
+  let check = false
   if (tags) {
     if (_.has(tags, 'getTickets')) {
       tags = tags['getTickets']
@@ -35,9 +27,24 @@ async function test() {
         }
       })
 
-      console.log(result, 'result yok result')
+      if (_.has(result, 'id')) {
+        check = result['id']
+      }
     }
   }
-}
 
-test()
+  return check
+}
+async function main() {
+  let checkTag = `{
+        getTickets(start: "2022-12-10 22:20", end: "2022-12-10 22:45", isClosed: false) {
+          id
+          tags {
+            tagName
+            tag
+          }
+        }
+      }`
+  await test(checkTag)
+}
+main()
