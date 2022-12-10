@@ -17,7 +17,7 @@ async function test() {
   if (tags) {
     if (_.has(tags, 'getTickets')) {
       tags = tags['getTickets']
-      let result = { id: null, filter: [] }
+      let result = null
       await asyncForEach(tags, async (v) => {
         if (Array.isArray(v['tags'])) {
           let filter = await asyncFilter(v['tags'], async (t) => {
