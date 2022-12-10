@@ -1,6 +1,6 @@
 const Query = require('./bin/lib/query')
 const _ = require('lodash')
-const { asyncFilter } = require('./bin/lib/helpers')
+const { asyncFilter, asyncForEach } = require('./bin/lib/helpers')
 
 async function test() {
   let checkTag = `{
@@ -17,20 +17,18 @@ async function test() {
   if (tags) {
     if (_.has(tags, 'getTickets')) {
       tags = tags['getTickets']
-      let filtered = await asyncFilter(tags, async (v) => {
-        let result = { id: v['id'], filter: [] }
+      let result = { id: '', filter: [] }
+      await asyncForEach(tags, async (v) => {
+        result['id'] = v['id']
         if (Array.isArray(v['tags'])) {
           let filter = await asyncFilter(v['tags'], async (t) => {
             return (
               t['tagName'] == 'ID' && t['tag'] == '6394dc9557fdecdfff3331e5'
             )
           })
-
-          result['filter'] = filter
+          console.log(filter, result, 'f')
         }
-        return result
       })
-      console.dir(filtered, 'filtered')
     }
   }
 }
