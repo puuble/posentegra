@@ -137,7 +137,7 @@ class Socket {
     try {
       let message = JSON.parse(data['message'])
       const q = new Query(message)
-      console.log(message, message.order._id, 'aa')
+
       let ticket = await q.ticketExists(message.order._id)
       console.log(ticket, 'ticketcheck')
       if (!ticket) {
@@ -180,7 +180,7 @@ class Socket {
         if (pos_ticket) {
           last.send = await this.api.send(result)
         }
-
+        console.log(result, 'res')
         return last
       } else {
         let result = {
