@@ -182,6 +182,23 @@ class Socket {
         }
 
         return last
+      } else {
+        let result = {
+          message: {
+            pos_ticket: ticket,
+            orderId: message['order']['pid'],
+          },
+          channel: data['channel'],
+          sender: data['user']['id'],
+          receiver: data['receiver'],
+          broadcast: false,
+        }
+        let last = {
+          receive: result,
+        }
+        if (ticket) {
+          last.send = await this.api.send(result)
+        }
       }
       return {}
     } catch (err) {
