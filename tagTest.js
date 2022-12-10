@@ -26,9 +26,15 @@ async function test() {
               t['tagName'] == 'ID' && t['tag'] == '6394dc9557fdecdfff3331e5'
             )
           })
-          console.log(filter, result, 'f')
+          if (Array.isArray(filter)) {
+            if (filter.length > 0) {
+              result['filter'] = filter[0]
+            }
+          }
         }
       })
+
+      console.log(result, 'alsana result')
     }
   }
 }
