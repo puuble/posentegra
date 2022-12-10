@@ -23,7 +23,7 @@ async function test() {
           let filter = await asyncFilter(v['tags'], async (t) => {
             return t['tagName'] == 'ID'
           })
-
+          console.log(filter, 'filter')
           result['filter'] = filter
         }
 
@@ -33,7 +33,6 @@ async function test() {
       console.log(filtered)
     }
   }
-  console.log(tags)
 }
 
 test()
