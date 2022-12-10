@@ -14,7 +14,7 @@ async function test(checkTag) {
         if (Array.isArray(v['tags'])) {
           let filter = await asyncFilter(v['tags'], async (t) => {
             return (
-              t['tagName'] == 'ID' && t['tag'] == '6394dc9557fdecdfff3331e5'
+              t['tagName'] == 'ID' && t['tag'] == '6394dc9557fdecdfff3331e51'
             )
           })
           if (Array.isArray(filter)) {
@@ -37,7 +37,7 @@ async function test(checkTag) {
 }
 async function main() {
   let checkTag = `{
-        getTickets(start: "2022-12-10 22:20", end: "2022-12-10 22:45", isClosed: false) {
+        getTickets(start: "2022-12-10 22:20", end: "2022-12-10 23:45", isClosed: false) {
           id
           tags {
             tagName
