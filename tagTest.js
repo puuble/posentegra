@@ -45,6 +45,7 @@ async function main() {
           }
         }
       }`
-  await test(checkTag)
+  let result = await test(checkTag)
+  console.log(result, 'r')
 }
 main()
