@@ -48,7 +48,7 @@ class Sambapos {
   }
   async refresh() {
     if (this.env) {
-      let access_token = null
+      this.access_token = null
       let url = `${this.url}/Token`
       let response = await _asyncrequest(
         url,
