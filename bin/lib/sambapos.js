@@ -9,10 +9,6 @@ const { getEnvironment } = require('./helpers')
 const fetch = (...args) =>
   import('node-fetch').then(({ default: fetch }) => fetch(...args))
 
-if (typeof localStorage === 'undefined' || localStorage === null) {
-  var LocalStorage = require('node-localstorage').LocalStorage
-  localStorage = new LocalStorage('./tmp')
-}
 function getToken(type) {
   let enviroment = null
   if (fs.existsSync('./tmp/' + type)) {
@@ -36,8 +32,8 @@ class Sambapos {
   constructor() {
     this.env = getEnvironment()
     if (this.env) {
-      this.access_token = getToken('access_token')
-      this.expires = getToken('expires')
+      this.access_token = this.getToken('access_token')
+      this.expires = this.getToken('expires')
       this.url = `http://${this.env.pos.host}:${this.env.pos.port}`
     }
   }
@@ -158,6 +154,8 @@ class Sambapos {
     let enviroment = null
     if (fs.existsSync('./tmp/' + type)) {
       enviroment = fs.readFileSync('./tmp/' + type, 'utf8')
+    } else {
+      return await this.login()
     }
     return enviroment
   }
