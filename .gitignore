@@ -1,7 +1,5 @@
 /node_modules/*
 /public/static/*
 PosEntegra-out.log
-/tmp/enviroment.backup
-/tmp/enviroment.json
 /logs/yemeksepeti-*.json
 .DS_Store
