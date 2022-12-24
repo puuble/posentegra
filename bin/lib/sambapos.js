@@ -154,8 +154,6 @@ class Sambapos {
     let enviroment = null
     if (fs.existsSync('./tmp/' + type)) {
       enviroment = fs.readFileSync('./tmp/' + type, 'utf8')
-    } else {
-      return await this.login()
     }
     return enviroment
   }
