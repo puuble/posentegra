@@ -32,8 +32,8 @@ class Sambapos {
   constructor() {
     this.env = getEnvironment()
     if (this.env) {
-      this.access_token = this.getToken('access_token')
-      this.expires = this.getToken('expires')
+      this.access_token = getToken('access_token')
+      this.expires = getToken('expires')
       this.url = `http://${this.env.pos.host}:${this.env.pos.port}`
     }
   }
