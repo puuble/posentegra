@@ -20,10 +20,10 @@ async function signin(db) {
   }
 
   if (env) {
-    let products = await query.getProducts()
-    console.log(products, 'sambapos check ')
     await sambapos.authCheck()
     await pusher.connect()
+    let products = await query.getProducts()
+    console.log(products, 'sambapos check ')
   }
 }
 
