@@ -19,6 +19,7 @@ async function signin(db) {
     }
   }
 
+  console.log(env, 'env2')
   if (env) {
     await sambapos.authCheck()
     await pusher.connect()
