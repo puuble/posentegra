@@ -3,11 +3,11 @@ const PusherClient = require('./lib/pusher')
 const Query = require('./lib/query')
 const Sambapos = require('./lib/sambapos')
 const pusher = new PusherClient()
-const sambapos = new Sambapos()
 const query = new Query()
 
 async function signin(db) {
   let env = await getEnvironment()
+  const sambapos = new Sambapos(env)
   let token = await db.getDBToken()
   let trigger = await _asyncrequest('/api/authenticateWithToken', 'POST', { token }, {}).catch((e) => {
     console.log('token kontrol et')

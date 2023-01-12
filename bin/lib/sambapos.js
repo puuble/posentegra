@@ -18,9 +18,9 @@ async function _asyncrequest(url, method = 'POST', data = {}, headers = {}) {
 }
 
 class Sambapos {
-  constructor() {
+  constructor(env) {
     this.db = new DB()
-    this.env = null
+    this.env = env
     this.access_token = null
     this.expires = null
   }
@@ -37,8 +37,6 @@ class Sambapos {
     return response
   }
   async refresh() {
-    this.env = await this.db.getField('enviroment')
-    console.log(this.env, 'env')
     this.url = `http://${this.env.pos.host}:${this.env.pos.port}`
     if (this.env) {
       this.access_token = null
@@ -81,8 +79,6 @@ class Sambapos {
     return false
   }
   async login() {
-    this.env = await this.db.getField('enviroment')
-    console.log(this.env, 'env')
     this.url = `http://${this.env.pos.host}:${this.env.pos.port}`
     if (this.env) {
       let url = `${this.url}/Token`
@@ -122,8 +118,6 @@ class Sambapos {
     }
   }
   async authCheck() {
-    this.env = await this.db.getField('enviroment')
-    console.log(this.env)
     this.url = `http://${this.env.pos.host}:${this.env.pos.port}`
     if (this.env) {
       let expires = await this.getToken('expires')
