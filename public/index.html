@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title></title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;700;900&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+        integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="/build/css/tailwind.css" />
+
+    <script
+        src="https://cdn.jsdelivr.net/gh/alpine-collective/alpine-magic-helpers@0.5.x/dist/component.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.7.3/dist/alpine.min.js" defer></script>
+
+    <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
+    <script>
+
+        // Enable pusher logging - don't include this in production
+        Pusher.logToConsole = true;
+
+        var pusher = new Pusher('4e51696222bfa2ffd7fa', {
+            cluster: 'eu'
+        });
+
+        var channel = pusher.subscribe('my-channel');
+        channel.bind('my-event', function (data) {
+            alert(JSON.stringify(data));
+        });
+    </script>
+
+
+    <style>
+        .form-check-input:checked {
+            background-color: #65a30d !important;
+            border-color: #65a30d !important;
+        }
+
+        .gridjs-wrapper {
+            border: none;
+            box-shadow: none !important;
+        }
+
+        .gridjs-table {
+            width: 100%
+        }
+
+        td.gridjs-td {
+            padding: 5px !important;
+            font-size: 14px;
+        }
+
+        .text-right {
+            text-align: right;
+        }
+
+    </style>
+    <link href="https://unpkg.com/gridjs/dist/theme/mermaid.min.css" rel="stylesheet" />
+
+</head>
+
+<body>
+
+
+
+    <div x-data="setup()" x-init="checkLoading(); setColors(color); " :class="{ 'dark': isDark}"
+        @resize.window="watchScreen()">
+
+        <div class="modal fade fixed top-0 left-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto"
+            id="exampleModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
+            aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div
+                class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable  relative w-auto pointer-events-none">
+                <div
+                    class="modal-content border-none shadow-lg relative flex flex-col w-full pointer-events-auto bg-white bg-clip-padding rounded-md outline-none text-current">
+                    <div
+                        class="modal-header flex flex-shrink-0 items-center justify-between p-4 border-b border-gray-200 rounded-t-md">
+                        <h5 class="text-xl font-medium leading-normal text-gray-800" id="exampleModalLabel">
+                            Sipariş Özeti
+                        </h5>
+                        <button type="button"
+                            class="btn-close box-content w-4 h-4 p-1 text-black border-none rounded-none opacity-50 focus:shadow-none focus:outline-none focus:opacity-100 hover:text-black hover:opacity-75 hover:no-underline"
+                            data-bs-dismiss="modal" @click="isModalOpen = false" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body relative p-4" x-html="detail">
+
+                    </div>
+                    <div
+                        class="modal-footer flex flex-shrink-0 flex-wrap items-center justify-end p-4 border-t border-gray-200 rounded-b-md">
+                        <div class="flex space-x-2 justify-start">
+                            <button type="button"
+                                class="inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out">
+                                Yeniden Gönder
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="flex h-screen antialiased text-gray-900 bg-gray-100 dark:bg-gray-800 dark:text-light">
+            <!-- Loading screen -->
+            <div :class="{'hidden':!loading}"
+                class="fixed inset-0 z-50 flex items-center justify-center text-2xl font-semibold text-white bg-primary-darker">
+                Yükleniyor.....
+            </div>
+
+            <!-- Sidebar -->
+            <!-- Backdrop -->
+            <div x-show="isSidebarOpen" @click="isSidebarOpen = false"
+                class="fixed inset-0 z-10 bg-primary-darker lg:hidden" style="opacity: 0.5" aria-hidden="true"></div>
+            <!-- Sidebar content -->
+
+
+            <!-- Sidebar button -->
+            <div class="fixed flex items-center space-x-4 top-5 right-10 lg:hidden">
+                <button @click="isSidebarOpen = true; $nextTick(() => { $refs.sidebar.focus() })"
+                    class="p-1 transition-colors duration-200 rounded-md text-primary-lighter bg-primary-50 hover:text-primary hover:bg-primary-100 dark:hover:text-light dark:hover:bg-primary-dark dark:bg-dark focus:outline-none focus:ring">
+                    <span class="sr-only">Toggle main manu</span>
+                    <span aria-hidden="true">
+                        <svg x-show="!isSidebarOpen" class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                        <svg x-show="isSidebarOpen" class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </span>
+                </button>
+            </div>
+
+            <!-- Main content -->
+            <main class="flex-1 h-full overflow-x-hidden overflow-y-auto" :class="{'hidden':login}">
+                <header class="relative bg-transparent dark:bg-transparent">
+                    <div class="flex items-center justify-between p-2 border-b dark:border-primary-darker">
+                        <!-- Mobile menu button -->
+                        <button @click="isMobileMainMenuOpen = !isMobileMainMenuOpen"
+                            class="p-1 transition-colors duration-200 rounded-md text-primary-lighter bg-primary-50 hover:text-primary hover:bg-primary-100 dark:hover:text-light dark:hover:bg-primary-dark dark:bg-dark md:hidden focus:outline-none focus:ring">
+                            <span class="sr-only">Open main manu</span>
+                            <span aria-hidden="true">
+                                <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M4 6h16M4 12h16M4 18h16" />
+                                </svg>
+                            </span>
+                        </button>
+
+                        <!-- Brand -->
+                        <a href="/"
+                            class="inline-block text-2xl font-bold tracking-wider  text-primary-dark dark:text-light">
+                            Meşhur Yeni Pazar Pidecisi - <small>Sandypos</small>
+                        </a>
+
+                        <!-- Mobile sub menu button -->
+                        <button @click="isMobileSubMenuOpen = !isMobileSubMenuOpen"
+                            class="p-1 transition-colors duration-200 rounded-md text-primary-lighter bg-primary-50 hover:text-primary hover:bg-primary-100 dark:hover:text-light dark:hover:bg-primary-dark dark:bg-dark md:hidden focus:outline-none focus:ring">
+                            <span class="sr-only">Open sub manu</span>
+                            <span aria-hidden="true">
+                                <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
+                                </svg>
+                            </span>
+                        </button>
+
+                        <!-- Desktop Right buttons -->
+                        <nav aria-label="Secondary" class="hidden space-x-2 md:flex md:items-center">
+                            <!-- Toggle dark theme button -->
+                            <button aria-hidden="true" class="relative focus:outline-none" x-cloak @click="toggleTheme">
+                                <div
+                                    class="w-12 h-6 transition rounded-full outline-none bg-primary-100 dark:bg-primary-lighter">
+                                </div>
+                                <div class="absolute top-0 left-0 inline-flex items-center justify-center w-6 h-6 transition-all duration-150 transform scale-110 rounded-full shadow-sm"
+                                    :class="{ 'translate-x-0 -translate-y-px  bg-white text-primary-dark': !isDark, 'translate-x-6 text-primary-100 bg-primary-darker': isDark }">
+                                    <svg x-show="!isDark" class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                                    </svg>
+                                    <svg x-show="isDark" class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+                                    </svg>
+                                </div>
+                            </button>
+
+                            <!-- Notification button -->
+                            <button @click="openNotificationsPanel"
+                                class="p-2 transition-colors duration-200 rounded-full text-primary-lighter bg-primary-50 hover:text-primary hover:bg-primary-100 dark:hover:text-light dark:hover:bg-primary-dark dark:bg-dark focus:outline-none focus:bg-primary-100 dark:focus:bg-primary-dark focus:ring-primary-darker">
+                                <span class="sr-only">Open Notification panel</span>
+                                <span x-show="notifications > 0"
+                                    class="inline-block py-1 px-1.5 leading-none text-center whitespace-nowrap align-baseline font-bold bg-red-600 text-white rounded ml-2"
+                                    style="position: absolute;
+                                    margin: 0;
+                                    top: 5px;" x-text="notifications">0</span>
+                                <svg class="w-7 h-7" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                                </svg>
+
+                            </button>
+
+
+                            <!-- Settings button -->
+                            <button @click="openSettingsPanel"
+                                class="p-2 transition-colors duration-200 rounded-full text-primary-lighter bg-primary-50 hover:text-primary hover:bg-primary-100 dark:hover:text-light dark:hover:bg-primary-dark dark:bg-dark focus:outline-none focus:bg-primary-100 dark:focus:bg-primary-dark focus:ring-primary-darker">
+                                <span class="sr-only">Open settings panel</span>
+                                <svg class="w-7 h-7" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                </svg>
+                            </button>
+
+                            <!-- User avatar button -->
+
+                        </nav>
+
+                        <!-- Mobile sub menu -->
+                        <nav x-transition:enter="transition duration-200 ease-in-out transform sm:duration-500"
+                            x-transition:enter-start="-translate-y-full opacity-0"
+                            x-transition:enter-end="translate-y-0 opacity-100"
+                            x-transition:leave="transition duration-300 ease-in-out transform sm:duration-500"
+                            x-transition:leave-start="translate-y-0 opacity-100"
+                            x-transition:leave-end="-translate-y-full opacity-0" x-show="isMobileSubMenuOpen"
+                            @click.away="isMobileSubMenuOpen = false"
+                            class="absolute flex items-center p-4 bg-white rounded-md shadow-lg dark:bg-darker top-16 inset-x-4 md:hidden"
+                            aria-label="Secondary">
+                            <div class="space-x-2">
+                                <!-- Toggle dark theme button -->
+                                <button aria-hidden="true" class="relative focus:outline-none" x-cloak
+                                    @click="toggleTheme">
+                                    <div
+                                        class="w-12 h-6 transition rounded-full outline-none bg-primary-100 dark:bg-primary-lighter">
+                                    </div>
+                                    <div class="absolute top-0 left-0 inline-flex items-center justify-center w-6 h-6 transition-all duration-200 transform scale-110 rounded-full shadow-sm"
+                                        :class="{ 'translate-x-0 -translate-y-px  bg-white text-primary-dark': !isDark, 'translate-x-6 text-primary-100 bg-primary-darker': isDark }">
+                                        <svg x-show="!isDark" class="w-4 h-4" xmlns="http://www.w3.org/2000/svg"
+                                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                                        </svg>
+                                        <svg x-show="isDark" class="w-4 h-4" xmlns="http://www.w3.org/2000/svg"
+                                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+                                        </svg>
+                                    </div>
+                                </button>
+
+                                <!-- Notification button -->
+                                <button
+                                    @click="openNotificationsPanel(); $nextTick(() => { isMobileSubMenuOpen = false })"
+                                    class="p-2 transition-colors duration-200 rounded-full text-primary-lighter bg-primary-50 hover:text-primary hover:bg-primary-100 dark:hover:text-light dark:hover:bg-primary-dark dark:bg-dark focus:outline-none focus:bg-primary-100 dark:focus:bg-primary-dark focus:ring-primary-darker">
+                                    <span class="sr-only">Open notifications panel</span>
+                                    <svg class="w-7 h-7" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                                    </svg>
+                                </button>
+
+                                <!-- Search button -->
+
+                                <!-- Settings button -->
+                                <button @click="openSettingsPanel(); $nextTick(() => { isMobileSubMenuOpen = false })"
+                                    class="p-2 transition-colors duration-200 rounded-full text-primary-lighter bg-primary-50 hover:text-primary hover:bg-primary-100 dark:hover:text-light dark:hover:bg-primary-dark dark:bg-dark focus:outline-none focus:bg-primary-100 dark:focus:bg-primary-dark focus:ring-primary-darker">
+                                    <span class="sr-only">Open settings panel</span>
+                                    <svg class="w-7 h-7" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    </svg>
+                                </button>
+                            </div>
+
+                            <!-- User avatar button -->
+
+                        </nav>
+                    </div>
+                    <!-- Mobile main manu -->
+
+                </header>
+
+                <div id="orders"></div>
+            </main>
+
+            <div class="flex-1 h-full overflow-x-hidden overflow-y-auto" :class="{'hidden':!login}">
+                <div class="flex justify-center items-center  " style="height: 90vh;">
+                    <div class="block p-12 rounded-lg shadow-lg   max-w-sm " style="width:50%;margin-top:15px">
+                        <form x-data="$parent.contactForm()" @submit.prevent="submitForm">
+                            <div x-text="formMessage"
+                                :class="{'hidden':formMessage == '','bg-red-700 text-red-100':error,'bg-green-100  text-green-700':!error}"
+                                class=" rounded-lg py-5 px-6 text-base mb-3" role="alert">
+                            </div>
+
+                            <div class="form-group mt-5 mb-6">
+                                <input type="text" required x-model="formData.token" class="
+                                  form-control
+                                  block
+                                  w-full
+                                  px-4 
+                                  py-2
+                                  text-xl
+                                  font-normal
+                                  text-gray-800
+                                  bg-white bg-clip-padding
+                                  border border-solid border-gray-300
+                                  rounded
+                                  transition
+                                  ease-in-out
+                                  m-0
+                                  focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none
+                                " id="exampleFormControlInput2" placeholder="Lisans Anahtarı Giriniz" />
+                            </div>
+
+
+                            <button :disabled="formLoading" x-text="buttonText" class="
+                            w-full
+                            px-6
+                            py-2.5
+                            bg-blue-600
+                            text-white
+                            font-medium
+                            text-xs
+                            leading-tight
+                            uppercase
+                            rounded
+                            shadow-md
+                            hover:bg-blue-700 hover:shadow-lg
+                            focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0
+                            active:bg-blue-800 active:shadow-lg
+                            transition
+                            duration-150
+                            ease-in-out">Kaydet</button>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Panels -->
+            <div x-transition:enter="transition duration-300 ease-in-out" x-transition:enter-start="opacity-0"
+                x-transition:enter-end="opacity-100" x-transition:leave="transition duration-300 ease-in-out"
+                x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" x-show="isSettingsPanelOpen"
+                @click="isSettingsPanelOpen = false" class="fixed inset-0 z-10 bg-primary-darker" style="opacity: 0.5"
+                aria-hidden="true"></div>
+
+            <div x-transition:enter="transition duration-300 ease-in-out" x-transition:enter-start="opacity-0"
+                x-transition:enter-end="opacity-100" x-transition:leave="transition duration-300 ease-in-out"
+                x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" x-show="isModalOpen"
+                @click="isModalOpen = false" class="fixed inset-0 z-10 bg-primary-darker" style="opacity: 0.5"
+                aria-hidden="true"></div>
+            <!-- Panel -->
+
+            <section x-transition:enter="transition duration-300 ease-in-out transform sm:duration-500"
+                x-transition:enter-start="translate-x-full" x-transition:enter-end="translate-x-0"
+                x-transition:leave="transition duration-300 ease-in-out transform sm:duration-500"
+                x-transition:leave-start="translate-x-0" x-transition:leave-end="translate-x-full" x-ref="settingsPanel"
+                tabindex="-1" x-show="isSettingsPanelOpen" @keydown.escape="isSettingsPanelOpen = false"
+                class="fixed inset-y-0 right-0 z-20 w-full max-w-xs bg-white shadow-xl dark:bg-darker dark:text-light sm:max-w-md focus:outline-none"
+                aria-labelledby="settinsPanelLabel">
+                <div class="absolute left-0 p-2 transform -translate-x-full">
+                    <!-- Close button -->
+                    <button @click="isSettingsPanelOpen = false"
+                        class="p-2 text-white rounded-md focus:outline-none focus:ring">
+                        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+                <!-- Panel content -->
+                <div class="flex flex-col h-screen">
+                    <!-- Panel header -->
+                    <div
+                        class="flex flex-col items-center justify-center flex-shrink-0 px-2 py-2 space-y-2 border-b dark:border-primary-dark">
+                        <span aria-hidden="true" class="text-gray-500 dark:text-primary">
+                            <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+                            </svg>
+                        </span>
+                        <h2 id="settinsPanelLabel" class="text-xl font-medium text-gray-500 dark:text-light">Ayarlar
+                        </h2>
+                    </div>
+                    <!-- Content -->
+                    <div class="flex-1 overflow-hidden hover:overflow-y-auto">
+                        <!-- Theme -->
+                        <div class="p-2 space-y-2 md:p-2">
+
+                            <div class="flex items-center space-x-8">
+
+                                <div
+                                    class="grid grid-cols-1 w-full gap-4 p-4 md:grid-cols-1 xl:grid-cols-1 2xl:grid-cols-1">
+
+                                    <div
+                                        class="p-2 bg-gray-100 dark:bg-primary-darker rounded-md w-full shadow dark:bg-slate-700">
+                                        <div class="text-center">Trendyol Yemek</div>
+                                        <div class="form-check form-switch pb-2  w-full" style="padding-left: 0px;">
+                                            <div class="flex justify-between items-center " x-data="{ isOn: false }">
+                                                <div class="w-64">
+                                                    <label class="form-check-label inline-block">Restoran
+                                                        Durumu</label>
+
+                                                    <div :class="{'text-green-500':isOn,'text-red-500':!isOn}"
+                                                        x-text="isOn ? 'Açık' : 'Kapalı' ">
+                                                        Kapalı
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <input
+                                                        class="form-check-input appearance-none  -ml-10 rounded-full float-left h-5 align-top bg-no-repeat bg-contain bg-red-500 focus:outline-none cursor-pointer shadow-sm"
+                                                        type="checkbox" role="switch"
+                                                        @click="isOn = !isOn; $parent.updateRestaurant(isOn,'ty')"
+                                                        style="width:130px; height: 70px;">
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                        <div class="form-check form-switch pb-2  w-full" style="padding-left: 0px;">
+                                            <div class="flex justify-between items-center "
+                                                x-data="{ otomatikOnay: false }">
+                                                <div class="w-64">
+                                                    <label class="form-check-label inline-block">Otomatik
+                                                        Onay</label>
+                                                    <div :class="{'text-green-500':otomatikOnay,'text-red-500':!otomatikOnay}"
+                                                        x-text="otomatikOnay? 'Açık' : 'Kapalı' ">
+                                                        Kapalı
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <input
+                                                        class="form-check-input appearance-none  -ml-10 rounded-full float-left h-5 align-top bg-no-repeat bg-contain bg-red-500 focus:outline-none cursor-pointer shadow-sm"
+                                                        type="checkbox" role="switch" style="width:130px; height: 70px;"
+                                                        @click="otomatikOnay = !otomatikOnay; $parent.updateRestaurant(otomatikOnay,'ty')">
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                        <div class="form-check form-switch pb-2  w-full" style="padding-left: 0px;"
+                                            x-data="{ selectedOption: '30', 
+                                            options: [ 
+                                               '30',
+                                               '35', 
+                                               '40'
+                                            ]}">
+                                            <div class="flex justify-between items-center ">
+                                                <div class="w-64">
+                                                    <label class="form-check-label inline-block">Hazırlanma
+                                                        Süresi</label>
+                                                    <div><span x-text="selectedOption">30</span>dk</div>
+                                                </div>
+                                                <div>
+                                                    <select name="time" class="px-4 py-3 rounded-full  dark:bg-black "
+                                                        style="width:130px;height: 70px;    text-align: center;"
+                                                        x-model="selectedOption">
+                                                        <template x-for="option in options" :key="option">
+                                                            <option :value="option" x-text="option"></option>
+                                                        </template>
+                                                    </select>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            <!-- Notification panel -->
+            <!-- Backdrop -->
+            <div x-transition:enter="transition duration-300 ease-in-out" x-transition:enter-start="opacity-0"
+                x-transition:enter-end="opacity-100" x-transition:leave="transition duration-300 ease-in-out"
+                x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
+                x-show="isNotificationsPanelOpen" @click="isNotificationsPanelOpen = false"
+                class="fixed inset-0 z-10 bg-primary-darker" style="opacity: 0.5" aria-hidden="true"></div>
+            <!-- Panel -->
+            <section x-transition:enter="transition duration-300 ease-in-out transform sm:duration-500"
+                x-transition:enter-start="-translate-x-full" x-transition:enter-end="translate-x-0"
+                x-transition:leave="transition duration-300 ease-in-out transform sm:duration-500"
+                x-transition:leave-start="translate-x-0" x-transition:leave-end="-translate-x-full"
+                x-ref="notificationsPanel" x-show="isNotificationsPanelOpen"
+                @keydown.escape="isNotificationsPanelOpen = false" tabindex="-1"
+                aria-labelledby="notificationPanelLabel"
+                class="fixed inset-y-0 z-20 w-full max-w-xs bg-white dark:bg-darker dark:text-light sm:max-w-md focus:outline-none">
+                <div class="absolute right-0 p-2 transform translate-x-full">
+                    <!-- Close button -->
+                    <button @click="isNotificationsPanelOpen = false"
+                        class="p-2 text-white rounded-md focus:outline-none focus:ring">
+                        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+                <div class="flex flex-col h-screen" x-data="{ activeTabe: 'action' }">
+                    <!-- Panel header -->
+                    <div class="flex-shrink-0">
+                        <div class="flex items-center justify-between px-4 pt-4 border-b dark:border-primary-darker">
+                            <h2 id="notificationPanelLabel" class="pb-4 font-semibold">Bildirimler</h2>
+                            <div class="space-x-2">
+                                <button @click.prevent="activeTabe = 'action'"
+                                    class="px-px pb-4 transition-all duration-200 transform translate-y-px border-b focus:outline-none"
+                                    :class="{'border-primary-dark dark:border-primary': activeTabe == 'action', 'border-transparent': activeTabe != 'action'}">
+                                    Hesap Hareketleri
+                                </button>
+                                <button @click.prevent="activeTabe = 'user'"
+                                    class="px-px pb-4 transition-all duration-200 transform translate-y-px border-b focus:outline-none"
+                                    :class="{'border-primary-dark dark:border-primary': activeTabe == 'user', 'border-transparent': activeTabe != 'user'}">
+                                    Kullanıcı Hareketleri
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Panel content (tabs) -->
+                    <div class="flex-1 pt-4 overflow-y-hidden hover:overflow-y-auto">
+                        <!-- Action tab -->
+                        <div class="space-y-4" x-show.transition.in="activeTabe == 'action'">
+                            <p class="px-4">hesap</p>
+                            <!--  -->
+                            <!-- Action tab content -->
+                            <!--  -->
+                        </div>
+
+                        <!-- User tab -->
+                        <div class="space-y-4" x-show.transition.in="activeTabe == 'user'">
+                            <p class="px-4">kullanıcı</p>
+                            <!--  -->
+                            <!-- User tab content -->
+                            <!--  -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- All javascript code in this project for now is just for demo DON'T RELY ON IT  -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+    <script src="/node_modules/tw-elements/dist/js/index.min.js"></script>
+    <script src="https://unpkg.com/gridjs/dist/gridjs.umd.js"></script>
+
+    <script>
+        const setup = () => {
+
+            const getTheme = () => {
+                if (window.localStorage.getItem('dark')) {
+                    return JSON.parse(window.localStorage.getItem('dark'))
+                }
+                return !!window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+            }
+
+            const setTheme = (value) => {
+                window.localStorage.setItem('dark', value)
+            }
+
+            const getColor = () => {
+                if (window.localStorage.getItem('color')) {
+                    return window.localStorage.getItem('color')
+                }
+                return 'cyan'
+            }
+
+            const setColors = (color) => {
+                const root = document.documentElement
+                root.style.setProperty('--color-primary', `var(--color-${color})`)
+                root.style.setProperty('--color-primary-50', `var(--color-${color}-50)`)
+                root.style.setProperty('--color-primary-100', `var(--color-${color}-100)`)
+                root.style.setProperty('--color-primary-light', `var(--color-${color}-light)`)
+                root.style.setProperty('--color-primary-lighter', `var(--color-${color}-lighter)`)
+                root.style.setProperty('--color-primary-dark', `var(--color-${color}-dark)`)
+                root.style.setProperty('--color-primary-darker', `var(--color-${color}-darker)`)
+                this.selectedColor = color
+                window.localStorage.setItem('color', color)
+            }
+            const updateRestaurant = (on, provider) => {
+                console.log(on, provider)
+            }
+
+
+            return {
+                loading: true,
+                login: false,
+                detail: '',
+                notifications: 0,
+                contactForm() {
+                    const FORM_URL = "/ajax/token";
+
+                    return {
+                        formData: {
+                            token: "6360169dba1bd2361c0bd0ff|MsU0csFqz2QeCEpQEFa3xSDLC3fhYmNqTXYgJuVg",
+                        },
+                        formMessage: "",
+                        formLoading: false,
+                        error: false,
+                        buttonText: "Gönder",
+
+                        submitForm() {
+                            this.formMessage = ""
+                            this.formLoading = true;
+                            this.buttonText = "Gönderiliyor...";
+
+                            fetch(FORM_URL, {
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json",
+                                    Accept: "application/json",
+                                },
+                                body: JSON.stringify(this.formData),
+                            })
+                                .then(async (response) => {
+
+                                    if (!response.ok) {
+                                        this.error = true
+                                        this.formMessage = "Bilinmeyen bir hata";
+                                    } else {
+                                        let result = await response.text()
+                                        result = JSON.parse(result)
+
+                                        if (result.success) {
+                                            this.formData.token = "";
+                                            this.formMessage = "Ayarlarınız Kaydedildi";
+                                            window.location.reload()
+
+                                        } else {
+                                            this.error = true
+                                            this.formMessage = "Lütfen lisans anahtarını Kontrol Edin.";
+                                        }
+                                    }
+
+                                })
+                                .catch(() => {
+                                    this.formMessage = "Bilinmeyen bir hata";
+                                }).finally(() => {
+                                    this.formLoading = false;
+                                    this.buttonText = "Gönder";
+                                });
+
+                        },
+                    };
+                },
+                listOrders() {
+                    const grid = new gridjs.Grid({
+                        columns: [
+                            {
+                                id: '_id',
+                                name: 'id',
+                                hidden: true
+                            },
+                            {
+                                id: 'totalPrice',
+                                name: 'totalPrice',
+                                hidden: true
+                            },
+                            {
+                                id: 'restaurantName',
+                                name: 'Restoran',
+                                width: '200px'
+                            },
+                            {
+                                id: 'created_at',
+                                name: 'Tarih',
+                                width: '150px',
+                                formatter: (cell) => {
+                                    return moment(cell).format('YYYY-MM-DD HH:mm')
+                                }
+                            },
+                            {
+                                id: 'client',
+                                name: 'Müşteri',
+                                formatter: (cell, row) => {
+
+                                    return cell.name
+                                }
+                            },
+                            {
+                                id: 'pos_ticket',
+                                name: 'Adisyon No',
+                            },
+                            {
+                                id: 'confirmationId',
+                                name: 'Onay Kodu'
+                            },
+                            {
+                                id: 'client',
+                                name: 'Bölge',
+                                formatter: (cell, row) => {
+                                    if (cell.location) {
+                                        return gridjs.html(`${cell.deliveryAddress.district}  <a target="_blank" class="text-secondary"
+                                        href="https://www.google.com/maps/dir/${cell.location.lat},${cell.location.lon}/@${cell.location.lat},${cell.location.lon},15.75z?hl=tr">
+                                        <i class="fas fa-map-marker-alt text-warning"></i> </a>`)
+                                    } else {
+                                        return cell.deliveryAddress.district
+                                    }
+
+
+                                }
+                            },
+                            {
+                                id: 'totalDiscountedPrice',
+                                name: "Tutar",
+                                formatter: (cell, row) => {
+                                    if (cell == 0) {
+                                        return row.cells[1].data
+                                    }
+                                }
+                            },
+                            {
+                                id: '_id',
+                                name: "",
+                                formatter: (cell, row) => {
+                                    return gridjs.html(`<button type="button" @click="showDetail('${cell}')" class="inline-block w-full px-6 py-2.5 bg-gray-200 text-gray-700 font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-gray-300 hover:shadow-lg focus:bg-gray-300 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-400 active:shadow-lg transition duration-150 ease-in-out">Detay</button>`)
+                                }
+                            }
+                        ],
+                        server: {
+                            url: '/ajax/getOrders',
+                            then: data => data,
+                            handle: (res) => {
+                                // no matching records found
+                                if (res.status === 404) return {
+                                    data: []
+                                };
+                                if (res.ok) {
+
+                                    return res.json();
+                                }
+
+                                throw Error('oh no :(');
+                            },
+                        }
+                    }).render(document.getElementById("orders"));
+                },
+
+                checkLoading() {
+                    if (!this.loading) {
+                        this.listOrders()
+                    } else {
+                        let url = "/ajax/login";
+                        fetch(url, {
+                            method: "GET",
+                            headers: {
+                                "Content-Type": "application/json",
+                                Accept: "application/json",
+                            },
+
+                        }).then(async (response) => {
+
+                            if (!response.ok) {
+
+                            } else {
+                                let result = await response.text()
+                                result = JSON.parse(result)
+                                if (result.success) {
+                                    this.loading = false;
+                                    this.listOrders()
+                                } else {
+
+                                    this.loading = false;
+                                    this.login = true
+                                }
+                            }
+
+                        }).catch(() => {
+
+                        })
+                    }
+                },
+                isDark: getTheme(),
+                color: getColor(),
+                selectedColor: 'cyan',
+                isModalOpen: false,
+                showDetail(id) {
+                    console.log(id, "showdetal")
+                    fetch('/ajax/getDetail?id=' + id, {
+                        method: "GET",
+                    })
+                        .then(async (response) => {
+                            let result = await response.text()
+                            result = JSON.parse(result)
+                            if (result.success) {
+                                this.detail = result.html
+                                this.isModalOpen = true;
+                                $("#exampleModal").modal('show')
+                            }
+
+                        })
+
+                },
+                toggleTheme() {
+                    this.isDark = !this.isDark
+                    setTheme(this.isDark)
+                },
+                setLightTheme() {
+                    this.isDark = false
+                    setTheme(this.isDark)
+                },
+                setDarkTheme() {
+                    this.isDark = true
+                    setTheme(this.isDark)
+                },
+                setColors,
+                watchScreen() {
+                    if (window.innerWidth <= 1024) {
+                        this.isSidebarOpen = false
+                    } else if (window.innerWidth >= 1024) {
+                        this.isSidebarOpen = true
+                    }
+                },
+                isSidebarOpen: window.innerWidth >= 1024 ? true : false,
+                toggleSidbarMenu() {
+                    this.isSidebarOpen = !this.isSidebarOpen
+                },
+                isNotificationsPanelOpen: false,
+                openNotificationsPanel() {
+                    this.isNotificationsPanelOpen = true
+                    this.$nextTick(() => {
+                        this.$refs.notificationsPanel.focus()
+                    })
+                },
+                isSettingsPanelOpen: false,
+
+                openSettingsPanel() {
+                    this.isSettingsPanelOpen = true
+                    this.$nextTick(() => {
+                        this.$refs.settingsPanel.focus()
+                    })
+                },
+                isMobileSubMenuOpen: false,
+                openMobileSubMenu() {
+                    this.isMobileSubMenuOpen = true
+                    this.$nextTick(() => {
+                        this.$refs.mobileSubMenu.focus()
+                    })
+                },
+                isMobileMainMenuOpen: false,
+                openMobileMainMenu() {
+                    this.isMobileMainMenuOpen = true
+                    this.$nextTick(() => {
+                        this.$refs.mobileMainMenu.focus()
+                    })
+                },
+                isSearchPanelOpen: false,
+                openSearchPanel() {
+                    this.isSearchPanelOpen = true
+                    this.$nextTick(() => {
+                        this.$refs.searchInput.focus()
+                    })
+                },
+                updateRestaurant,
+
+            }
+        }
+    </script>
+
+
+</body>
+
+</html>
