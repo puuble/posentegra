@@ -19,12 +19,10 @@ async function _asyncrequest(url, method = 'POST', data = {}, headers = {}) {
 
 class Sambapos {
   constructor() {
-    if (this.env) {
-      this.db = new DB()
-      this.access_token = null
-      this.expires = null
-      this.url = `http://${this.env.pos.host}:${this.env.pos.port}`
-    }
+    this.db = new DB()
+    this.env = null
+    this.access_token = null
+    this.expires = null
   }
   async getToken(field) {
     return await this.db.getField(field)
@@ -39,6 +37,8 @@ class Sambapos {
     return response
   }
   async refresh() {
+    this.env = await this.db.getField('enviroment')
+    this.url = `http://${this.env.pos.host}:${this.env.pos.port}`
     if (this.env) {
       this.access_token = null
       let url = `${this.url}/Token`
@@ -81,6 +81,7 @@ class Sambapos {
   }
   async login() {
     this.env = await this.db.getField('enviroment')
+    this.url = `http://${this.env.pos.host}:${this.env.pos.port}`
     if (this.env) {
       let url = `${this.url}/Token`
       let response = await _asyncrequest(
