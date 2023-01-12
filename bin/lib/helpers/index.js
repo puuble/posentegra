@@ -34,7 +34,7 @@ async function getEnvironment() {
   let db = new DB()
   try {
     let data = await db.getField('enviroment')
-    return JSON.parse(data)
+    return data
   } catch (err) {
     console.error(err)
   }
@@ -44,7 +44,7 @@ async function getEnv() {
   let db = new DB()
   try {
     let data = await db.getField('enviroment')
-    return JSON.parse(data)
+    return data
   } catch (err) {
     console.error(err)
   }
