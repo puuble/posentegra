@@ -10,7 +10,7 @@ const fs = require('fs')
 router.post('/token', async function (req, res, next) {
   let token = req.body.token
   let fail = req.session.fail
-  let trigger = await _asyncrequest('api/authenticateWithToken', 'POST', { token: req.body.token }, {}).catch((e) => {
+  let trigger = await _asyncrequest('/api/authenticateWithToken', 'POST', { token: req.body.token }, {}).catch((e) => {
     req.session.fail = true
     // console.log(e)
     // return res.redirect(301, '/')
