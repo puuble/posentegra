@@ -604,6 +604,7 @@ class Query {
   }
   async getProducts() {
     let env = await db.getField('enviroment')
+    console.log(env, 'getprod')
     const sambapos = new Sambapos(env)
     this.accessToken = await sambapos.authCheck()
     console.log(this.accessToken, 'getProducts')
