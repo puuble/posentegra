@@ -76,7 +76,7 @@ async function _asyncrequest(url, method = 'POST', data = {}, headers = {}, host
     url: host + url,
     headers,
   }
-  console.log(options)
+  console.log(options, 'test')
   return asyncrequest(options)
 }
 async function sendFileWithBody(url, method = 'POST', formData, body = {}, headers = {}) {
