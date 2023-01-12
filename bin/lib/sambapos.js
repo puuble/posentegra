@@ -123,6 +123,7 @@ class Sambapos {
   }
   async authCheck() {
     this.env = await this.db.getField('enviroment')
+    console.log(this.env)
     this.url = `http://${this.env.pos.host}:${this.env.pos.port}`
     if (this.env) {
       let expires = await this.getToken('expires')
