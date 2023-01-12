@@ -38,6 +38,7 @@ class Sambapos {
   }
   async refresh() {
     this.env = await this.db.getField('enviroment')
+    console.log(env)
     this.url = `http://${this.env.pos.host}:${this.env.pos.port}`
     if (this.env) {
       this.access_token = null
@@ -81,6 +82,7 @@ class Sambapos {
   }
   async login() {
     this.env = await this.db.getField('enviroment')
+    console.log(env)
     this.url = `http://${this.env.pos.host}:${this.env.pos.port}`
     if (this.env) {
       let url = `${this.url}/Token`
