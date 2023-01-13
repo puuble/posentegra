@@ -16,11 +16,12 @@ async function _asyncrequest(url, method = 'POST', data = {}, headers = {}) {
 
   return asyncrequest(options)
 }
+const db = new DB()
 
 class Sambapos {
-  constructor(env) {
-    this.db = new DB()
-    this.env = env
+  constructor() {
+    this.db = db
+    this.env = null
     this.access_token = null
     this.expires = null
   }
@@ -37,6 +38,7 @@ class Sambapos {
     return response
   }
   async refresh() {
+    this.env = await db.getField('enviroment')
     this.url = `http://${this.env.pos.host}:${this.env.pos.port}`
     if (this.env) {
       this.access_token = null
@@ -60,7 +62,6 @@ class Sambapos {
       if (response) {
         if (_.has(response, 'access_token')) {
           this.db.access_token(response.access_token)
-
           this.access_token = response.access_token
         }
         if (_.has(response, 'refresh_token')) {
@@ -79,6 +80,7 @@ class Sambapos {
     return false
   }
   async login() {
+    this.env = await db.getField('enviroment')
     this.url = `http://${this.env.pos.host}:${this.env.pos.port}`
     if (this.env) {
       let url = `${this.url}/Token`
@@ -97,11 +99,11 @@ class Sambapos {
       })
 
       if (response) {
-        console.log(response, 'login')
         if (_.has(response, 'refresh_token')) {
           this.db.refresh_token(response.refresh_token)
         }
         if (_.has(response, 'access_token')) {
+          console.log(response.access_token, 'access_token')
           this.db.refresh_token(response.access_token)
           this.access_token = response.access_token
         }
@@ -118,6 +120,8 @@ class Sambapos {
     }
   }
   async authCheck() {
+    this.env = await db.getField('enviroment')
+    console.log(this.env, await db.getField('enviroment'))
     this.url = `http://${this.env.pos.host}:${this.env.pos.port}`
     if (this.env) {
       let expires = await this.getToken('expires')
@@ -133,6 +137,7 @@ class Sambapos {
         this.access_token = await this.refresh()
       }
 
+      await db.access_token(this.access_token)
       return this.access_token
     } else {
       return false

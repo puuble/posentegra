@@ -8,6 +8,7 @@ const query = new Query()
 
 async function main() {
   let env = await db.getField('enviroment')
+  console.log(env)
   const sambapos = new Sambapos(env)
   await sambapos.authCheck()
   let products = await query.getProducts()

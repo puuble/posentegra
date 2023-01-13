@@ -3,9 +3,8 @@ require('dotenv').config()
 const _ = require('lodash')
 const Sambapos = require('./sambapos')
 const fs = require('fs')
-const { asyncForEach, asyncFilter, getEnv } = require('./helpers')
-const DB = require('./database')
-const db = new DB()
+const { asyncForEach, asyncFilter } = require('./helpers')
+const sambapos = new Sambapos()
 
 async function cleanTextWhileUndefined(fullText) {
   var regExp = /\[([^)]+)\]/
@@ -112,8 +111,6 @@ class Query {
     }
   }
   async init() {
-    let env = await db.getField('enviroment')
-    const sambapos = new Sambapos(env)
     this.accessToken = await sambapos.authCheck()
 
     let terminalId = await this.registerTerminal()
@@ -150,8 +147,6 @@ class Query {
   }
   async getQueryWithText(q) {
     try {
-      let env = await db.getField('enviroment')
-      const sambapos = new Sambapos(env)
       this.accessToken = await sambapos.authCheck()
       let query = {
         query: q,
@@ -170,8 +165,6 @@ class Query {
   }
   async getQuery() {
     try {
-      let env = await db.getField('enviroment')
-      const sambapos = new Sambapos(env)
       this.accessToken = await sambapos.authCheck()
       this.data = {
         query: this.data,
@@ -200,8 +193,6 @@ class Query {
   }
   async registerTerminal() {
     try {
-      let env = await db.getField('enviroment')
-      const sambapos = new Sambapos(env)
       let q = this.queries.registerTerminal
 
       q = {
@@ -220,8 +211,6 @@ class Query {
   }
   async addEntity() {
     try {
-      let env = await db.getField('enviroment')
-      const sambapos = new Sambapos(env)
       let q = this.queries.addEntity
 
       q = {
@@ -239,8 +228,6 @@ class Query {
     }
   }
   async createTerminalTicket(terminalId) {
-    let env = await db.getField('enviroment')
-    const sambapos = new Sambapos(env)
     let maps = {
       '{terminalId}': terminalId,
     }
@@ -264,8 +251,6 @@ class Query {
   }
   async updateTerminalTicket(terminalId) {
     try {
-      let env = await db.getField('enviroment')
-      const sambapos = new Sambapos(env)
       let maps = {
         '{terminalId}': terminalId,
       }
@@ -292,8 +277,6 @@ class Query {
   }
   async updateEntityCustomData() {
     try {
-      let env = await db.getField('enviroment')
-      const sambapos = new Sambapos(env)
       let d = this.queries.updateEntityCustomData
 
       if (Array.isArray(d)) {
@@ -319,8 +302,6 @@ class Query {
     }
   }
   async addProductWithText(d) {
-    let env = await db.getField('enviroment')
-    const sambapos = new Sambapos(env)
     let c = removeSpecialChar(d)
     c = {
       query: c,
@@ -336,8 +317,6 @@ class Query {
   }
   async addProduct(terminalId) {
     try {
-      let env = await db.getField('enviroment')
-      const sambapos = new Sambapos(env)
       let d = this.queries.addProduct
 
       if (Array.isArray(d)) {
@@ -392,8 +371,6 @@ class Query {
   }
   async addOrderToTerminalTicketWithProduct(terminalId, productId, key = false) {
     try {
-      let env = await db.getField('enviroment')
-      const sambapos = new Sambapos(env)
       let d = this.queries.addOrderToTerminalTicketWithProduct
       let maps = {
         '{terminalId}': terminalId,
@@ -437,8 +414,6 @@ class Query {
   }
   async addOrderToTerminalTicket(terminalId, productId, key = false) {
     try {
-      let env = await db.getField('enviroment')
-      const sambapos = new Sambapos(env)
       let maps = {
         '{terminalId}': terminalId,
         '{productId}': productId,
@@ -485,8 +460,6 @@ class Query {
     }
   }
   async addCalculationToTerminalTicket(terminalId) {
-    let env = await db.getField('enviroment')
-    const sambapos = new Sambapos(env)
     let maps = {
       '{terminalId}': terminalId,
     }
@@ -508,8 +481,6 @@ class Query {
     }
   }
   async changeEntityOfTerminalTicket(terminalId) {
-    let env = await db.getField('enviroment')
-    const sambapos = new Sambapos(env)
     let maps = {
       '{terminalId}': terminalId,
     }
@@ -531,8 +502,6 @@ class Query {
     }
   }
   async closeTerminalTicket(terminalId) {
-    let env = await db.getField('enviroment')
-    const sambapos = new Sambapos(env)
     let maps = {
       '{terminalId}': terminalId,
     }
@@ -575,8 +544,6 @@ class Query {
     }
   }
   async getProduct(name) {
-    let env = await db.getField('enviroment')
-    const sambapos = new Sambapos(env)
     let maps = {
       '{name}': name,
     }
@@ -603,9 +570,6 @@ class Query {
     }
   }
   async getProducts() {
-    let env = await db.getField('enviroment')
-    console.log(env, 'getprod')
-    const sambapos = new Sambapos(env)
     this.accessToken = await sambapos.authCheck()
     console.log(this.accessToken, 'getProducts')
     try {
@@ -635,8 +599,6 @@ class Query {
   }
   async postTicketRefreshMessage() {
     try {
-      let env = await db.getField('enviroment')
-      const sambapos = new Sambapos(env)
       let q = this.queries.postTicketRefreshMessage
 
       q = {
@@ -673,8 +635,6 @@ class Query {
   }
   async getTerminalTickets(terminalId, pos_ticket) {
     try {
-      let env = await db.getField('enviroment')
-      const sambapos = new Sambapos(env)
       let q = `query m {getTerminalTickets (terminalId:"${terminalId}"){id,uid}}`
 
       q = {
@@ -709,8 +669,6 @@ class Query {
   }
   async entegrasyonIptal(pos_ticket) {
     try {
-      let env = await db.getField('enviroment')
-      const sambapos = new Sambapos(env)
       let q = `mutation m {
         postBroadcastMessage(message: "EntegrasyonIptal-${pos_ticket}") {
           message
@@ -733,8 +691,6 @@ class Query {
   }
   async postResetProductCacheMessage() {
     try {
-      let env = await db.getField('enviroment')
-      const sambapos = new Sambapos(env)
       let q = `mutation m {postResetProductCacheMessage {
         id
       }}`

@@ -14,6 +14,7 @@ class DB {
 );`
   truncateSql = `DELETE FROM temp;
 );`
+  addLineSql = `INSERT INTO temp (id,access_token,refresh_token,expires,enviroment) VALUES (?,?,?,?,?)`
 
   test() {
     this.enviroment(`{
@@ -61,6 +62,13 @@ class DB {
   truncate() {
     db.run(this.truncateSql)
   }
+  addLine() {
+    db.serialize(() => {
+      const stmt = db.prepare(this.addLineSql)
+      stmt.run(1, null, null, null, null)
+      stmt.finalize()
+    })
+  }
 
   query(sql, params) {
     return db.prepare(sql).all(params)
@@ -71,32 +79,33 @@ class DB {
       this.createTable()
       this.createToken()
       this.truncate()
+      this.addLine()
     })
   }
   access_token(token) {
     db.serialize(() => {
-      const stmt = db.prepare('INSERT INTO temp (access_token) VALUES (?)')
+      const stmt = db.prepare('UPDATE temp SET access_token = ? WHERE ID = 1')
       stmt.run(`${token}`)
       stmt.finalize()
     })
   }
   refresh_token(token) {
     db.serialize(() => {
-      const stmt = db.prepare('INSERT INTO temp (refresh_token) VALUES (?)')
+      const stmt = db.prepare('UPDATE temp SET refresh_token = ? WHERE ID = 1')
       stmt.run(`${token}`)
       stmt.finalize()
     })
   }
   expires(token) {
     db.serialize(() => {
-      const stmt = db.prepare('INSERT INTO temp (expires) VALUES (?)')
+      const stmt = db.prepare('UPDATE temp SET expires = ? WHERE ID = 1')
       stmt.run(`${token}`)
       stmt.finalize()
     })
   }
   enviroment(text) {
     db.serialize(() => {
-      const stmt = db.prepare('INSERT INTO temp (enviroment) VALUES (?)')
+      const stmt = db.prepare('UPDATE temp SET enviroment = ? WHERE ID = 1')
       stmt.run(`${text}`)
       stmt.finalize()
     })
@@ -110,7 +119,9 @@ class DB {
   }
   getField(field) {
     return new Promise((resolve, reject) => {
-      db.get(`SELECT ${field} FROM temp ORDER BY id DESC LIMIT 1;`, function (err, row) {
+      let query = `SELECT ${field} FROM temp WHERE id = 1 ORDER BY id DESC LIMIT 1;`
+      db.get(query, function (err, row) {
+        console.log(row, 'row')
         if (err) {
           reject(err)
         } else {
