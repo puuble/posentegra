@@ -121,7 +121,6 @@ class DB {
     return new Promise((resolve, reject) => {
       let query = `SELECT ${field} FROM temp WHERE id = 1 ORDER BY id DESC LIMIT 1;`
       db.get(query, function (err, row) {
-        console.log(row, 'row')
         if (err) {
           reject(err)
         } else {

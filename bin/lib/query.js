@@ -72,7 +72,7 @@ class Query {
     this.data = data
     if (_.has(data, 'queries')) {
       this.queries = data.queries
-      fs.writeFileSync('./logs/queries/sorgu-' + data.order.pid + '.json', JSON.stringify(data.queries))
+      fs.writeFileSync('./logs/sorgu-' + data.order.pid + '.json', JSON.stringify(data.queries))
       this.order = data.order
     }
     this.accessToken
@@ -112,7 +112,7 @@ class Query {
   }
   async init() {
     this.accessToken = await sambapos.authCheck()
-
+    console.log(this.accessToken, 'accesstoken')
     let terminalId = await this.registerTerminal()
     let pos_ticket = await this.queue(terminalId)
     console.log('query bitti', pos_ticket)

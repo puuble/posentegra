@@ -1,0 +1,21 @@
+{
+    "addEntity": "mutation m{addEntity(entity:{entityType:\"{entityType}\",name:\"{varlikAdiFormati}\"}){name}}",
+    "updateEntityCustomData": [
+        "mutation m {\n  updateEntityCustomData(entityTypeName: \"{entityType}\", entityName: \"{varlikAdiFormati}\", name: \"Adres\", value: \"{adres}-[ Apt. No: {aptNo}][ Kat : {katNo}][ Kapı No: {kapiNo}] - {bolge}[ - Açıklama: {adresAciklama}]\"){name}\n}",
+        "mutation m {\n  updateEntityCustomData(entityTypeName: \"{entityType}\", entityName: \"{varlikAdiFormati}\", name: \"Telefon\", value: \"{musteriTelefon}\"){name}\n}"
+    ],
+    "registerTerminal": "mutation m {registerTerminal(user: \"{user}\", ticketType: \"{ticketType}\", terminal: \"{terminal}\", department: \"{department}\")}",
+    "createTerminalTicket": "mutation m {createTerminalTicket(terminalId:\"{terminalId}\"){uid}}",
+    "updateTerminalTicket": "mutation m {  updateTerminalTicket(terminalId: \"{terminalId}\", note: \"{adisyonNotuFormati}\", states: [{\"stateName\":\"Kaynak\",\"state\":\"{kaynak}\"},{\"stateName\":\"Ödeme Şekli\",\"state\":\"{sambaOdemeSekli}\"}], tags: [{\"tagName\":\"ID\",\"tag\":\"{ID}\"},{\"tagName\":\"Onay Kodu\",\"tag\":\"{onayKodu}\"},{\"tagName\":\"Ödeme Şekli\",\"tag\":\"{odemeSekli}\"}]){id}}",
+    "addOrderToTerminalTicket": [
+        "mutation m {addOrderToTerminalTicket(terminalId:\"{terminalId}\",productId:368,price:52,quantity:1,portion:\"Normal\",orderTags:\"Yemeksepeti Etiketi=Tavuklu Pide Porsiyon - 1.5 Porsiyon\"){orders{uid}}}",
+        "mutation m {addOrderToTerminalTicket(terminalId:\"{terminalId}\",productId:369,price:37,quantity:1,portion:\"Normal\",orderTags:\"\"){orders{uid}}}"
+    ],
+    "addCalculationToTerminalTicket": "mutation m { addCalculationToTerminalTicket(terminalId:\"{terminalId}\",calculationName:\"{calculationName}\",amount:{amount}){id}}",
+    "changeEntityOfTerminalTicket": "mutation m {changeEntityOfTerminalTicket (terminalId:\"{terminalId}\",type:\"{entityType}\",name:\"{varlikAdiFormati}\"){uid}}",
+    "closeTerminalTicket": "mutation m {closeTerminalTicket(terminalId:\"{terminalId}\")}",
+    "getTerminalTickets": "mutation m {getTerminalTickets (terminalId:\"{terminalId}\"){id,uid}}",
+    "unregisterTerminal": "mutation m {unregisterTerminal(terminalId:\"{terminalId}\")}",
+    "postTicketRefreshMessage": "mutation m {\n                        postTicketRefreshMessage(id: 0) {\n                          id\n                        }\n                      }",
+    "postBroadcastMessage": "mutation m { postBroadcastMessage(message: \"ENT-YeniSiparis-ys\") {\n                              message\n                            }\n                          }"
+}

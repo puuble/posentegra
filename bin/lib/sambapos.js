@@ -29,6 +29,9 @@ class Sambapos {
     return await this.db.getField(field)
   }
   async query(q) {
+    this.env = await db.getField('enviroment')
+    this.url = `http://${this.env.pos.host}:${this.env.pos.port}`
+    console.log(this.access_token, 'at')
     const url = `${this.url}/api/graphql`
     let response = await _asyncrequest(url, 'POST', q, {
       'Content-Type': 'application/json',
@@ -38,6 +41,7 @@ class Sambapos {
     return response
   }
   async refresh() {
+    console.log(this.env, 'refresh')
     this.env = await db.getField('enviroment')
     this.url = `http://${this.env.pos.host}:${this.env.pos.port}`
     if (this.env) {
@@ -121,11 +125,14 @@ class Sambapos {
   }
   async authCheck() {
     this.env = await db.getField('enviroment')
-    console.log(this.env, await db.getField('enviroment'))
     this.url = `http://${this.env.pos.host}:${this.env.pos.port}`
+
     if (this.env) {
       let expires = await this.getToken('expires')
-
+      this.access_token = await db.getField('access_token')
+      if (this.access_token == 'null') {
+        this.access_token = await this.refresh()
+      }
       if (expires) {
         let a = moment(expires)
         let diff = moment(moment(a)).diff(moment(), 'minutes')
@@ -137,6 +144,7 @@ class Sambapos {
         this.access_token = await this.refresh()
       }
 
+      console.log(this.access_token, expires, 'accttt')
       await db.access_token(this.access_token)
       return this.access_token
     } else {

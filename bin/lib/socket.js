@@ -98,7 +98,7 @@ class Socket {
           const ty = new TY(tyData['ty'])
           await ty.set500(message['order']['pid'])
         }
-        if (slug == 'ys') {
+        /* if (slug == 'ys') {
           const YS = require('./ys')
           let ysData = this.env.restaurants[restaurantId]
           console.log(ysData, 'ONAYLAMA ')
@@ -106,7 +106,7 @@ class Socket {
           await ys.set500(message['order']['pid'], function (err, data) {
             console.log(err, data, message['order']['pid'], 'YS ONAYLAMA')
           })
-        }
+        }*/
       }
 
       let result = {

@@ -4,7 +4,7 @@ let db = new DB()
 
 async function main() {
   let env = await db.getField('enviroment')
-  const sambapos = new Sambapos(env)
+  const sambapos = new Sambapos()
   let s = await sambapos.authCheck()
   console.log(s)
   let json = `{
