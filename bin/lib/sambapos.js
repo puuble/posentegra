@@ -31,7 +31,7 @@ class Sambapos {
   async query(q) {
     this.env = await db.getField('enviroment')
     this.url = `http://${this.env.pos.host}:${this.env.pos.port}`
-    console.log(this.access_token, 'at')
+
     const url = `${this.url}/api/graphql`
     let response = await _asyncrequest(url, 'POST', q, {
       'Content-Type': 'application/json',
