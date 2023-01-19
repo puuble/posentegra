@@ -3,6 +3,7 @@ const { getEnvironment, asyncForEach, m_exec } = require('./helpers')
 const Query = require('./query')
 const _ = require('lodash')
 const fs = require('fs')
+const crypt = require('./crypt')
 class Socket {
   constructor() {
     this.api = new Api()
@@ -90,6 +91,17 @@ class Socket {
 
       let slug = message['order']['slug']
       let restaurantId = message['order']['restaurantId']
+
+      let result = {
+        message: {
+          pos_ticket,
+          orderId: message['order']['pid'],
+        },
+        channel: data['channel'],
+        sender: data['user']['id'],
+        receiver: data['receiver'],
+        broadcast: false,
+      }
       if (_.has(this.env.restaurants, restaurantId)) {
         if (slug == 'ty') {
           const TY = require('./ty')
@@ -97,6 +109,11 @@ class Socket {
           console.log(tyData, 'TY ONAYLAMA')
           const ty = new TY(tyData['ty'])
           await ty.set500(message['order']['pid'])
+        }
+        if (slug == 'migros') {
+          let template = '{"orderId":100061610,"orderStatus":"Approved","storeId":23000000101029}'
+          let passKey = crypt.AESEncrypt(template, 'aNdRgUkXp2s5u8x/A?D(G+KbPeShVmYq')
+          result['message']['key'] = passKey
         }
         /* if (slug == 'ys') {
           const YS = require('./ys')
@@ -109,16 +126,6 @@ class Socket {
         }*/
       }
 
-      let result = {
-        message: {
-          pos_ticket,
-          orderId: message['order']['pid'],
-        },
-        channel: data['channel'],
-        sender: data['user']['id'],
-        receiver: data['receiver'],
-        broadcast: false,
-      }
       let last = {
         receive: result,
       }
