@@ -111,19 +111,7 @@ class Socket {
           await ty.set500(message['order']['pid'])
         }
         if (slug == 'migros') {
-          let template = '{"orderId":100061610,"orderStatus":"Approved","storeId":23000000101029}'
-          let passKey = crypt.AESEncrypt(template, 'aNdRgUkXp2s5u8x/A?D(G+KbPeShVmYq')
-          result['message']['key'] = passKey
         }
-        /* if (slug == 'ys') {
-          const YS = require('./ys')
-          let ysData = this.env.restaurants[restaurantId]
-          console.log(ysData, 'ONAYLAMA ')
-          const ys = new YS(ysData['ys'])
-          await ys.set500(message['order']['pid'], function (err, data) {
-            console.log(err, data, message['order']['pid'], 'YS ONAYLAMA')
-          })
-        }*/
       }
 
       let last = {
