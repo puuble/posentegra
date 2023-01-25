@@ -17,23 +17,8 @@
 
     <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.7.3/dist/alpine.min.js" defer></script>
 
-    <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
-    <script>
 
-        // Enable pusher logging - don't include this in production
-        Pusher.logToConsole = true;
-
-        var pusher = new Pusher('4e51696222bfa2ffd7fa', {
-            cluster: 'eu'
-        });
-
-        var channel = pusher.subscribe('my-channel');
-        channel.bind('my-event', function (data) {
-            alert(JSON.stringify(data));
-        });
-    </script>
-
-
+    <link href="https://unpkg.com/gridjs/dist/theme/mermaid.min.css" rel="stylesheet" />
     <style>
         .form-check-input:checked {
             background-color: #65a30d !important;
@@ -52,14 +37,31 @@
         td.gridjs-td {
             padding: 5px !important;
             font-size: 14px;
+            border: none;
+
         }
 
         .text-right {
             text-align: right;
         }
 
+        .migros td {
+            background-color: #EF7D07;
+            color: #fff
+        }
+
+        .getir td {
+            background-color: #5D3EBC !important;
+            color: #fff
+        }
+
+        .ys td {
+            background-color: #ea004b !important;
+            color: #fff
+        }
+
     </style>
-    <link href="https://unpkg.com/gridjs/dist/theme/mermaid.min.css" rel="stylesheet" />
+
 
 </head>
 
@@ -86,7 +88,104 @@
                             class="btn-close box-content w-4 h-4 p-1 text-black border-none rounded-none opacity-50 focus:shadow-none focus:outline-none focus:opacity-100 hover:text-black hover:opacity-75 hover:no-underline"
                             data-bs-dismiss="modal" @click="isModalOpen = false" aria-label="Close"></button>
                     </div>
-                    <div class="modal-body relative p-4" x-html="detail">
+                    <div class="modal-body relative p-4">
+                        <div class="flex flex-col">
+                            <div class="text-center">
+                                <h3 class="text-lg" style="font-size:40px" x-text="detail.provider.kaynak"></h3>
+                            </div>
+                            <div>
+                                <p> <b>Teslimat tipi:</b> Restoran Kuryesi Teslim Edecek.</p>
+                                <p> <b>Ödeme Yöntemi: </b> <span x-text="detail.posPaymentMethod"></span> </p>
+
+                            </div>
+                            <div>
+                                <p> <b>Restoran:</b> <span x-text="detail.restaurantName"></span></p>
+                                <p> <b>Onay Kodu:</b> <span x-text="detail.confirmationId"></span></p>
+                                <p> <b>Sipariş Tarihi:</b> <span x-text="detail.created_at"></span></p>
+
+
+                            </div>
+                            <div class=" overflow-x-auto sm:-mx-6 lg:-mx-8">
+                                <div class="py-2 inline-block w-full sm:px-12 lg:px-12">
+                                    <div class="overflow-hidden">
+
+                                        <table class="w-full">
+                                            <thead class="bg-white border-b">
+                                                <tr>
+                                                    <th scope="col"
+                                                        class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                                                        Ürün
+                                                    </th>
+                                                    <th scope="col"
+                                                        class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                                                        Fiyat
+                                                    </th>
+                                                    <th scope="col"
+                                                        class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                                                        Adet
+                                                    </th>
+                                                    <th scope="col"
+                                                        class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                                                        Tutar
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <template x-for="(v, k) in detail.products" :key="k">
+                                                    <tr :class="k % 2 ==0 ? 'bg-gray-100 border-b' : ' bg-white border-b'"
+                                                        class="">
+                                                        <td
+                                                            class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                                            <h3 style="font-weight: bold;" x-text="v.name">
+                                                            </h3>
+                                                            <ul style="list-style-type: square; margin-left:25px">
+
+                                                                <template x-for="(option,i) in v.optionCategories"
+                                                                    :key="i">
+                                                                    <li x-text="option.name.tr"></li>
+                                                                </template>
+
+                                                            </ul>
+                                                        </td>
+                                                        <td class="text-center"><span x-text="v.priceWithOption"></span>
+                                                        </td>
+                                                        <td class="text-center"><span x-text="v.count"></span></td>
+                                                        <td class="text-center"><span x-text="v.price"></span></td>
+                                                    </tr>
+                                                </template>
+
+
+                                                <tr class="bg-gray-100 border-b">
+                                                    <td colspan="3"
+                                                        class="px-6 py-4 text-right whitespace-nowrap text-sm font-medium text-gray-900">
+                                                        Toplam:
+                                                    </td>
+                                                    <td
+                                                        class="px-6 text-center py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                                        <span x-text="detail.totalDiscountedPrice"></span>
+                                                    </td>
+
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <p> <b>Müşteri:</b> <span x-text="detail.client.name"></span></p>
+                                <p> <b>Adres:</b> <span x-text="detail.client.deliveryAddress.address"></span> </p>
+                                <p> <b>Apt No:</b> <span x-text="detail.client.deliveryAddress.aptNo"></span> </p>
+                                <p> <b>Daire No:</b> <span x-text="detail.client.deliveryAddress.doorNo"></span> </p>
+                                <p> <b>Kat:</b> <span x-text="detail.client.deliveryAddress.floor"></span> </p>
+                                <p>
+                                    <b>Adres Tarifi:</b>
+                                    <span x-text="detail.client.deliveryAddress.description"></span>
+                                </p>
+                                <p> <b>Müşteri İletişim:</b> <span x-text="detail.client.clientPhoneNumber"></span> </p>
+                            </div>
+
+                        </div>
 
                     </div>
                     <div
@@ -154,9 +253,8 @@
                         </button>
 
                         <!-- Brand -->
-                        <a href="/"
-                            class="inline-block text-2xl font-bold tracking-wider  text-primary-dark dark:text-light">
-                            Meşhur Yeni Pazar Pidecisi - <small>Sandypos</small>
+                        <a href="/" class="inline-block font-bold tracking-wider  text-primary-dark dark:text-light">
+                            Meşhur Yeni Pazar Pidecisi
                         </a>
 
                         <!-- Mobile sub menu button -->
@@ -610,7 +708,13 @@
             return {
                 loading: true,
                 login: false,
-                detail: '',
+                detail: {
+                    provider: {},
+                    client: {
+                        deliveryAddress: {}
+                    },
+                    products: []
+                },
                 notifications: 0,
                 contactForm() {
                     const FORM_URL = "/ajax/token";
@@ -730,7 +834,9 @@
                                 name: "Tutar",
                                 formatter: (cell, row) => {
                                     if (cell == 0) {
-                                        return row.cells[1].data
+                                        return parseFloat(row.cells[1].data).toFixed(2)
+                                    } else {
+                                        return parseFloat(cell).toFixed(2)
                                     }
                                 }
                             },
@@ -744,7 +850,18 @@
                         ],
                         server: {
                             url: '/ajax/getOrders',
-                            then: data => data,
+                            then: (data) => {
+
+                                setTimeout(() => {
+                                    data.map((c, i) => {
+                                        console.log(i, c.provider.slug)
+                                        $(".gridjs-table tbody tr").eq(i).addClass(c.provider.slug);
+
+                                    })
+                                }, 50);
+
+                                return data;
+                            },
                             handle: (res) => {
                                 // no matching records found
                                 if (res.status === 404) return {
@@ -799,16 +916,42 @@
                 color: getColor(),
                 selectedColor: 'cyan',
                 isModalOpen: false,
+                getOptionCategories(p) {
+
+                    return p.map(c => {
+                        let options = []
+                        if (Array.isArray(options)) {
+                            if (options.length > 1) {
+                                options.push()
+                            }
+                        }
+                        return {
+                            name: c.name,
+                            options
+                        }
+                    })
+
+
+
+                },
                 showDetail(id) {
                     console.log(id, "showdetal")
                     fetch('/ajax/getDetail?id=' + id, {
                         method: "GET",
                     })
                         .then(async (response) => {
-                            let result = await response.text()
-                            result = JSON.parse(result)
+                            let result = await response.json()
+                            console.log(result)
                             if (result.success) {
-                                this.detail = result.html
+                                this.detail = result.data
+                                this.detail.products = this.detail.products.map(p => {
+                                    return {
+                                        name: p.name.tr,
+                                        price: p.price,
+                                        priceWithOption: p.priceWithOption,
+                                        optionCategories: this.getOptionCategories(p.optionCategories)
+                                    }
+                                })
                                 this.isModalOpen = true;
                                 $("#exampleModal").modal('show')
                             }
@@ -881,6 +1024,7 @@
             }
         }
     </script>
+
 
 
 </body>

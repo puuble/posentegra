@@ -2,6 +2,8 @@
     "private": true,
     "scripts": {},
     "dependencies": {
-        "tw-elements": "^1.0.0-alpha13"
+        "tw-elements": "^1.0.0-alpha13",
+        "vue": "^3.2.45",
+        "vue-router": "^4.1.6"
     }
 }

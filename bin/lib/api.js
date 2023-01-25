@@ -104,6 +104,23 @@ class Api {
       console.log(error, 'api.send')
     }
   }
+  async loadDetail(id) {
+    try {
+      this.env = await getEnvironment()
+      let result = await _asyncrequest(
+        '/api/orderDetail/' + id,
+        'GET',
+        {},
+        {
+          Authorization: 'Bearer ' + this.env.token,
+        }
+      ).catch((e) => console.log('SERVERDAN', e.message))
+
+      return result
+    } catch (error) {
+      console.log(error, 'api.send')
+    }
+  }
 }
 
 module.exports = Api

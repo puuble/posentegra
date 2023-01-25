@@ -62,10 +62,9 @@ router.get('/login', async function (req, res, next) {
 })
 router.get('/getDetail', async function (req, res, next) {
   let id = req.query.id
-
-  let html = fs.readFileSync('./detail.html', { encoding: 'utf8', flag: 'r' })
-
-  res.json({ success: true, id, html })
+  let api = new Api()
+  let data = await api.loadDetail(id)
+  res.json({ success: true, id, data })
 })
 router.get('/getOrders', async function (req, res, next) {
   let env = await getEnv()
