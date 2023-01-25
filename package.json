@@ -3,8 +3,6 @@
     "version": "0.0.0",
     "private": true,
     "scripts": {
-        "dev": "vite",
-        "build": "vite build",
         "start": "node ./bin/www",
         "serve": "run-p css:watch html:serve",
         "prod": "run-s css:build",

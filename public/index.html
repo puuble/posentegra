@@ -70,8 +70,7 @@
 
 
 
-    <div x-data="setup()" x-init="checkLoading(); setColors(color); " :class="{ 'dark': isDark}"
-        @resize.window="watchScreen()">
+    <div x-data="setup()" x-init="checkLoading(); " :class="{ 'dark': isDark}" @resize.window="watchScreen()">
 
         <div class="modal fade fixed top-0 left-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto"
             id="exampleModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
@@ -529,7 +528,8 @@
                                                         class="form-check-input appearance-none  -ml-10 rounded-full float-left h-5 align-top bg-no-repeat bg-contain bg-red-500 focus:outline-none cursor-pointer shadow-sm"
                                                         type="checkbox" role="switch"
                                                         @click="isOn = !isOn; $parent.updateRestaurant(isOn,'ty')"
-                                                        style="width:130px; height: 70px;">
+                                                        style="    width: 100px;
+                                                        height: 60px;">
                                                 </div>
 
                                             </div>
@@ -549,7 +549,8 @@
                                                 <div>
                                                     <input
                                                         class="form-check-input appearance-none  -ml-10 rounded-full float-left h-5 align-top bg-no-repeat bg-contain bg-red-500 focus:outline-none cursor-pointer shadow-sm"
-                                                        type="checkbox" role="switch" style="width:130px; height: 70px;"
+                                                        type="checkbox" role="switch" style="width: 100px;
+                                                        height: 60px;"
                                                         @click="otomatikOnay = !otomatikOnay; $parent.updateRestaurant(otomatikOnay,'ty')">
                                                 </div>
 
@@ -571,8 +572,8 @@
                                                 </div>
                                                 <div>
                                                     <select name="time" class="px-4 py-3 rounded-full  dark:bg-black "
-                                                        style="width:130px;height: 70px;    text-align: center;"
-                                                        x-model="selectedOption">
+                                                        style="    width: 100px;
+                                                        height: 60px;    text-align: center;" x-model="selectedOption">
                                                         <template x-for="option in options" :key="option">
                                                             <option :value="option" x-text="option"></option>
                                                         </template>
