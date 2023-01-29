@@ -49,6 +49,7 @@ class Api {
       if (!result) {
         console.log('undefined result')
       }
+      console.log(result, 'resultApi')
       return result
     } catch (error) {
       console.log(error, 'api.send')
