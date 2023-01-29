@@ -70,15 +70,15 @@ class Socket {
       receive: data,
     }
 
-    /*let result = {
+    let result = {
       message: data['message'],
       channel: data['channel'],
       sender: data['user']['id'],
       receiver: data['receiver'],
       broadcast: false,
-    }*/
+    }
 
-    //last.send = await this.api.send(result)
+    last.send = await this.api.send(result)
     return last
   }
   async order(data) {

@@ -924,7 +924,9 @@
                         let options = []
                         if (Array.isArray(options)) {
                             if (options.length > 1) {
-                                options.push()
+                                options.forEach(function (c) {
+                                    console.log(c)
+                                })
                             }
                         }
                         return {
