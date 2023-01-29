@@ -16,23 +16,30 @@ class Socket {
     }
   }
   async createMenu(data) {
-    let message = data.message
+    let result = {}
 
-    let result = {
-      message: {
-        optionId: message.optionId,
-      },
-      channel: data['channel'],
-      sender: data['user']['id'],
-      receiver: data['receiver'],
-      broadcast: false,
-    }
-    let send = await this.api.send(result)
+    if (_.has(data, 'message')) {
+      let message = data.message
+      if (_.has(message, 'optionId')) {
+        let msg = {
+          message: {
+            optionId: message.optionId,
+          },
+          channel: data['channel'],
+          sender: data['user']['id'],
+          receiver: data['receiver'],
+          broadcast: false,
+        }
 
-    return {
-      receive: result,
-      send,
+        send = await this.api.send(result)
+        result = {
+          receive: msg,
+          send,
+        }
+      }
     }
+
+    return result
   }
 
   async getMenu(data) {
