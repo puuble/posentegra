@@ -52,7 +52,6 @@ class PusherClient {
           })
 
           channelUser.bind(event, async (data) => {
-            console.log(data, 'aa')
             await this.sendData(data)
           })
           channelUser.bind_global(function (data) {

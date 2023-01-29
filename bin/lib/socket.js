@@ -64,6 +64,7 @@ class Socket {
     }
   }
   async getOdemeTipi(data) {
+    console.log(data,"gelens")
     const q = new Query(data.message['query'])
 
     let last = {
