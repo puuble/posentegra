@@ -283,17 +283,16 @@ class Socket {
         let q = new Query()
 
         await asyncForEach(result, async function (d) {
-          console.log(d, 'databak2')
-          /*  let productName = d.provider_name
+          let productName = d.provider_name
           let text = `mutation m {
             addProduct(name: "${productName}", groupCode: "Entegrasyon", portions: {name: "Normal", price:1}) {
               id
             }
           }`
-          await q.addProductWithText(text)*/
+          await q.addProductWithText(text)
         })
 
-        /*await q.postResetProductCacheMessage()
+        await q.postResetProductCacheMessage()
         let getProducts = await q.getProducts()
 
         let req = {
@@ -307,7 +306,7 @@ class Socket {
         return {
           receive: req,
           send: send,
-        }*/
+        }
       }
     }
   }
