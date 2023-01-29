@@ -17,7 +17,7 @@ class Socket {
   }
   async createMenu(data) {
     let message = data.message
-
+    console.log(data, 'createMenuData')
     let result = {
       message: {
         optionId: message.optionId,
