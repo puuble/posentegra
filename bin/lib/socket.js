@@ -28,7 +28,7 @@ class Socket {
       broadcast: false,
     }
     let send = await this.api.send(result)
-    send.optionId = message.optionId
+    send.optionId = result.message.optionId
 
     return {
       receive: result,
