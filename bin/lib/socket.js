@@ -16,7 +16,7 @@ class Socket {
     }
   }
   async createMenu(data) {
-    let message = data.message
+    //let message = data.message
     console.log(data, 'createMenuData')
     let result = {
       message: {
@@ -28,7 +28,7 @@ class Socket {
       broadcast: false,
     }
     let send = await this.api.send(result)
-    send.optionId = result.message.optionId
+    send.optionId = data.optionId
 
     return {
       receive: result,
