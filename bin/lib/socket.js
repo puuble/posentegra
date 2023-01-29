@@ -280,7 +280,7 @@ class Socket {
       let result = data.result
       result = Object.keys(result)
       if (Array.isArray(result)) {
-        let q = new Query({})
+        let q = new Query()
 
         await asyncForEach(result, async function (d) {
           let product = data.result[d]
@@ -297,7 +297,7 @@ class Socket {
         let getProducts = await q.getProducts()
 
         let req = {
-          message: { data: getProducts, optionId: data.optionId },
+          message: { data: getProducts, optionId: data.message.optionId },
           channel: 'sendCreateMenu',
           sender: this.env.userId,
           receiver: this.env.userId,
