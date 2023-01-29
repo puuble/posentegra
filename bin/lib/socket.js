@@ -20,6 +20,7 @@ class Socket {
 
     if (_.has(data, 'message')) {
       let message = data.message
+      console.log(message, 'mesajcreate')
       if (_.has(message, 'optionId')) {
         let msg = {
           message: {
