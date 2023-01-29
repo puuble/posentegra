@@ -20,7 +20,7 @@ class Socket {
     console.log(data, 'createMenuData')
     let result = {
       message: {
-        optionId: message.optionId,
+        optionId: data.optionId,
       },
       channel: data['channel'],
       sender: data['user']['id'],
