@@ -281,8 +281,8 @@ class Socket {
       result = Object.keys(result)
       if (Array.isArray(result)) {
         let q = new Query()
-
-        await asyncForEach(result, async function (d) {
+        console.log(data, 'databak')
+        /* await asyncForEach(result, async function (d) {
           let product = data.result[d]
           let productName = product.provider_name
           let text = `mutation m {
@@ -297,7 +297,7 @@ class Socket {
         let getProducts = await q.getProducts()
 
         let req = {
-          message: { data: getProducts, optionId: data.message.optionId },
+          message: { data: getProducts, optionId: data.optionId },
           channel: 'sendCreateMenu',
           sender: this.env.userId,
           receiver: this.env.userId,
@@ -307,7 +307,7 @@ class Socket {
         return {
           receive: req,
           send: send,
-        }
+        }*/
       }
     }
   }
