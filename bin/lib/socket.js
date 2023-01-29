@@ -64,13 +64,13 @@ class Socket {
     }
   }
   async getOdemeTipi(data) {
-    console.log(data, 'gelens')
     const q = new Query()
     let res = await q.getQueryWithText(data['message']['query'])
     let last = {
       receive: data,
     }
 
+    console.log(res, 'getOdemeTipiRes')
     let result = {
       message: res,
       channel: data['channel'],
