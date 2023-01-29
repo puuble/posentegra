@@ -32,7 +32,7 @@ class Socket {
           broadcast: false,
         }
 
-        send = await this.api.send(result)
+        let send = await this.api.send(result)
         result = {
           receive: msg,
           send,
