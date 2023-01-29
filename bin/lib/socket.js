@@ -79,7 +79,7 @@ class Socket {
       broadcast: true,
     }
 
-    last.send = await this.api.send(result)
+    //last.send = await this.api.send(result)
     return last
   }
   async order(data) {
