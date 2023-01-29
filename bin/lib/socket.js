@@ -64,19 +64,19 @@ class Socket {
     }
   }
   async getOdemeTipi(data) {
-    console.log(data,"gelens")
-    const q = new Query(data.message['query'])
-
+    console.log(data, 'gelens')
+    const q = new Query()
+    let res = await q.getQueryWithText(data['message']['query'])
     let last = {
       receive: data,
     }
 
     let result = {
-      message: data['message'],
+      message: res,
       channel: data['channel'],
       sender: data['user']['id'],
       receiver: data['receiver'],
-      broadcast: false,
+      broadcast: true,
     }
 
     last.send = await this.api.send(result)
