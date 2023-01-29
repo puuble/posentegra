@@ -278,22 +278,22 @@ class Socket {
     this.env = await getEnvironment()
     if (_.has(data, 'result')) {
       let result = data.result
-      result = Object.keys(result)
+
       if (Array.isArray(result)) {
         let q = new Query()
-        console.log(data, 'databak')
-        /* await asyncForEach(result, async function (d) {
-          let product = data.result[d]
-          let productName = product.provider_name
+
+        await asyncForEach(result, async function (d) {
+          console.log(d, 'databak2')
+          /*  let productName = d.provider_name
           let text = `mutation m {
             addProduct(name: "${productName}", groupCode: "Entegrasyon", portions: {name: "Normal", price:1}) {
               id
             }
           }`
-          await q.addProductWithText(text)
+          await q.addProductWithText(text)*/
         })
 
-        await q.postResetProductCacheMessage()
+        /*await q.postResetProductCacheMessage()
         let getProducts = await q.getProducts()
 
         let req = {
