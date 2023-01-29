@@ -26,7 +26,7 @@ class Socket {
           message: {
             optionId: message.optionId,
           },
-          channel: 'sendCreateMenu',
+          channel: data['channel'],
           sender: data['user']['id'],
           receiver: data['receiver'],
           broadcast: false,
