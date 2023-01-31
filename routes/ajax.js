@@ -66,6 +66,19 @@ router.get('/getDetail', async function (req, res, next) {
   let data = await api.loadDetail(id)
   res.json({ success: true, id, data })
 })
+router.get('/getReasons', async function (req, res, next) {
+  let id = req.query.id
+  let api = new Api()
+  let data = await api.getReasons(id)
+  res.json(data)
+})
+router.get('/saveReason', async function (req, res, next) {
+  let reason = req.query.reason
+  let id = req.query.id
+  let api = new Api()
+  let data = await api.saveReason(reason, id)
+  res.json(data)
+})
 router.get('/getOrders', async function (req, res, next) {
   let env = await getEnv()
   let fail = req.session.fail
