@@ -4,13 +4,9 @@ const Query = require('./query')
 const _ = require('lodash')
 const { spawn } = require('child_process')
 let p = './OnayBekliyor.wav'
-function playSound(off = false) {
-  //const sound = spawn('afplay', ['-v', '100', p])
-  /*const sound = spawn('powershell.exe', [
-    '-Command',
-    '(New-Object Media.SoundPlayer "' + p + '").Play(); Start-Sleep -s 3; Exit;',
-  ])*/
-  const sound = spawn('powershell.exe', [
+let sound
+function startSound() {
+  sound = spawn('powershell.exe', [
     '-Command',
     "Start-Process powershell.exe -WindowStyle Hidden -ArgumentList '-Command','while ($true) {(New-Object Media.SoundPlayer \\\"" +
       p +
@@ -25,18 +21,15 @@ function playSound(off = false) {
     console.error(`stderr: ${data}`)
   })
 
-  if (off) {
-    sound.kill()
-  } else {
-    /*sound.on('close', (code
-        ) => {
-      if (code === 0) {
-        // ws.send('played')
-        playSound()
-      }
-    })*/
-  }
+  sound.on('close', (code) => {
+    console.log(`child process exited with code ${code}`)
+  })
 }
+
+function stopSound() {
+  sound.kill()
+}
+
 class Socket {
   constructor() {
     this.api = new Api()
@@ -348,10 +341,10 @@ class Socket {
     m_exec(data['message']['cmd'])
   }
   async playOnayBekliyor() {
-    playSound()
+    startSound()
   }
   async pauseOnayBekliyor() {
-    playSound(true)
+    stopSound()
   }
   async query(data) {
     const q = new Query()
