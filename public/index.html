@@ -978,6 +978,22 @@
                                     if (status == 1900) {
                                         statusText = "Site Tarafından iptal edildi"
                                     }
+                                    if (status == 550) {
+                                        statusText = "Sipariş Hazırlandı"
+                                    }
+                                    if (status == 600) {
+                                        statusText = "Sipariş Kuryeye Teslim Edildi"
+                                    }
+                                    if (status == 700) {
+                                        statusText = "Kurye Yola Çıktı"
+                                    }
+                                    if (status == 800) {
+                                        statusText = "Kurye Adrese Ulaştı"
+                                    }
+                                    if (status == 900) {
+                                        statusText = "Sipariş Teslim edildi."
+                                    }
+
 
                                     return statusText
                                 }
