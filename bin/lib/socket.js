@@ -10,7 +10,6 @@ function playSound(off = false) {
     '-Command',
     '(New-Object Media.SoundPlayer "' + p + '").Play(); Start-Sleep -s 3; Exit;',
   ])*/
-
   const sound = spawn('powershell.exe', [
     '-Command',
     "Start-Process powershell.exe -WindowStyle Hidden -ArgumentList '-Command','(New-Object Media.SoundPlayer \\\"" +
