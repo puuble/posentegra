@@ -72,6 +72,12 @@ router.get('/getReasons', async function (req, res, next) {
   let data = await api.getReasons(id)
   res.json(data)
 })
+router.get('/onayla', async function (req, res, next) {
+  let id = req.query.id
+  let api = new Api()
+  let data = await api.onayla(id)
+  res.json(data)
+})
 router.get('/saveReason', async function (req, res, next) {
   let reason = req.query.reason
   let id = req.query.id
