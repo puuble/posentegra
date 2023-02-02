@@ -20,15 +20,14 @@ function playSound(off = false) {
 
   if (off) {
     sound.kill()
-  }
-  sound.on('close', (code) => {
-    if (code === 0) {
-      // ws.send('played')
-      if (!off) {
+  } else {
+    sound.on('close', (code) => {
+      if (code === 0) {
+        // ws.send('played')
         playSound()
       }
-    }
-  })
+    })
+  }
 }
 class Socket {
   constructor() {
