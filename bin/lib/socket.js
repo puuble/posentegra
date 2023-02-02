@@ -15,18 +15,18 @@ function playSound(off = false) {
     '-Command',
     "Start-Process powershell.exe -WindowStyle Hidden -ArgumentList '-Command','(New-Object Media.SoundPlayer \\\"" +
       p +
-      '\\").Play();  Exit;\'',
+      '\\").Play(); Start-Sleep -s 3; Exit;\'',
   ])
 
   if (off) {
     sound.kill()
   } else {
-    sound.on('close', (code) => {
+    /*sound.on('close', (code) => {
       if (code === 0) {
         // ws.send('played')
         playSound()
       }
-    })
+    })*/
   }
 }
 class Socket {
