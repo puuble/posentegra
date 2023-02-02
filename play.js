@@ -1,4 +1,4 @@
-const { spawn } = require('child_process')
+const { spawn, exec } = require('child_process')
 let p = './OnayBekliyor.wav'
 function playSound() {
   //const sound = spawn('afplay', ['-v', '100', p])
@@ -15,4 +15,11 @@ function playSound() {
   })
 }
 
-playSound()
+exec('./images/OnayBekliyor.cmd', (error, stdout, stderr) => {
+  if (error) {
+    console.error(`exec error: ${error}`)
+    return
+  }
+  console.log(`stdout: ${stdout}`)
+  console.error(`stderr: ${stderr}`)
+})

@@ -16,29 +16,7 @@ class Socket {
       console.log(data, key)
     }
   }
-  async startSound() {
-    this.sound = spawn('powershell.exe', [
-      '-Command',
-      "Start-Process powershell.exe -WindowStyle Hidden -ArgumentList '-Command','while ($true) {(New-Object Media.SoundPlayer \\\"" +
-        p +
-        '\\").Play(); Start-Sleep -s 3}; Exit;\'',
-    ])
 
-    this.sound.stdout.on('data', (data) => {
-      console.log(`stdout: ${data}`)
-    })
-
-    this.sound.stderr.on('data', (data) => {
-      console.error(`stderr: ${data}`)
-    })
-
-    this.sound.on('close', (code) => {
-      console.log(`child process exited with code ${code}`)
-    })
-  }
-  async stopSound() {
-    this.sound.kill()
-  }
   async createMenu(data) {
     let result = {}
 
@@ -339,10 +317,10 @@ class Socket {
     m_exec(data['message']['cmd'])
   }
   async playOnayBekliyor() {
-    this.startSound()
+    await this.startSound()
   }
   async pauseOnayBekliyor() {
-    this.stopSound()
+    await this.stopSound()
   }
 
   async query(data) {
