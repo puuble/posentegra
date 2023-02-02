@@ -15,7 +15,7 @@ function playSound() {
   })
 }
 
-exec('./images/OnayBekliyor.cmd', (error, stdout, stderr) => {
+exec('C:/peClientV2/images/OnayBekliyor.cmd', (error, stdout, stderr) => {
   if (error) {
     console.error(`exec error: ${error}`)
     return
