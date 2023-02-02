@@ -4,42 +4,40 @@ const Query = require('./query')
 const _ = require('lodash')
 const { spawn } = require('child_process')
 let p = './OnayBekliyor.wav'
-let sound
-function startSound() {
-  sound = spawn('powershell.exe', [
-    '-Command',
-    "Start-Process powershell.exe -WindowStyle Hidden -ArgumentList '-Command','while ($true) {(New-Object Media.SoundPlayer \\\"" +
-      p +
-      '\\").Play(); Start-Sleep -s 3}; Exit;\'',
-  ])
-
-  sound.stdout.on('data', (data) => {
-    console.log(`stdout: ${data}`)
-  })
-
-  sound.stderr.on('data', (data) => {
-    console.error(`stderr: ${data}`)
-  })
-
-  sound.on('close', (code) => {
-    console.log(`child process exited with code ${code}`)
-  })
-}
-
-function stopSound() {
-  sound.kill()
-}
 
 class Socket {
   constructor() {
     this.api = new Api()
-
+    this.sound
     this.logSwitch = false
   }
   async log(data, key = false) {
     if (this.logSwitch) {
       console.log(data, key)
     }
+  }
+  async startSound() {
+    this.sound = spawn('powershell.exe', [
+      '-Command',
+      "Start-Process powershell.exe -WindowStyle Hidden -ArgumentList '-Command','while ($true) {(New-Object Media.SoundPlayer \\\"" +
+        p +
+        '\\").Play(); Start-Sleep -s 3}; Exit;\'',
+    ])
+
+    this.sound.stdout.on('data', (data) => {
+      console.log(`stdout: ${data}`)
+    })
+
+    this.sound.stderr.on('data', (data) => {
+      console.error(`stderr: ${data}`)
+    })
+
+    this.sound.on('close', (code) => {
+      console.log(`child process exited with code ${code}`)
+    })
+  }
+  async stopSound() {
+    this.sound.kill()
   }
   async createMenu(data) {
     let result = {}
@@ -341,11 +339,12 @@ class Socket {
     m_exec(data['message']['cmd'])
   }
   async playOnayBekliyor() {
-    startSound()
+    this.startSound()
   }
   async pauseOnayBekliyor() {
-    stopSound()
+    this.stopSound()
   }
+
   async query(data) {
     const q = new Query()
     console.log(data['message']['query'])
