@@ -2,7 +2,7 @@ const Api = require('./api')
 const { getEnvironment, asyncForEach, m_exec } = require('./helpers')
 const Query = require('./query')
 const _ = require('lodash')
-const { spawn } = require('child_process')
+const { exec } = require('child_process')
 let p = './OnayBekliyor.wav'
 
 class Socket {
@@ -317,7 +317,9 @@ class Socket {
     m_exec(data['message']['cmd'])
   }
   async playOnayBekliyor() {
-    await this.startSound()
+    exec('C:/peClientV2/images/OnayBekliyor.cmd', (error, stdout, stderr) => {
+      console.log(error)
+    })
   }
   async pauseOnayBekliyor() {
     await this.stopSound()
