@@ -2,8 +2,26 @@ const Api = require('./api')
 const { getEnvironment, asyncForEach, m_exec } = require('./helpers')
 const Query = require('./query')
 const _ = require('lodash')
-const fs = require('fs')
-const crypt = require('./crypt')
+const { spawn } = require('child_process')
+let p = './OnayBekliyor.wav'
+function playSound(off = false) {
+  //const sound = spawn('afplay', ['-v', '100', p])
+  const sound = spawn('powershell.exe', [
+    '-Command',
+    '(New-Object Media.SoundPlayer "' + p + '").Play(); Start-Sleep -s 3; Exit;',
+  ])
+
+  sound.on('close', (code) => {
+    if (code === 0) {
+      // ws.send('played')
+      if (!off) {
+        playSound()
+      } else {
+        sound.kill()
+      }
+    }
+  })
+}
 class Socket {
   constructor() {
     this.api = new Api()
@@ -313,6 +331,12 @@ class Socket {
   async startUpdate(data) {
     console.log(data)
     m_exec(data['message']['cmd'])
+  }
+  async playOnayBekliyor() {
+    playSound()
+  }
+  async pauseOnayBekliyor() {
+    playSound(true)
   }
   async query(data) {
     const q = new Query()
