@@ -13,7 +13,9 @@ function playSound(off = false) {
 
   const sound = spawn('powershell.exe', [
     '-Command',
-    "Start-Process powershell.exe -WindowStyle Hidden -ArgumentList '-Command','(New-Object Media.SoundPlayer \"./OnayBekliyor.wav\").Play(); Exit;'",
+    "Start-Process powershell.exe -WindowStyle Hidden -ArgumentList '-Command','(New-Object Media.SoundPlayer \\\"" +
+      p +
+      '\\").Play(); Start-Sleep -s 3; Exit;\'',
   ])
 
   if (off) {
