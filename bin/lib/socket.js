@@ -12,15 +12,24 @@ function playSound(off = false) {
   ])*/
   const sound = spawn('powershell.exe', [
     '-Command',
-    "Start-Process powershell.exe -WindowStyle Hidden -ArgumentList '-Command','(New-Object Media.SoundPlayer \\\"" +
+    "Start-Process powershell.exe -WindowStyle Hidden -ArgumentList '-Command','while ($true) {(New-Object Media.SoundPlayer \\\"" +
       p +
-      '\\").Play(); Start-Sleep -s 3; Exit;\'',
+      '\\").Play(); Start-Sleep -s 3}; Exit;\'',
   ])
+
+  sound.stdout.on('data', (data) => {
+    console.log(`stdout: ${data}`)
+  })
+
+  sound.stderr.on('data', (data) => {
+    console.error(`stderr: ${data}`)
+  })
 
   if (off) {
     sound.kill()
   } else {
-    /*sound.on('close', (code) => {
+    /*sound.on('close', (code
+        ) => {
       if (code === 0) {
         // ws.send('played')
         playSound()
