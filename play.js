@@ -4,7 +4,7 @@ function playSound() {
   //const sound = spawn('afplay', ['-v', '100', p])
   const sound = spawn('powershell.exe', [
     '-Command',
-    '(New-Object Media.SoundPlayer "' + p + '").Play(); Start-Sleep -s 3; Exit;',
+    "Start-Process powershell.exe -WindowStyle Hidden -ArgumentList '-Command','(New-Object Media.SoundPlayer \"./OnayBekliyor.wav\").Play(); Exit;'",
   ])
 
   sound.on('close', (code) => {
