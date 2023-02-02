@@ -322,7 +322,7 @@ class Socket {
     })
   }
   async pauseOnayBekliyor() {
-    await this.stopSound()
+    // await this.stopSound()
   }
 
   async query(data) {
