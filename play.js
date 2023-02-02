@@ -12,7 +12,7 @@ function playSound() {
   sound.on('close', (code) => {
     if (code === 0) {
       // ws.send('played')
-      // playSound()
+      playSound()
     }
   })
 }
