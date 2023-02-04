@@ -151,7 +151,13 @@
                                 <h3 class="text-lg" style="font-size:40px" x-text="detail.provider.kaynak"></h3>
                             </div>
                             <div>
-                                <p> <b>Teslimat tipi:</b> Restoran Kuryesi Teslim Edecek.</p>
+                                <p> <b>Teslimat tipi:</b>
+                                    <span x-show="detail.deliveryType == 2">Restoran Kuryesi Teslim Edecek.</span>
+                                    <span x-show="detail.deliveryType == 1">
+                                        <span x-text="detail.provider.kaynak"></span> Kuryesi Teslim Edecek.</span>
+                                    <span x-show="detail.deliveryType == 3">Gel Al Siparişi.</span>
+
+                                </p>
                                 <p> <b>Ödeme Yöntemi: </b> <span x-text="detail.posPaymentMethod"></span> </p>
 
                             </div>
