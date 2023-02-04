@@ -261,15 +261,29 @@
                             </div>
                             <div>
                                 <p> <b>Müşteri:</b> <span x-text="detail.client.name"></span></p>
-                                <p> <b>Adres:</b> <span x-text="detail.client.deliveryAddress.address"></span> </p>
-                                <p> <b>Apt No:</b> <span x-text="detail.client.deliveryAddress.aptNo"></span> </p>
-                                <p> <b>Daire No:</b> <span x-text="detail.client.deliveryAddress.doorNo"></span> </p>
-                                <p> <b>Kat:</b> <span x-text="detail.client.deliveryAddress.floor"></span> </p>
-                                <p>
+
+                                <p x-show="detail.client.deliveryAddress.address != 'null'">
+                                    <b>Adres:</b> <span x-text="detail.client.deliveryAddress.address"></span>
+                                </p>
+                                <p x-show="detail.client.deliveryAddress.aptNo != 'null'">
+                                    <b>Apt No:</b> <span x-text="detail.client.deliveryAddress.aptNo"></span>
+                                </p>
+
+                                <p x-show="detail.client.deliveryAddress.doorNo != 'null'">
+                                    <b>Daire No:</b> <span x-text="detail.client.deliveryAddress.doorNo"></span>
+                                </p>
+
+                                <p x-show="detail.client.deliveryAddress.floor != 'null'">
+                                    <b>Kat:</b> <span x-text="detail.client.deliveryAddress.floor"></span>
+                                </p>
+
+                                <p x-show="detail.client.deliveryAddress.description != 'null'">
                                     <b>Adres Tarifi:</b>
                                     <span x-text="detail.client.deliveryAddress.description"></span>
                                 </p>
-                                <p> <b>Müşteri İletişim:</b> <span x-text="detail.client.clientPhoneNumber"></span> </p>
+                                <p x-show="detail.client.clientPhoneNumber != 'null'">
+                                    <b>Müşteri İletişim:</b> <span x-text="detail.client.clientPhoneNumber"></span>
+                                </p>
                             </div>
 
                         </div>
