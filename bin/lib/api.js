@@ -196,7 +196,7 @@ class Api {
     try {
       this.env = await getEnvironment()
       let result = await _asyncrequest(
-        '/api/restaurant/updateStatus/',
+        '/api/restaurant/updateStatus',
         'POST',
         {
           providerId, //providerId
