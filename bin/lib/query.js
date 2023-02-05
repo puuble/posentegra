@@ -223,7 +223,7 @@ class Query {
       let q = await this.changeString(queryString, '{terminalId}', maps)
 
       q = {
-        query: await changeNote(q),
+        query: q,
         variables: null,
         operationName: 'm',
       }
