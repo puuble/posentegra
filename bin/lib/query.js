@@ -6,55 +6,17 @@ const fs = require('fs')
 const { asyncForEach, asyncFilter } = require('./helpers')
 const sambapos = new Sambapos()
 
-async function cleanTextWhileUndefined(fullText) {
-  var regExp = /\[([^)]+)\]/
-  var re = /\[[^\]]*\]/g
-  var re2 = /\{[^\]]*\}/g
-  var re3 = /undefined/g
-  var re4 = /true|false/g
-  var re5 = /null/g
-  var matches = fullText.match(re)
-  if (Array.isArray(matches)) {
-    await asyncForEach(matches, (m) => {
-      let getParent = regExp.exec(m)
-      if (Array.isArray(getParent)) {
-        var text = getParent[1] ? getParent[1].split(':') : false
-        if (text) {
-          let ntext = text[1] ? text[1] : text[0]
-          if (Array.isArray(ntext.match(re2))) {
-            fullText = fullText.replace(m, '')
-          } else {
-            ntext = ntext.replace(/\s/gi, '')
-          }
-
-          if (Array.isArray(ntext.match(re3))) {
-            fullText = fullText.replace(m, '')
-          }
-          if (Array.isArray(ntext.match(re4))) {
-            fullText = fullText.replace(m, '')
-          }
-          if (ntext == null) {
-            fullText = fullText.replace(m, '')
-          }
-          if (ntext == 'null') {
-            fullText = fullText.replace(m, '')
-          }
-          if (ntext == 'undefined') {
-            fullText = fullText.replace(m, '')
-          }
-        }
-      }
-    })
-    fullText = fullText.replace(/\n/gi, '')
-    fullText = fullText.replace(/\[|\]/gi, '')
-  }
-
-  return fullText
+async function cleanTextWhileUndefined(text, data) {
+  let newText = text.replace(/\[(.*?)\{(.*?)\}(.*?)\]/g, (match, start, key, end) => {
+    return data[key] !== undefined && data[key] !== null && data[key] !== false ? start + data[key] + end : ''
+  })
+  return newText.replace(/\{(.*?)\}/g, (match, key) => {
+    return data[key] !== undefined && data[key] !== null && data[key] !== false ? data[key] : ''
+  })
 }
 async function changeNote(text) {
   var mySubString = text.substring(text.indexOf('note:'), text.lastIndexOf('states:') - 2)
-  let ntext = await cleanTextWhileUndefined(mySubString)
-  let newString = text.replace(mySubString, ntext)
+  let newString = text.replace(mySubString, text)
   return newString
 }
 function removeSpecialChar(text) {
@@ -282,8 +244,6 @@ class Query {
       if (Array.isArray(d)) {
         if (d.length > 0) {
           await asyncForEach(d, async (c) => {
-            c = await cleanTextWhileUndefined(c)
-
             c = {
               query: c,
               variables: null,
