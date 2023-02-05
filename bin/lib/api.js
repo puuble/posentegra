@@ -156,6 +156,23 @@ class Api {
       console.log(error, 'api.send')
     }
   }
+  async getProviders() {
+    try {
+      this.env = await getEnvironment()
+      let result = await _asyncrequest(
+        '/api/restaurant/getProviders',
+        'GET',
+        {},
+        {
+          Authorization: 'Bearer ' + this.env.token,
+        }
+      ).catch((e) => console.log('SERVERDAN', e.message))
+
+      return result
+    } catch (error) {
+      console.log(error, 'api.send')
+    }
+  }
   async saveReason(reason, id) {
     try {
       this.env = await getEnvironment()
@@ -170,6 +187,27 @@ class Api {
         }
       ).catch((e) => console.log('SERVERDAN', e.message))
 
+      return result
+    } catch (error) {
+      console.log(error, 'api.send')
+    }
+  }
+  async updateRestaurantStatus(providerId, status, field) {
+    try {
+      this.env = await getEnvironment()
+      let result = await _asyncrequest(
+        '/api/restaurant/updateStatus/',
+        'POST',
+        {
+          providerId, //providerId
+          status,
+          field,
+        },
+        {
+          Authorization: 'Bearer ' + this.env.token,
+        }
+      ).catch((e) => console.log('SERVERDAN', e.message))
+      console.log(result, 'mm')
       return result
     } catch (error) {
       console.log(error, 'api.send')

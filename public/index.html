@@ -79,7 +79,8 @@
 
 
 
-    <div x-data="setup()" x-init="checkLoading(); " :class="{ 'dark': isDark}" @resize.window="watchScreen()">
+    <div x-data="setup()" x-init="checkLoading();  getProviders() " :class="{ 'dark': isDark}"
+        @resize.window="watchScreen()">
 
 
 
@@ -320,6 +321,7 @@
                 </div>
             </div>
         </div>
+
         <div class="flex h-screen antialiased text-gray-900 bg-gray-100 dark:bg-gray-800 dark:text-light">
             <!-- Loading screen -->
             <div :class="{'hidden':!loading}"
@@ -430,7 +432,7 @@
 
 
                             <!-- Settings button -->
-                            <button @click="openSettingsPanel"
+                            <button @click="await getProviders(); openSettingsPanel();"
                                 class="p-2 transition-colors duration-200 rounded-full text-primary-lighter bg-primary-50 hover:text-primary hover:bg-primary-100 dark:hover:text-light dark:hover:bg-primary-dark dark:bg-dark focus:outline-none focus:bg-primary-100 dark:focus:bg-primary-dark focus:ring-primary-darker">
                                 <span class="sr-only">Open settings panel</span>
                                 <svg class="w-7 h-7" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -623,88 +625,99 @@
                         <!-- Theme -->
                         <div class="p-2 space-y-2 md:p-2">
 
-                            <div class="flex items-center space-x-8">
 
-                                <div
-                                    class="grid grid-cols-1 w-full gap-4 p-4 md:grid-cols-1 xl:grid-cols-1 2xl:grid-cols-1">
+                            <template x-for="(vl, ky) in providers" :key="ky">
+                                <div class="flex items-center space-x-8">
 
                                     <div
-                                        class="p-2 bg-gray-100 dark:bg-primary-darker rounded-md w-full shadow dark:bg-slate-700">
-                                        <div class="text-center">Trendyol Yemek</div>
-                                        <div class="form-check form-switch pb-2  w-full" style="padding-left: 0px;">
-                                            <div class="flex justify-between items-center " x-data="{ isOn: false }">
-                                                <div class="w-64">
-                                                    <label class="form-check-label inline-block">Restoran
-                                                        Durumu</label>
+                                        class="grid grid-cols-1 w-full gap-4 p-4 md:grid-cols-1 xl:grid-cols-1 2xl:grid-cols-1">
 
-                                                    <div :class="{'text-green-500':isOn,'text-red-500':!isOn}"
-                                                        x-text="isOn ? 'Açık' : 'Kapalı' ">
-                                                        Kapalı
+                                        <div
+                                            class="p-2 bg-gray-100 dark:bg-primary-darker rounded-md w-full shadow dark:bg-slate-700">
+                                            <div class="text-center" x-text="vl.name"></div>
+                                            <div class="form-check form-switch pb-2  w-full" style="padding-left: 0px;">
+                                                <div class="flex justify-between items-center ">
+                                                    <div class="w-64">
+                                                        <label class="form-check-label inline-block">Restoran
+                                                            Durumu</label>
+
+                                                        <div :class="{'text-green-500':vl.status,'text-red-500':!vl.status}"
+                                                            x-text="vl.status ? 'Açık' : 'Kapalı' ">
+                                                            Kapalı
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div>
-                                                    <input
-                                                        class="form-check-input appearance-none  -ml-10 rounded-full float-left h-5 align-top bg-no-repeat bg-contain bg-red-500 focus:outline-none cursor-pointer shadow-sm"
-                                                        type="checkbox" role="switch"
-                                                        @click="isOn = !isOn; $parent.updateRestaurant(isOn,'ty')"
-                                                        style="    width: 100px;
-                                                        height: 60px;">
-                                                </div>
-
-                                            </div>
-
-                                        </div>
-                                        <div class="form-check form-switch pb-2  w-full" style="padding-left: 0px;">
-                                            <div class="flex justify-between items-center "
-                                                x-data="{ otomatikOnay: false }">
-                                                <div class="w-64">
-                                                    <label class="form-check-label inline-block">Otomatik
-                                                        Onay</label>
-                                                    <div :class="{'text-green-500':otomatikOnay,'text-red-500':!otomatikOnay}"
-                                                        x-text="otomatikOnay? 'Açık' : 'Kapalı' ">
-                                                        Kapalı
+                                                    <div>
+                                                        <input
+                                                            class="form-check-input appearance-none  -ml-10 rounded-full float-left h-5 align-top bg-no-repeat bg-contain bg-red-500 focus:outline-none cursor-pointer shadow-sm"
+                                                            type="checkbox" role="switch" x-model="vl.status"
+                                                            @click="vl.status = !vl.status; updateRestaurant(vl.status,vl.providerId ,'status')"
+                                                            style="    width: 100px;
+                                                            height: 60px;">
                                                     </div>
-                                                </div>
-                                                <div>
-                                                    <input
-                                                        class="form-check-input appearance-none  -ml-10 rounded-full float-left h-5 align-top bg-no-repeat bg-contain bg-red-500 focus:outline-none cursor-pointer shadow-sm"
-                                                        type="checkbox" role="switch" style="width: 100px;
-                                                        height: 60px;"
-                                                        @click="otomatikOnay = !otomatikOnay; $parent.updateRestaurant(otomatikOnay,'ty')">
+
                                                 </div>
 
                                             </div>
+                                            <div class="form-check form-switch pb-2  w-full" style="padding-left: 0px;">
+                                                <div class="flex justify-between items-center ">
+                                                    <div class="w-64">
+                                                        <label class="form-check-label inline-block">Otomatik
+                                                            Onay</label>
+                                                        <div :class="{'text-green-500':vl.otomatikOnay,'text-red-500':!vl.otomatikOnay}"
+                                                            x-text="vl.otomatikOnay? 'Açık' : 'Kapalı' ">
+                                                            Kapalı
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <input
+                                                            class="form-check-input appearance-none  -ml-10 rounded-full float-left h-5 align-top bg-no-repeat bg-contain bg-red-500 focus:outline-none cursor-pointer shadow-sm"
+                                                            type="checkbox" role="switch" style="width: 100px;
+                                                            height: 60px;" x-model="vl.otomatikOnay"
+                                                            @click="vl.otomatikOnay = !vl.otomatikOnay; updateRestaurant(vl.otomatikOnay,vl.providerId,'otomatikOnay')">
+                                                    </div>
 
-                                        </div>
-                                        <div class="form-check form-switch pb-2  w-full" style="padding-left: 0px;"
-                                            x-data="{ selectedOption: '30', 
-                                            options: [ 
-                                               '30',
-                                               '35', 
-                                               '40'
-                                            ]}">
-                                            <div class="flex justify-between items-center ">
-                                                <div class="w-64">
-                                                    <label class="form-check-label inline-block">Hazırlanma
-                                                        Süresi</label>
-                                                    <div><span x-text="selectedOption">30</span>dk</div>
-                                                </div>
-                                                <div>
-                                                    <select name="time" class="px-4 py-3 rounded-full  dark:bg-black "
-                                                        style="    width: 100px;
-                                                        height: 60px;    text-align: center;" x-model="selectedOption">
-                                                        <template x-for="option in options" :key="option">
-                                                            <option :value="option" x-text="option"></option>
-                                                        </template>
-                                                    </select>
                                                 </div>
 
                                             </div>
+                                            <div class="form-check form-switch pb-2  w-full" style="padding-left: 0px;"
+                                                x-data="{ selectedOption: '30', 
+                                                options: [ 
+                                                   '30',
+                                                   '35', 
+                                                   '40'
+                                                ]}">
+                                                <div class="flex justify-between items-center ">
+                                                    <div class="w-64">
+                                                        <label class="form-check-label inline-block">Hazırlanma
+                                                            Süresi</label>
+                                                        <div><span x-text="selectedOption">30</span>dk</div>
+                                                    </div>
+                                                    <div>
+                                                        <select name="time"
+                                                            class="px-4 py-3 rounded-full  dark:bg-black " style="    width: 100px;
+                                                            height: 60px;    text-align: center;"
+                                                            x-model="selectedOption">
+                                                            <template x-for="option in options" :key="option">
+                                                                <option :value="option" x-text="option"></option>
+                                                            </template>
+                                                        </select>
+                                                    </div>
 
+                                                </div>
+
+                                            </div>
                                         </div>
                                     </div>
+
+
+
                                 </div>
-                            </div>
+
+
+                            </template>
+
+
+
                         </div>
 
                     </div>
@@ -810,6 +823,7 @@
                 return 'cyan'
             }
 
+
             const setColors = (color) => {
                 const root = document.documentElement
                 root.style.setProperty('--color-primary', `var(--color-${color})`)
@@ -822,8 +836,24 @@
                 this.selectedColor = color
                 window.localStorage.setItem('color', color)
             }
-            const updateRestaurant = (on, provider) => {
-                console.log(on, provider)
+            const updateRestaurant = (on, provider, field) => {
+                console.log(on, provider, field)
+                let result = fetch('/ajax/updateRestaurantStatus', {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Accept: "application/json",
+                    },
+                    body: JSON.stringify({
+                        provider,
+                        on,
+                        field
+                    }),
+
+                }).then(async response => {
+                    const res = await response.json();
+                    console.log(res)
+                });
             }
 
 
@@ -841,6 +871,7 @@
                 reasons: [],
                 reasonText: '',
                 notifications: 0,
+                providers: [],
                 modalHide() {
                     this.isModalOpen = false;
                     let target = document.getElementById('exampleModal');
@@ -1064,7 +1095,7 @@
                                     data.map((c, i) => {
                                         console.log(i, c.provider.slug)
                                         $(".gridjs-table tbody tr").eq(i).addClass(c.provider.slug);
-
+    
                                     })
                                 }, 50);*/
 
@@ -1151,6 +1182,21 @@
                 color: getColor(),
                 selectedColor: 'cyan',
                 isModalOpen: false,
+                getProviders() {
+                    let url = '/ajax/getProviders'
+                    const response = fetch(url, {
+                        method: "GET",
+                        headers: {
+                            "Content-Type": "application/json",
+                            Accept: "application/json",
+                        },
+
+                    }).then(async response => {
+                        const res = await response.json();
+                        this.providers = res.data.restaurants
+                    });
+
+                },
                 getOptionCategories(p) {
 
                     return p.map(c => {
@@ -1225,13 +1271,17 @@
                 isNotificationsPanelOpen: false,
                 openNotificationsPanel() {
                     this.isNotificationsPanelOpen = true
+
                     this.$nextTick(() => {
+
                         this.$refs.notificationsPanel.focus()
                     })
                 },
                 isSettingsPanelOpen: false,
 
                 openSettingsPanel() {
+
+
                     this.isSettingsPanelOpen = true
                     this.$nextTick(() => {
                         this.$refs.settingsPanel.focus()
