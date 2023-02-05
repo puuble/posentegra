@@ -245,7 +245,7 @@ class Query {
         if (d.length > 0) {
           await asyncForEach(d, async (c) => {
             c = {
-              query: c,
+              query: removeSpecialChar(c),
               variables: null,
               operationName: 'm',
             }
