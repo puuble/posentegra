@@ -7,7 +7,8 @@
 var app = require('../app')
 var debug = require('debug')('express:server')
 var http = require('http')
-
+const TY = require('./lib/ty')
+const fs = require('fs')
 /**
  * Get port from environment and store in Express.
  */
@@ -75,6 +76,47 @@ function onError(error) {
   }
 }
 
+function getEnvironment() {
+  try {
+    let data = null
+    if (fs.existsSync('./tmp/enviroment.json')) {
+      data = fs.readFileSync('./tmp/enviroment.json', 'utf8')
+      data = JSON.parse(data)
+    }
+    return data
+  } catch (err) {
+    console.error(err)
+  }
+}
+const ORTAM = 'prod'
+const env = getEnvironment()
+
+async function run() {
+  if (env) {
+    let restaurants = _.has(env, 'restaurants') ? env.restaurants : []
+    restaurants = Object.keys(restaurants)
+    if (Array.isArray(restaurants)) {
+      if (restaurants.length > 0) {
+        await asyncForEach(restaurants, async (key) => {
+          let option = env.restaurants[key]
+
+          if (_.has(option, 'ty')) {
+            if (_.has(option['ty'], 'integration')) {
+              if (
+                option['ty']['integration']['apiKey'] != '' &&
+                option['ty']['integration']['apiSecretKey'] != '' &&
+                option['ty']['integration']['supplierId'] != ''
+              ) {
+                const ty = new TY(option['ty'])
+                await ty.getOrder(true)
+              }
+            }
+          }
+        })
+      }
+    }
+  }
+}
 /**
  * Event listener for HTTP server "listening" event.
  */
@@ -83,4 +125,28 @@ function onListening() {
   var addr = server.address()
   var bind = typeof addr === 'string' ? 'pipe ' + addr : 'port ' + addr.port
   debug('Listening on ' + bind)
+  console.log(env)
+  try {
+    if (env) {
+      if (ORTAM != 'dev') {
+        if (env) {
+          let restaurants = _.has(env, 'restaurants') ? env.restaurants : []
+          restaurants = Object.keys(restaurants)
+          if (Array.isArray(restaurants)) {
+            if (restaurants.length > 0) {
+              cron.schedule('*/7 * * * * *', async () => {
+                console.log('7 saniye de bir run ')
+                await run()
+              })
+            }
+          }
+        }
+      }
+    } else {
+      console.log('Token girilmesi gerekiyor. ')
+      console.log(`http://localhost:3000  sayfasını tarayıcıdan açınız.`)
+    }
+  } catch (error) {
+    console.log(error)
+  }
 }
