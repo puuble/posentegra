@@ -144,9 +144,12 @@ class Sambapos {
     if (this.env) {
       let expires = await this.getToken('expires')
       this.access_token = await db.getField('access_token')
+      this.refreshToken = await db.getField('refresh_token')
+
       if (this.access_token == 'null') {
         this.access_token = await this.refresh()
       }
+
       if (expires) {
         let a = moment(expires)
         let diff = moment(moment(a)).diff(moment(), 'minutes')
@@ -158,7 +161,7 @@ class Sambapos {
         this.access_token = await this.refresh()
       }
 
-      console.log(this.access_token, expires, 'accttt')
+      console.log(refreshToken, 'accttt')
       await db.access_token(this.access_token)
       return this.access_token
     } else {
