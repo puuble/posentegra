@@ -61,7 +61,7 @@ class Sambapos {
           }),
           { 'Content-Type': 'application/x-www-form-urlencoded' }
         ).catch((err) => {
-          console.log(err)
+          console.log(err.message)
           console.log('ERROR SAMBA REFRESG')
         })
 
@@ -147,7 +147,9 @@ class Sambapos {
       this.access_token = await db.getField('access_token')
       this.refreshToken = await db.getField('refresh_token')
 
-      if (this.access_token == 'null') {
+      if (this.refreshToken == null) {
+        this.access_token = await this.login()
+      } else if (this.access_token == null) {
         this.access_token = await this.refresh()
       }
 
@@ -162,7 +164,6 @@ class Sambapos {
         this.access_token = await this.refresh()
       }
 
-      console.log(this.refreshToken, 'accttt')
       await db.access_token(this.access_token)
       return this.access_token
     } else {
