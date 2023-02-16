@@ -23,6 +23,7 @@ class Sambapos {
     this.db = db
     this.env = null
     this.access_token = null
+    this.refreshToken = null
     this.expires = null
   }
   async getToken(field) {
@@ -161,7 +162,7 @@ class Sambapos {
         this.access_token = await this.refresh()
       }
 
-      console.log(refreshToken, 'accttt')
+      console.log(this.refreshToken, 'accttt')
       await db.access_token(this.access_token)
       return this.access_token
     } else {
