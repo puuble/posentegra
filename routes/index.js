@@ -29,7 +29,7 @@ router.post('/changeStatus', async (req, res, next) => {
     let restaurant = env.restaurants[restaurantId][provider]
 
     const ty = new TY(restaurant.integration)
-    const ys = new YS(restaurant, 2)
+
     if (provider == 'getir') {
       result = await _asyncrequest(
         `/api/changeStatus`,
