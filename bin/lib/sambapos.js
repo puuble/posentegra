@@ -65,16 +65,6 @@ class Sambapos {
           console.log('ERROR SAMBA REFRESG')
         })
 
-        console.log(
-          {
-            grant_type: 'refresh_token',
-            username: this.env.pos.username,
-            client_id: this.env.pos.client_id,
-            refresh_token: await db.getField('refresh_token'),
-            client_secret: 'test',
-          },
-          'aa'
-        )
         if (response) {
           if (_.has(response, 'access_token')) {
             this.db.access_token(response.access_token)

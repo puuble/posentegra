@@ -374,8 +374,9 @@
                         </button>
 
                         <!-- Brand -->
-                        <a href="/" class="inline-block font-bold tracking-wider  text-primary-dark dark:text-light">
-                            Meşhur Yeni Pazar Pidecisi
+                        <a href="/" class="inline-block font-bold tracking-wider  text-primary-dark dark:text-light"
+                            x-text="name">
+
                         </a>
 
                         <!-- Mobile sub menu button -->
@@ -861,6 +862,7 @@
                 loading: true,
                 login: false,
                 grid: {},
+                name: "Restoran Yönetim Ekranı",
                 detail: {
                     provider: {},
                     client: {
@@ -1162,9 +1164,11 @@
 
                             } else {
                                 let result = await response.json()
-
+                                console.log(result, "aa")
                                 if (result.success) {
+                                    this.name= result.data.pos.name
                                     this.loading = false;
+
                                     this.listOrders()
                                 } else {
 
