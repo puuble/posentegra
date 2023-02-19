@@ -45,7 +45,7 @@
             text-align: right;
         }
 
-        .migros {
+        .ty {
             background-color: rgba(239, 125, 7, 1) !important;
             color: #fff
         }
@@ -1166,7 +1166,7 @@
                                 let result = await response.json()
                                 console.log(result, "aa")
                                 if (result.success) {
-                                    this.name= result.data.pos.name
+                                    this.name = result.data.pos.name
                                     this.loading = false;
 
                                     this.listOrders()

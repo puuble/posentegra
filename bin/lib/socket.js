@@ -155,15 +155,6 @@ class Socket {
           const ty = new TY(tyData['ty'])
           await ty.set500(message['order']['pid'])
         }
-        if (slug == 'ys') {
-          const YS = require('./ys')
-          let ysData = this.env.restaurants[restaurantId]
-          console.log(ysData, 'ONAYLAMA ')
-          const ys = new YS(ysData['ys'])
-          await ys.set500(message['order']['pid'], function (err, data) {
-            console.log(err, data, message['order']['pid'], 'YS ONAYLAMA')
-          })
-        }
       }
       if (!ticket) {
         let pos_ticket = await q.init()
