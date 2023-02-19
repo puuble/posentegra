@@ -173,6 +173,23 @@ class Api {
       console.log(error, 'api.send')
     }
   }
+  async again(id) {
+    try {
+      this.env = await getEnvironment()
+      let result = await _asyncrequest(
+        '/api/again?id=' + id,
+        'GET',
+        {},
+        {
+          Authorization: 'Bearer ' + this.env.token,
+        }
+      ).catch((e) => console.log('SERVERDAN', e.message))
+
+      return result
+    } catch (error) {
+      console.log(error, 'api.send')
+    }
+  }
   async saveReason(reason, id) {
     try {
       this.env = await getEnvironment()

@@ -99,6 +99,12 @@ router.get('/saveReason', async function (req, res, next) {
   let data = await api.saveReason(reason, id)
   res.json(data)
 })
+router.get('/again', async function (req, res, next) {
+  let id = req.query.id
+  let api = new Api()
+  let data = await api.again(id)
+  res.json(data)
+})
 router.get('/getOrders', async function (req, res, next) {
   let env = await getEnv()
   let fail = req.session.fail

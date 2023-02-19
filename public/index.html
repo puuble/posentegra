@@ -309,7 +309,7 @@
                                     class="mr-5 inline-block px-6 py-2.5 bg-red-600 text-white font-medium text-xs leading-tight uppercase hover:bg-red-700 focus:bg-red-700 focus:outline-none focus:ring-0 active:bg-red-800 transition duration-150 ease-in-out">İptal
                                     Et</button>
 
-                                <button type="button"
+                                <button type="button" @click="again(detail.pid)"
                                     class=" rounded-r inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase hover:bg-blue-700 focus:bg-blue-700 focus:outline-none focus:ring-0 active:bg-blue-800 transition duration-150 ease-in-out">YENİDEN
                                     Gönder</button>
 
@@ -906,6 +906,16 @@
                             $("#iptal").modal('hide')
                             this.isModalOpen = false;
                             this.updateOrders()
+                        })
+                },
+                again(id) {
+                    fetch('/ajax/again?id=' + id, {
+                        method: "GET",
+                    })
+                        .then(async (response) => {
+                            let result = await response.json()
+                            this.reasons = result.data
+
                         })
                 },
                 cancelOrder(id) {
