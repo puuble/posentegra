@@ -94,6 +94,8 @@ class Socket {
   async order(data) {
     try {
       this.env = await getEnvironment()
+      console.log(data, 'siparisgeldi')
+
       let message = JSON.parse(data['message'])
 
       const q = new Query(message)
