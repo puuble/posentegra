@@ -95,34 +95,35 @@ class Socket {
     try {
       this.env = await getEnvironment()
       console.log(data, 'siparisgeldi')
+      let result = data
+      let pos_ticket = null
+      if (_.has(data, 'message')) {
+        let message = JSON.parse(data['message'])
+        const q = new Query(message)
+        pos_ticket = await q.init()
+        let slug = message['order']['slug']
+        let restaurantId = message['order']['restaurantId']
 
-      let message = JSON.parse(data['message'])
-
-      const q = new Query(message)
-      let pos_ticket = await q.init()
-
-      let slug = message['order']['slug']
-      let restaurantId = message['order']['restaurantId']
-
-      let result = {
-        message: {
-          pos_ticket,
-          orderId: message['order']['pid'],
-        },
-        channel: data['channel'],
-        sender: data['user']['id'],
-        receiver: data['receiver'],
-        broadcast: false,
-      }
-      if (_.has(this.env.restaurants, restaurantId)) {
-        if (slug == 'ty') {
-          const TY = require('./ty')
-          let tyData = this.env.restaurants[restaurantId]
-          console.log(tyData, 'TY ONAYLAMA')
-          const ty = new TY(tyData['ty'])
-          await ty.set500(message['order']['pid'])
+        result = {
+          message: {
+            pos_ticket,
+            orderId: message['order']['pid'],
+          },
+          channel: data['channel'],
+          sender: data['user']['id'],
+          receiver: data['receiver'],
+          broadcast: false,
         }
-        if (slug == 'migros') {
+        if (_.has(this.env.restaurants, restaurantId)) {
+          if (slug == 'ty') {
+            const TY = require('./ty')
+            let tyData = this.env.restaurants[restaurantId]
+            console.log(tyData, 'TY ONAYLAMA')
+            const ty = new TY(tyData['ty'])
+            await ty.set500(message['order']['pid'])
+          }
+          if (slug == 'migros') {
+          }
         }
       }
 
