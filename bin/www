@@ -131,16 +131,6 @@ function onListening() {
   console.log('test')
   try {
     if (env) {
-      let restaurants = _.has(env, 'restaurants') ? env.restaurants : []
-      restaurants = Object.keys(restaurants)
-      if (Array.isArray(restaurants)) {
-        if (restaurants.length > 0) {
-          cron.schedule('*/7 * * * * *', async () => {
-            console.log('7 saniye de bir run ')
-            await run()
-          })
-        }
-      }
     } else {
       console.log('Token girilmesi gerekiyor. ')
       console.log(`http://localhost:3000  sayfasını tarayıcıdan açınız.`)
