@@ -12,13 +12,9 @@
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="/build/css/tailwind.css" />
 
-    <script
-        src="https://cdn.jsdelivr.net/gh/alpine-collective/alpine-magic-helpers@0.5.x/dist/component.min.js"></script>
-
-    <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.7.3/dist/alpine.min.js" defer></script>
-
-
-    <link href="https://unpkg.com/gridjs/dist/theme/mermaid.min.css" rel="stylesheet" />
+    <script src="/component.min.js"></script>
+    <script src="/alpine.min.js" defer></script>
+    <link href="/mermaid.min.css" rel="stylesheet" />
     <style>
         .form-check-input:checked {
             background-color: #65a30d !important;
@@ -800,7 +796,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
     <script src="/tw-elements/dist/js/index.min.js"></script>
-    <script src="https://unpkg.com/gridjs/dist/gridjs.umd.js"></script>
+    <script src="./gridjs.umd.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/js/bootstrap.min.js"></script>
 
     <script>
@@ -1015,8 +1011,10 @@
                                 id: 'client',
                                 name: 'Müşteri',
                                 formatter: (cell, row) => {
-
-                                    return cell.name
+                                    if (!cell) {
+                                        return 'yok'
+                                    }
+                                    return (cell.hasOwnProperty('name')) ? cell.name : 'isim yok'
                                 }
                             },
                             {
@@ -1031,6 +1029,9 @@
                                 id: 'client',
                                 name: 'Bölge',
                                 formatter: (cell, row) => {
+                                    if (!cell) {
+                                        return 'yok'
+                                    }
                                     if (cell.location) {
                                         return gridjs.html(`${cell.deliveryAddress.district}  <a target="_blank" class="text-secondary"
                                         href="https://www.google.com/maps/dir/${cell.location.lat},${cell.location.lon}/@${cell.location.lat},${cell.location.lon},15.75z?hl=tr">
@@ -1092,6 +1093,9 @@
                                 id: 'provider',
                                 name: "İşlemler",
                                 formatter: (cell, row) => {
+                                    if (!cell) {
+                                        return 'yok'
+                                    }
                                     let cls = cell.slug
                                     let content = `<button type="button" @click="showDetail('${row.cells[0].data}')" class="inline-block w-full ${cls} px-6 py-2.5 bg-gray-200 text-gray-700 font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-gray-300 hover:shadow-lg focus:bg-gray-300 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-400 active:shadow-lg transition duration-150 ease-in-out">Detay</button>`
 

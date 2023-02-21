@@ -1,0 +1,1 @@
+{"receive":{"user":{"id":"6373f7b9700159f47701094e"},"message":{"pid":"63f4e4a2c99d3c3bd8c7aa39","id":"63f4e4a3cc42c555430d4824","restaurantId":"6373f7bf49ea6048bd0fda6c","slug":"getir","action":"deliver","channel":"changeStatus","status":900},"channel":"changeStatus","receiver":"6373f7b9700159f47701094e"},"send":false}

@@ -118,7 +118,6 @@ router.get('/getOrders', async function (req, res, next) {
     if (_.has(env, 'token')) {
       let api = new Api()
       orders = await api.getOrders()
-      console.log(orders)
     }
   }
 
