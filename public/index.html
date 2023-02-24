@@ -248,7 +248,8 @@
                                                     </td>
                                                     <td
                                                         class="px-6 text-center py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                                        <span x-text="detail.totalDiscountedPrice"
+                                                        <span
+                                                            x-text="parseFloat(detail.totalDiscountedPrice).toFixed(2)"
                                                             x-show="detail.totalDiscountedPrice > 0"></span>
                                                         <span x-show="detail.totalDiscountedPrice == 0"
                                                             x-text="parseFloat(detail.totalPrice).toFixed(2)"></span>
