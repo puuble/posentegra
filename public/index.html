@@ -1194,7 +1194,7 @@
 
                             } else {
                                 let result = await response.json()
-                                console.log(result, "aa")
+
                                 if (result.success) {
                                     this.name = result.data.pos.name
                                     this.loading = false;
@@ -1232,24 +1232,13 @@
 
                 },
                 getOptionCategories(p) {
-
                     return p.map(c => {
-                        let options = []
-                        if (Array.isArray(c)) {
 
-                            if (c.length > 1) {
-                                options.forEach(function (opt) {
-                                    console.log(opt)
-                                })
-                            }
-                        }
                         return {
                             name: c.name,
-                            options
+                            options: []
                         }
                     })
-
-
 
                 },
                 showDetail(id) {
@@ -1259,7 +1248,7 @@
                     })
                         .then(async (response) => {
                             let result = await response.json()
-                            console.log(result)
+
                             if (result.success) {
                                 this.detail = result.data
                                 this.detail.products = this.detail.products.map(p => {
