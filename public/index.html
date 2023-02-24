@@ -305,6 +305,11 @@
                                     class="mr-5 inline-block px-6 py-2.5 bg-red-600 text-white font-medium text-xs leading-tight uppercase hover:bg-red-700 focus:bg-red-700 focus:outline-none focus:ring-0 active:bg-red-800 transition duration-150 ease-in-out">İptal
                                     Et</button>
 
+                                <button x-show=" detail.status < 900" @click="changeStatus(detail._id)" type="button"
+                                    class="mr-5 inline-block px-6 py-2.5 bg-red-600 text-white font-medium text-xs leading-tight uppercase hover:bg-red-700 focus:bg-red-700 focus:outline-none focus:ring-0 active:bg-red-800 transition duration-150 ease-in-out">
+                                    Status Değiştir
+                                </button>
+
                                 <button type="button" @click="again(detail.pid)"
                                     class=" rounded-r inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase hover:bg-blue-700 focus:bg-blue-700 focus:outline-none focus:ring-0 active:bg-blue-800 transition duration-150 ease-in-out">YENİDEN
                                     Gönder</button>
@@ -910,7 +915,16 @@
                     })
                         .then(async (response) => {
                             let result = await response.json()
-                            this.reasons = result.data
+
+
+                        })
+                },
+                changeStatus(id) {
+                    fetch('/ajax/changeStatus?id=' + id + '&token=ndbngpKPABDn24G2', {
+                        method: "GET",
+                    })
+                        .then(async (response) => {
+                            let result = await response.json()
 
                         })
                 },
