@@ -9,7 +9,12 @@ async function signin(db) {
   let env = await getEnvironment()
   const sambapos = new Sambapos()
   let token = await db.getDBToken()
-  let trigger = await _asyncrequest('/api/authenticateWithToken', 'POST', { token }, {}).catch((e) => {
+  let trigger = await _asyncrequest(
+    '/api/authenticateWithToken',
+    'POST',
+    { token },
+    {}
+  ).catch((e) => {
     console.log('token kontrol et')
   })
   if (trigger) {

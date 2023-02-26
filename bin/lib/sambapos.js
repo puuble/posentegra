@@ -23,7 +23,6 @@ class Sambapos {
     this.db = db
     this.env = null
     this.access_token = null
-    this.refreshToken = null
     this.expires = null
   }
   async getToken(field) {
@@ -42,48 +41,44 @@ class Sambapos {
     return response
   }
   async refresh() {
-    try {
-      console.log(this.env, 'refresh')
-      this.env = await db.getField('enviroment')
-      this.url = `http://${this.env.pos.host}:${this.env.pos.port}`
-      if (this.env) {
-        this.access_token = null
-        let url = `${this.url}/Token`
-        let response = await _asyncrequest(
-          url,
-          'POST',
-          qs.stringify({
-            grant_type: 'refresh_token',
-            username: this.env.pos.username,
-            client_id: this.env.pos.client_id,
-            refresh_token: await db.getField('refresh_token'),
-            client_secret: 'test',
-          }),
-          { 'Content-Type': 'application/x-www-form-urlencoded' }
-        ).catch((err) => {
-          console.log(err.message)
-          console.log('ERROR SAMBA REFRESG')
-        })
+    console.log(this.env, 'refresh')
+    this.env = await db.getField('enviroment')
+    this.url = `http://${this.env.pos.host}:${this.env.pos.port}`
+    if (this.env) {
+      this.access_token = null
+      let url = `${this.url}/Token`
+      let response = await _asyncrequest(
+        url,
+        'POST',
+        qs.stringify({
+          grant_type: 'refresh_token',
+          username: this.env.pos.username,
+          client_id: this.env.pos.client_id,
+          refresh_token: await this.getToken('refresh_token'),
+          client_secret: 'test',
+        }),
+        { 'Content-Type': 'application/x-www-form-urlencoded' }
+      ).catch((err) => {
+        console.log(err)
+        console.log('ERROR SAMBA REFRESG')
+      })
 
-        if (response) {
-          if (_.has(response, 'access_token')) {
-            this.db.access_token(response.access_token)
-            this.access_token = response.access_token
-          }
-          if (_.has(response, 'refresh_token')) {
-            this.db.refresh_token(response.refresh_token)
-          }
-          if (_.has(response, 'expires_in')) {
-            this.db.expires(moment(response['.expires']).toISOString())
-          }
-        } else {
-          this.access_token = await this.login()
+      if (response) {
+        if (_.has(response, 'access_token')) {
+          this.db.access_token(response.access_token)
+          this.access_token = response.access_token
         }
-
-        return this.access_token
+        if (_.has(response, 'refresh_token')) {
+          this.db.refresh_token(response.refresh_token)
+        }
+        if (_.has(response, 'expires_in')) {
+          this.db.expires(moment(response['.expires']).toISOString())
+        }
+      } else {
+        this.access_token = await this.login()
       }
-    } catch (error) {
-      console.log(error)
+
+      return this.access_token
     }
 
     return false
@@ -135,14 +130,9 @@ class Sambapos {
     if (this.env) {
       let expires = await this.getToken('expires')
       this.access_token = await db.getField('access_token')
-      this.refreshToken = await db.getField('refresh_token')
-
-      if (this.refreshToken == null) {
-        this.access_token = await this.login()
-      } else if (this.access_token == null) {
+      if (this.access_token == 'null') {
         this.access_token = await this.refresh()
       }
-
       if (expires) {
         let a = moment(expires)
         let diff = moment(moment(a)).diff(moment(), 'minutes')
@@ -154,6 +144,7 @@ class Sambapos {
         this.access_token = await this.refresh()
       }
 
+      console.log(this.access_token, expires, 'accttt')
       await db.access_token(this.access_token)
       return this.access_token
     } else {

@@ -1,15 +1,16 @@
-var express = require('express')
-var path = require('path')
-var cookieParser = require('cookie-parser')
+require('dotenv').config()
+const express = require('express')
 var logger = require('morgan')
-
+const cors = require('cors')
+const bodyParser = require('body-parser')
+const app = express()
+const PORT = process.env.PORT
 var indexRouter = require('./routes/index')
 var ajaxRouter = require('./routes/ajax')
 const session = require('express-session')
 const DB = require('./bin/lib/database')
 const { signin } = require('./bin/start')
 
-var app = express()
 app.use(
   session({
     secret: '!posentegra!',
@@ -24,14 +25,15 @@ async function run() {
   await signin(db)
 }
 run()
+
+app.use(cors()) // to allow cross origin requests
+app.use(bodyParser.json()) // to convert the request into JSON
+app.use('/', indexRouter)
+app.use('/api/ajax', ajaxRouter)
 app.use(logger('dev'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
-app.use(cookieParser())
-app.use(express.static(path.join(__dirname, 'public')))
-app.use(express.static(path.join(__dirname, 'node_modules')))
 
-app.use('/', indexRouter)
-app.use('/ajax', ajaxRouter)
-
-module.exports = app
+app.listen(PORT, () => {
+  console.log(`App is listening at http://localhost:${PORT}`)
+})

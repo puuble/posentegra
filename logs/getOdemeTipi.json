@@ -1,1 +1,0 @@
-{"receive":{"user":{"id":"63264ce4f45d0adbff284343"},"message":{"query":"mutation m { postBroadcastMessage(message: \"ENT-ÖdemeTipi\") {\n            message\n            }\n         }"},"channel":"getOdemeTipi","receiver":"6360169dba1bd2361c0bd0fe"}}
