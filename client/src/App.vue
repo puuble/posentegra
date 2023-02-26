@@ -68,7 +68,7 @@ export default {
   },
   created() {
     // Get the darkMode flag from session storage
-    const isDarkModeOn = sessionStorage.getItem('darkMode') === 'true'
+    const isDarkModeOn = window.localStorage.getItem('darkMode') === 'true'
 
     // Set the isDarkMode data property to the value from session storage
     this.$store.state.darkMode = isDarkModeOn

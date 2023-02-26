@@ -1,7 +1,7 @@
 <template>
   <div class="card">
     <div class="card-body px-0 pt-0 pb-2">
-      <div class="table-responsive p-0">
+      <div class="table-responsive p-0" style="overflow-y: hidden">
         <table class="table align-items-center mb-0">
           <thead>
             <tr>
@@ -55,31 +55,8 @@
                   class="px-2 py-1"
                   :class="restaurantCount > 1 ? 'd-flex' : ''"
                 >
-                  <div>
-                    <img
-                      v-if="order.provider.slug == 'getir'"
-                      src="https://app.test.posentegra.com/images/getir.png"
-                      class="avatar avatar-sm me-3"
-                      alt="user1"
-                    />
-                    <img
-                      v-if="order.provider.slug == 'ty'"
-                      src="https://app.test.posentegra.com/images/trendyol.png"
-                      class="avatar avatar-sm bg-white me-3"
-                      alt="user1"
-                    />
-                    <img
-                      v-if="order.provider.slug == 'ys'"
-                      src="https://app.test.posentegra.com/images/yemeksepeti.png"
-                      class="avatar avatar-sm bg-white me-3"
-                      alt="user1"
-                    />
-                    <img
-                      v-if="order.provider.slug == 'migros'"
-                      src="https://app.test.posentegra.com/images/migros-yemek.svg"
-                      class="avatar avatar-sm bg-white me-3"
-                      alt="user1"
-                    />
+                  <div class="avatar-content">
+                    <div class="" :class="order.provider.slug"></div>
                   </div>
                   <div
                     :class="restaurantCount > 1 ? 'd-block' : 'd-none'"
@@ -92,7 +69,7 @@
                 </div>
               </td>
               <td>
-                <p class="text-xs font-weight-bold mb-0">
+                <p class="text-sm font-weight-bold mb-0">
                   {{ formatDate(order.updated_at) }}
                 </p>
               </td>
@@ -258,6 +235,66 @@
   </div>
 </template>
 
+<style scoped>
+.ys {
+  background-image: url('https://app.test.posentegra.com/images/yemeksepeti.png');
+  background-size: contain;
+  background-position: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.ty {
+  background-image: url('https://app.test.posentegra.com/images/trendyol.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  transform: scale(2.5);
+  margin-left: auto;
+  margin-right: auto;
+}
+.migros {
+  background-image: url('https://app.test.posentegra.com/images/migros-yemek.svg');
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  transform: scale(2.5);
+  margin-left: auto;
+  margin-right: auto;
+}
+.getir {
+  background-image: url('https://app.test.posentegra.com/images/getir.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  transform: scale(1.5);
+  margin-left: auto;
+  margin-right: auto;
+}
+.avatar-content {
+  margin-left: auto;
+  margin-right: auto;
+}
+.avatar-sm {
+  width: 100% !important;
+  height: auto !important;
+}
+.avatar-xl {
+  width: 100% !important;
+  height: auto !important;
+}
+</style>
 <script>
 import moment from 'moment'
 import ModalPanel from './ModalPanel.vue'
@@ -290,7 +327,7 @@ export default {
   computed: {},
   created() {
     // Get the darkMode flag from session storage
-    const isDarkModeOn = sessionStorage.getItem('darkMode') === 'true'
+    const isDarkModeOn = window.localStorage.getItem('darkMode') === 'true'
 
     // Set the isDarkMode data property to the value from session storage
     this.$store.state.darkMode = isDarkModeOn
@@ -307,19 +344,12 @@ export default {
     },
     getStatus(status) {
       let statusText = 'Onaylandı'
-      let color = 'bg-warning'
+      let color = 'bg-success'
       if (status == 400) {
         statusText = 'Onay Bekliyor'
-        color = 'bg-warning'
-      }
-      if (status == 1600) {
-        statusText = 'Restoran Tarafından iptal edildi'
         color = 'bg-danger'
       }
-      if (status == 1900) {
-        statusText = 'Site Tarafından iptal edildi'
-        color = 'bg-danger'
-      }
+
       if (status == 550) {
         statusText = 'Sipariş Hazırlandı'
         color = 'bg-success'
@@ -330,15 +360,23 @@ export default {
       }
       if (status == 700) {
         statusText = 'Kurye Yola Çıktı'
-        color = 'bg-success'
+        color = 'bg-info'
       }
       if (status == 800) {
         statusText = 'Kurye Adrese Ulaştı'
         color = 'bg-success'
       }
       if (status == 900) {
-        statusText = 'Sipariş Teslim edildi.'
-        color = 'bg-success text-dark'
+        statusText = 'Sipariş Teslim Edildi.'
+        color = 'bg-success'
+      }
+      if (status == 1600) {
+        statusText = 'Restoran İptal Etti'
+        color = 'bg-danger'
+      }
+      if (status == 1600) {
+        statusText = 'Platform İptal Etti'
+        color = 'bg-danger'
       }
 
       return `<span class="badge badge-lg w-100 ${color}" style="text-transform: none">${statusText}</span>`

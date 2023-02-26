@@ -114,7 +114,7 @@ export default {
   props: ['minNav', 'textWhite', 'toggleConfigurator'],
   created() {
     this.minNav
-    const isDarkModeOn = sessionStorage.getItem('darkMode') === 'true'
+    const isDarkModeOn = window.localStorage.getItem('darkMode') === 'true'
     this.$store.state.darkMode = isDarkModeOn
     if (isDarkModeOn) {
       activateDarkMode()
@@ -130,13 +130,13 @@ export default {
       if (this.$store.state.darkMode) {
         this.$store.state.darkMode = false
         this.$store.state.sidebarType = 'bg-white'
-        sessionStorage.setItem('darkMode', false)
+        window.localStorage.setItem('darkMode', false)
         deactivateDarkMode()
         return
       } else {
         this.$store.state.darkMode = true
         this.$store.state.sidebarType = 'bg-default'
-        sessionStorage.setItem('darkMode', true)
+        window.localStorage.setItem('darkMode', true)
         activateDarkMode()
       }
     },

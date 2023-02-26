@@ -10,7 +10,7 @@ export default createStore({
     sidebarType: 'bg-dark',
     isRTL: false,
     mcolor: '',
-    darkMode: sessionStorage.getItem('darkMode') === 'true',
+    darkMode: window.localStorage.getItem('darkMode') === 'true',
     isNavFixed: true,
     isAbsolute: false,
     showNavs: true,
