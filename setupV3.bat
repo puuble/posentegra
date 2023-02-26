@@ -6,6 +6,6 @@ call npm install
 call npm install pm2 -g
 call npm install pm2-windows-startup -g
 call pm2-startup install -g
-call pm2 start node  --name "app name" -- app.js
+call pm2 start node  --name "PosEntegraV3" -- app.js
 call pm2 save
 call node ./bin/setup.js
