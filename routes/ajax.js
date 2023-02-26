@@ -10,7 +10,12 @@ const fs = require('fs')
 router.post('/token', async function (req, res, next) {
   let token = req.body.token
   let fail = req.session.fail
-  let trigger = await _asyncrequest('/api/authenticateWithToken', 'POST', { token: req.body.token }, {}).catch((e) => {
+  let trigger = await _asyncrequest(
+    '/api/authenticateWithToken',
+    'POST',
+    { token: req.body.token },
+    {}
+  ).catch((e) => {
     req.session.fail = true
     // console.log(e)
     // return res.redirect(301, '/')
@@ -38,7 +43,12 @@ router.get('/login', async function (req, res, next) {
   if (token == null) {
     res.json({ success: false })
   } else {
-    let trigger = await _asyncrequest('/api/authenticateWithToken', 'POST', { token }, {}).catch((e) => {
+    let trigger = await _asyncrequest(
+      '/api/authenticateWithToken',
+      'POST',
+      { token },
+      {}
+    ).catch((e) => {
       req.session.fail = true
       //console.log(e)
       // return res.redirect(301, '/')
@@ -107,7 +117,6 @@ router.get('/getOrders', async function (req, res, next) {
     req.session.fail = false
   }
 
-  console.log(env['token'], 'env')
   if (env) {
     if (_.has(env, 'token')) {
       let api = new Api()

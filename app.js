@@ -14,10 +14,6 @@ const path = require('path')
 
 app.use(express.static(path.join(__dirname, 'dist')))
 
-app.get('/client/*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'dist/index.html'))
-})
-
 app.use(
   session({
     secret: '!posentegra!',
