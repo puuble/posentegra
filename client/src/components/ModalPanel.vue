@@ -133,10 +133,10 @@
   </div>
 </template>
 <style scoped>
-.modal-header {
-  background-color: #007bff;
-  color: #fff;
+.bg-secondary {
+  background-color: #444445 !important;
 }
+
 .bg-gray {
   background-color: #e0e2e3;
 }

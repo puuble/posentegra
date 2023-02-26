@@ -11,7 +11,7 @@
               <th
                 class="text-secondary text-sm font-weight-bolder col-md-2 ps-2"
               >
-                Tarih
+                Saat
               </th>
               <th
                 class="text-secondary text-sm font-weight-bolder col-md-2 ps-2"
@@ -55,12 +55,26 @@
                   class="px-2 py-1"
                   :class="restaurantCount > 1 ? 'd-flex' : ''"
                 >
-                  <div class="avatar-content">
+                  <div
+                    v-if="this.$store.state.darkMode"
+                    class="avatar-content"
+                    :class="
+                      order.provider.slug == 'ty' ? 'bg-white scaleUp' : ''
+                    "
+                  >
+                    <div class="" :class="order.provider.slug"></div>
+                  </div>
+                  <div
+                    v-else
+                    class="avatar-content"
+                    :class="order.provider.slug == 'ty' ? 'bg-white' : ''"
+                  >
                     <div class="" :class="order.provider.slug"></div>
                   </div>
                   <div
                     :class="restaurantCount > 1 ? 'd-block' : 'd-none'"
                     class="d-flex flex-column justify-content-center"
+                    style="padding-left: 15px"
                   >
                     <h6 class="mb-0 text-sm">
                       {{ order.restaurantName }}
@@ -113,7 +127,7 @@
               <td class="align-middle">
                 <button
                   type="button"
-                  class="btn btn-secondary bg-secondary btn-sm font-weight-bold mb-0 text-sm"
+                  class="btn btn-secondary bg-secondary2 btn-sm font-weight-bold mb-0 text-sm"
                   data-toggle="tooltip"
                   data-original-title="Detay"
                   data-bs-toggle="modal"
@@ -190,7 +204,7 @@
                   <span> {{ selectedOrder.restaurantName }}</span>
                 </p>
                 <p>
-                  <b>Onay Kodu:</b>
+                  <b>Sipariş No:</b>
                   <span>
                     {{ selectedOrder.shortCode }}
                   </span>
@@ -236,13 +250,39 @@
 </template>
 
 <style scoped>
+.bg-secondary2 {
+  background-color: #444445 !important;
+}
+.modal-footer {
+  display: flex;
+  flex-wrap: wrap;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0.75rem;
+  border-top: 1px solid #2b2a2a;
+  border-bottom-right-radius: calc(0.75rem - 1px);
+  border-bottom-left-radius: calc(0.75rem - 1px);
+}
+.modal-header {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1rem;
+  border-bottom: 1px solid #2b2a2a;
+  border-top-left-radius: calc(0.75rem - 1px);
+  border-top-right-radius: calc(0.75rem - 1px);
+}
 .ys {
-  background-image: url('https://app.test.posentegra.com/images/yemeksepeti.png');
+  background-image: url('https://app.test.posentegra.com/images/yemeksepeti.svg');
   background-size: contain;
+  background-repeat: no-repeat;
   background-position: center;
-  width: 40px;
+  width: 100px;
   height: 40px;
-  border-radius: 10px;
+
+  transform: scale(1.6);
   margin-left: auto;
   margin-right: auto;
 }
@@ -254,7 +294,7 @@
   width: 40px;
   height: 40px;
   border-radius: 10px;
-  transform: scale(2.5);
+  transform: scale(2);
   margin-left: auto;
   margin-right: auto;
 }
@@ -285,6 +325,9 @@
 .avatar-content {
   margin-left: auto;
   margin-right: auto;
+  border-radius: 5px;
+  padding: 4px;
+  width: 120px;
 }
 .avatar-sm {
   width: 100% !important;
@@ -382,7 +425,7 @@ export default {
       return `<span class="badge badge-lg w-100 ${color}" style="text-transform: none">${statusText}</span>`
     },
     formatDate(date) {
-      return moment(date).format('YYYY-MM-DD hh:mm:ss')
+      return moment(date).format('HH:mm')
     },
   },
 }
