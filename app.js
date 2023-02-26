@@ -10,6 +10,13 @@ var ajaxRouter = require('./routes/ajax')
 const session = require('express-session')
 const DB = require('./bin/lib/database')
 const { signin } = require('./bin/start')
+const path = require('path')
+
+app.use(express.static(path.join(__dirname, 'dist')))
+
+app.get('/client/*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'dist/index.html'))
+})
 
 app.use(
   session({
