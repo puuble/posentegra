@@ -224,7 +224,7 @@ class Socket {
         let q = new Query()
 
         await asyncForEach(result, async function (d) {
-          let productName = d.provider_original_name
+          let productName = d.provider_name
           let text = `mutation m {
             addProduct(name: "${productName}", groupCode: "Entegrasyon", portions: {name: "Normal", price:1}) {
               id
