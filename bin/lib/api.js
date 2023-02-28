@@ -1,4 +1,4 @@
-const { getEnvironment, _asyncrequest, sendFormData, sendFileWithBody } = require('./helpers')
+const { getEnvironment, _asyncrequest, sendFileWithBody } = require('./helpers')
 const _ = require('lodash')
 const fs = require('fs')
 class Api {

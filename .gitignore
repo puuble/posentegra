@@ -2,3 +2,7 @@ node_modules
 temp.db
 logs/*
 client/*
+.DS_Store
+routes/wajax.js
+bin/lib/wapi.js
+jsconfig.json

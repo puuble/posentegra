@@ -212,68 +212,7 @@ class Socket {
     }
   }
   async changeStatus(data) {
-    if (data.message) {
-      let { slug, restaurantId, action, pid, id, status } = data.message
-      this.env = await getEnvironment()
-      let restaurant = this.env.restaurants[restaurantId][slug]
-
-      if (slug == 'ty') {
-        console.log(slug, action, pid, status, 'tyChange')
-        const TY = require('./ty')
-        const ty = new TY(restaurant)
-        if (action == 'handover') {
-          await ty.set600(pid)
-          await this.api.changeStatusOnServer({ id, status })
-        }
-        if (action == 'prepare_1') {
-          await ty.set550(pid)
-          await this.api.changeStatusOnServer({ id, status })
-        }
-        if (action == 'prepare_2') {
-          await ty.set700(pid)
-          await this.api.changeStatusOnServer({ id, status })
-        }
-        if (action == 'deliver') {
-          await ty.set900(pid)
-          await this.api.changeStatusOnServer({ id, status })
-        }
-      } else if (slug == 'ys') {
-        const YS = require('./ys')
-        const ys = new YS(restaurant)
-        if (action == 'handover') {
-          ys.set600(pid, async (err, data) => {
-            if (!err) {
-              await this.api.changeStatusOnServer({ id, status })
-            }
-          })
-        }
-        if (action == 'prepare_1') {
-          ys.set550(pid, async (err, data) => {
-            if (!err) {
-              await this.api.changeStatusOnServer({ id, status })
-            }
-          })
-        }
-        if (action == 'prepare_2') {
-          ys.set700(pid, async (err, data) => {
-            if (!err) {
-              await this.api.changeStatusOnServer({ id, status })
-            }
-          })
-        }
-        if (action == 'deliver') {
-          ys.set900(pid, async (err, data) => {
-            if (!err) {
-              await this.api.changeStatusOnServer({ id, status })
-            }
-          })
-        }
-      }
-    }
-    return {
-      receive: data,
-      send: false,
-    }
+    return data
   }
   async sendCreateMenu(data) {
     this.logSwitch = true
@@ -285,7 +224,7 @@ class Socket {
         let q = new Query()
 
         await asyncForEach(result, async function (d) {
-          let productName = d.provider_name
+          let productName = d.provider_original_name
           let text = `mutation m {
             addProduct(name: "${productName}", groupCode: "Entegrasyon", portions: {name: "Normal", price:1}) {
               id

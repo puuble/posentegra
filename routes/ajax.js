@@ -85,7 +85,7 @@ router.get('/getReasons', async function (req, res, next) {
 router.post('/updateRestaurantStatus', async function (req, res, next) {
   let id = req.body.provider
   let status = req.body.on
-  let field = req.body.field
+  let field = req.body.field //otomatikOnay ||status
   let api = new Api()
   let data = await api.updateRestaurantStatus(id, status, field)
   res.json(data)

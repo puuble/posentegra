@@ -33,6 +33,36 @@ class PusherClient {
       },
     })
   }
+  async test() {
+    try {
+      this.env = await getEnvironment()
+      if (this.env) {
+        if (_.has(this.env, 'userId')) {
+          let connected = false
+          let channel = `private-triggerResponse.63878cde0a9eefe16f0652fd-query`
+          let event = 'TriggerResponse'
+          var channelUser = this.pusher.subscribe(channel)
+
+          channelUser.bind('pusher:subscription_succeeded', async () => {
+            connected = true
+            console.log('baglandi', channel, connected)
+            channelUser.trigger('client-connected', {
+              connected,
+            })
+          })
+
+          channelUser.bind(event, async (data) => {
+            console.log(data)
+          })
+          channelUser.bind_global(function (data) {
+            console.log(data, channel, 'a')
+          })
+        }
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
   async connect() {
     try {
       this.env = await getEnvironment()
