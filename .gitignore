@@ -1,6 +1,6 @@
 node_modules
 temp.db
-logs/*
+logs/sorgu*
 client/*
 .DS_Store
 routes/wajax.js
