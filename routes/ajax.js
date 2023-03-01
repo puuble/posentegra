@@ -24,7 +24,7 @@ router.post('/token', async function (req, res, next) {
   if (!trigger) {
     req.session.fail = true
   }
-  console.log(trigger)
+  console.log(trigger, 'trg')
   if (trigger) {
     req.session.loggedin = true
     req.session.fail = false
@@ -32,11 +32,12 @@ router.post('/token', async function (req, res, next) {
     db.dbToken(trigger.data['token'])
     db.enviroment(JSON.stringify(trigger.data))
     //m_exec('pm2 restart all')
+    return res.json(trigger)
   } else {
     req.session.fail = true
   }
 
-  res.json(trigger)
+  res.json({ success: false })
 })
 router.get('/login', async function (req, res, next) {
   let token = await db.getDBToken()
