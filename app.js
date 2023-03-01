@@ -30,7 +30,6 @@ let db = new DB()
 db.dbCheck(DBSOURCE)
 
 async function run() {
-  await signin(db)
   let env = await getEnv()
 
   if (env) {
@@ -53,11 +52,13 @@ async function run() {
   }
 }
 //async function run() {}
-
-cron.schedule('*/7 * * * * *', async () => {
-  console.log('7 saniye de bir run ')
-  await run()
-})
+async function main() {
+  await signin(db)
+  cron.schedule('*/7 * * * * *', async () => {
+    console.log('7 saniye de bir run ')
+    await run()
+  })
+}
 
 app.use(cors()) // to allow cross origin requests
 app.use(bodyParser.json()) // to convert the request into JSON
@@ -68,5 +69,6 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 
 app.listen(PORT, () => {
+  main()
   console.log(`App is listening at http://localhost:${PORT}`)
 })
