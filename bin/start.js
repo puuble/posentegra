@@ -53,12 +53,12 @@ async function signin(db) {
     await pusher.connect()
     let products = await query.getProducts()
     console.log(products, 'sambapos check ')
-    cron.schedule('*/7 * * * * *', async () => {
-      console.log('7 saniye de bir run')
-      env = JSON.parse(env)
-      console.log(env)
-      await run(env)
-    })
+    //cron.schedule('*/7 * * * * *', async () => {
+    //  console.log('7 saniye de bir run')
+    //  env = JSON.parse(env)
+    //  console.log(env)
+    //  await run(env)
+    //})
   }
 }
 
