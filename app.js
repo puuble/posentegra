@@ -28,10 +28,9 @@ app.use(
 const DBSOURCE = 'temp.db'
 let db = new DB()
 db.dbCheck(DBSOURCE)
+let env = await getEnv()
 
 async function run() {
-  let env = await getEnv()
-
   if (env) {
     let restaurants = env.restaurants
 
