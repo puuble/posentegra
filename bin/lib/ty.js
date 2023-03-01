@@ -86,14 +86,12 @@ class TY {
             if (Array.isArray(sonuc.content)) {
               if (sonuc.content.length > 0) {
                 await asyncForEach(sonuc.content, async (data) => {
-                  this.env
                   let pid = data.id
-                  if (process.env.LOG == true) {
-                    fs.writeFileSync(
-                      './logs/ty-' + pid + '.json',
-                      JSON.stringify(body)
-                    )
-                  }
+
+                  await fs.writeFileSync(
+                    './logs/ty-' + pid + '.json',
+                    JSON.stringify(body)
+                  )
                 })
               }
             }
