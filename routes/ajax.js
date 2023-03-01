@@ -25,7 +25,7 @@ router.post('/token', async function (req, res, next) {
     req.session.fail = true
   }
   console.log(trigger, 'trg')
-  if (trigger) {
+  if (trigger.success) {
     req.session.loggedin = true
     req.session.fail = false
     req.session.token = req.body.token

@@ -12,9 +12,7 @@ const DB = require('./bin/lib/database')
 const { signin } = require('./bin/start')
 const path = require('path')
 const _ = require('lodash')
-const { getEnv, asyncForEach } = require('./bin/lib/helpers')
-const TY = require('./bin/lib/ty')
-const cron = require('node-cron')
+const { getEnv, asyncForEach, getEnvironment } = require('./bin/lib/helpers')
 
 app.use(express.static(path.join(__dirname, 'dist')))
 
@@ -29,34 +27,8 @@ const DBSOURCE = 'temp.db'
 let db = new DB()
 db.dbCheck(DBSOURCE)
 
-async function run(env) {
-  if (env) {
-    let restaurants = env.restaurants
-
-    restaurants = Object.keys(restaurants)
-    if (Array.isArray(restaurants)) {
-      if (restaurants.length > 0) {
-        await asyncForEach(restaurants, async (key) => {
-          let option = env.restaurants[key]
-
-          if (_.has(option, 'ty')) {
-            const ty = new TY(option['ty'])
-            console.log('tyGetOrder')
-            await ty.getOrder(true)
-          }
-        })
-      }
-    }
-  }
-}
-//async function run() {}
 async function main() {
-  let env = await getEnv()
   await signin(db)
-  cron.schedule('*/7 * * * * *', async () => {
-    console.log('7 saniye de bir run ')
-    await run(env)
-  })
 }
 main()
 app.use(cors()) // to allow cross origin requests
