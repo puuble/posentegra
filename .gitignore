@@ -6,3 +6,6 @@ client/*
 routes/wajax.js
 bin/lib/wapi.js
 jsconfig.json
+PosEntegraV3-out.log
+.gitignore
+PosEntegraV3-error.log
