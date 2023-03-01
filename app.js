@@ -28,9 +28,8 @@ app.use(
 const DBSOURCE = 'temp.db'
 let db = new DB()
 db.dbCheck(DBSOURCE)
-let env = await getEnv()
 
-async function run() {
+async function run(env) {
   if (env) {
     let restaurants = env.restaurants
 
@@ -52,10 +51,11 @@ async function run() {
 }
 //async function run() {}
 async function main() {
+  let env = await getEnv()
   await signin(db)
   cron.schedule('*/7 * * * * *', async () => {
     console.log('7 saniye de bir run ')
-    await run()
+    await run(env)
   })
 }
 main()
