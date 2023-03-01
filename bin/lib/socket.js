@@ -113,6 +113,13 @@ class Socket {
         broadcast: false,
       }
       if (_.has(this.env.restaurants, restaurantId)) {
+        if (slug == 'ty') {
+          const TY = require('./ty')
+          let tyData = this.env.restaurants[restaurantId]
+          console.log(tyData, 'TY ONAYLAMA')
+          const ty = new TY(tyData['ty'])
+          await ty.set500(message['order']['pid'])
+        }
       }
 
       let last = {
@@ -187,8 +194,70 @@ class Socket {
     }
   }
   async changeStatus(data) {
-    return data
+    if (data.message) {
+      let { slug, restaurantId, action, pid, id, status } = data.message
+
+      let restaurant = this.env.restaurants[restaurantId][slug]
+
+      if (slug == 'ty') {
+        console.log(slug, action, pid, status, 'tyChange')
+        const TY = require('./ty')
+        const ty = new TY(restaurant)
+        if (action == 'handover') {
+          await ty.set600(pid)
+          await this.api.changeStatusOnServer({ id, status })
+        }
+        if (action == 'prepare_1') {
+          await ty.set550(pid)
+          await this.api.changeStatusOnServer({ id, status })
+        }
+        if (action == 'prepare_2') {
+          await ty.set700(pid)
+          await this.api.changeStatusOnServer({ id, status })
+        }
+        if (action == 'deliver') {
+          await ty.set900(pid)
+          await this.api.changeStatusOnServer({ id, status })
+        }
+      } else if (slug == 'ys') {
+        const YS = require('./ys')
+        const ys = new YS(restaurant)
+        if (action == 'handover') {
+          ys.set600(pid, async (err, data) => {
+            if (!err) {
+              await this.api.changeStatusOnServer({ id, status })
+            }
+          })
+        }
+        if (action == 'prepare_1') {
+          ys.set550(pid, async (err, data) => {
+            if (!err) {
+              await this.api.changeStatusOnServer({ id, status })
+            }
+          })
+        }
+        if (action == 'prepare_2') {
+          ys.set700(pid, async (err, data) => {
+            if (!err) {
+              await this.api.changeStatusOnServer({ id, status })
+            }
+          })
+        }
+        if (action == 'deliver') {
+          ys.set900(pid, async (err, data) => {
+            if (!err) {
+              await this.api.changeStatusOnServer({ id, status })
+            }
+          })
+        }
+      }
+    }
+    return {
+      receive: data,
+      send: false,
+    }
   }
+
   async sendCreateMenu(data) {
     this.logSwitch = true
     this.env = await getEnvironment()
