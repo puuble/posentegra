@@ -7,15 +7,27 @@ const { asyncForEach, asyncFilter } = require('./helpers')
 const sambapos = new Sambapos()
 
 async function cleanTextWhileUndefined(text, data) {
-  let newText = text.replace(/\[(.*?)\{(.*?)\}(.*?)\]/g, (match, start, key, end) => {
-    return data[key] !== undefined && data[key] !== null && data[key] !== false ? start + data[key] + end : ''
-  })
+  let newText = text.replace(
+    /\[(.*?)\{(.*?)\}(.*?)\]/g,
+    (match, start, key, end) => {
+      return data[key] !== undefined &&
+        data[key] !== null &&
+        data[key] !== false
+        ? start + data[key] + end
+        : ''
+    }
+  )
   return newText.replace(/\{(.*?)\}/g, (match, key) => {
-    return data[key] !== undefined && data[key] !== null && data[key] !== false ? data[key] : ''
+    return data[key] !== undefined && data[key] !== null && data[key] !== false
+      ? data[key]
+      : ''
   })
 }
 async function changeNote(text) {
-  var mySubString = text.substring(text.indexOf('note:'), text.lastIndexOf('states:') - 2)
+  var mySubString = text.substring(
+    text.indexOf('note:'),
+    text.lastIndexOf('states:') - 2
+  )
   let newString = text.replace(mySubString, text)
   return newString
 }
@@ -34,7 +46,10 @@ class Query {
     this.data = data
     if (_.has(data, 'queries')) {
       this.queries = data.queries
-      fs.writeFileSync('./logs/sorgu-' + data.order.pid + '.json', JSON.stringify(data.queries))
+      fs.writeFileSync(
+        './logs/sorgu-' + data.order.pid + '.json',
+        JSON.stringify(data.queries)
+      )
       this.order = data.order
     }
     this.accessToken
@@ -78,6 +93,7 @@ class Query {
     let terminalId = await this.registerTerminal()
     let pos_ticket = await this.queue(terminalId)
     console.log('query bitti', pos_ticket)
+
     return pos_ticket
   }
   async getMessage(message, key = false) {
@@ -194,7 +210,11 @@ class Query {
       '{terminalId}': terminalId,
     }
     try {
-      let q = await this.changeString(this.queries.createTerminalTicket, '{terminalId}', maps)
+      let q = await this.changeString(
+        this.queries.createTerminalTicket,
+        '{terminalId}',
+        maps
+      )
 
       q = {
         query: q,
@@ -217,7 +237,9 @@ class Query {
         '{terminalId}': terminalId,
       }
 
-      let queryString = await this.arrayToGraphQl(this.queries.updateTerminalTicket)
+      let queryString = await this.arrayToGraphQl(
+        this.queries.updateTerminalTicket
+      )
       queryString = removeSpecialChar(queryString)
       queryString = queryString.replace(/(^"|"$)/g, '')
       let q = await this.changeString(queryString, '{terminalId}', maps)
@@ -307,7 +329,11 @@ class Query {
               if (result) {
                 if (Array.isArray(result)) {
                   if (result.length > 0) {
-                    await this.addOrderToTerminalTicketWithProduct(terminalId, result[0]['id'], i)
+                    await this.addOrderToTerminalTicketWithProduct(
+                      terminalId,
+                      result[0]['id'],
+                      i
+                    )
                   }
                 }
               }
@@ -318,7 +344,11 @@ class Query {
             if (_.has(product, 'id')) {
               if (product.id) {
                 await this.postResetProductCacheMessage()
-                await this.addOrderToTerminalTicketWithProduct(terminalId, product.id, i)
+                await this.addOrderToTerminalTicketWithProduct(
+                  terminalId,
+                  product.id,
+                  i
+                )
               }
             }
           })
@@ -329,7 +359,11 @@ class Query {
       console.log(error, 'addProduct')
     }
   }
-  async addOrderToTerminalTicketWithProduct(terminalId, productId, key = false) {
+  async addOrderToTerminalTicketWithProduct(
+    terminalId,
+    productId,
+    key = false
+  ) {
     try {
       let d = this.queries.addOrderToTerminalTicketWithProduct
       let maps = {
@@ -353,7 +387,11 @@ class Query {
             })
           } else {
             await asyncForEach(d, async (c, index) => {
-              let q = await this.changeString(c, '{terminalId}|{productId}', maps)
+              let q = await this.changeString(
+                c,
+                '{terminalId}|{productId}',
+                maps
+              )
 
               q = {
                 query: q,
@@ -397,7 +435,11 @@ class Query {
             })
           } else {
             await asyncForEach(d, async (c, index) => {
-              let q = await this.changeString(c, '{terminalId}|{productId}', maps)
+              let q = await this.changeString(
+                c,
+                '{terminalId}|{productId}',
+                maps
+              )
 
               q = {
                 query: q,
@@ -424,7 +466,11 @@ class Query {
       '{terminalId}': terminalId,
     }
     try {
-      let q = await this.changeString(this.queries.addCalculationToTerminalTicket, '{terminalId}', maps)
+      let q = await this.changeString(
+        this.queries.addCalculationToTerminalTicket,
+        '{terminalId}',
+        maps
+      )
 
       q = {
         query: q,
@@ -445,7 +491,11 @@ class Query {
       '{terminalId}': terminalId,
     }
     try {
-      let q = await this.changeString(this.queries.changeEntityOfTerminalTicket, '{terminalId}', maps)
+      let q = await this.changeString(
+        this.queries.changeEntityOfTerminalTicket,
+        '{terminalId}',
+        maps
+      )
 
       q = {
         query: q,
@@ -466,7 +516,11 @@ class Query {
       '{terminalId}': terminalId,
     }
     try {
-      let q = await this.changeString(this.queries.closeTerminalTicket, '{terminalId}', maps)
+      let q = await this.changeString(
+        this.queries.closeTerminalTicket,
+        '{terminalId}',
+        maps
+      )
 
       q = {
         query: q,
@@ -487,7 +541,11 @@ class Query {
       '{terminalId}': terminalId,
     }
     try {
-      let q = await this.changeString(this.queries.unregisterTerminal, '{terminalId}', maps)
+      let q = await this.changeString(
+        this.queries.unregisterTerminal,
+        '{terminalId}',
+        maps
+      )
 
       q = {
         query: q,

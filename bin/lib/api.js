@@ -39,6 +39,14 @@ class Api {
       console.log(error, 'sendFile')
     }
   }
+  async sendPosTicket(pos_ticket, pid) {
+    await this.send({
+      pos_ticket,
+      pid,
+      channel: 'savePosTicket',
+      broadcast: false,
+    })
+  }
   async send(req) {
     try {
       this.env = await getEnvironment()
