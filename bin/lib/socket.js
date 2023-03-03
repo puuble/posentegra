@@ -106,7 +106,7 @@ class Socket {
         let result = {
           message: {
             pos_ticket,
-            orderId: message['order']['pid'],
+            orderId: data['orderId'],
           },
           channel: data['channel'],
           sender: data['user']['id'],
