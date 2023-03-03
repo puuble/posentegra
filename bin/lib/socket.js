@@ -100,7 +100,7 @@ class Socket {
         let message = JSON.parse(data['message'])
         const q = new Query(message)
         pos_ticket = await q.init()
-        this.api.sendPosTicket(pos_ticket, message['order']['pid'])
+        await this.api.sendPosTicket(pos_ticket, message['order']['pid'])
         let slug = message['order']['slug']
         let restaurantId = message['order']['restaurantId']
         let result = {
@@ -130,6 +130,7 @@ class Socket {
         }
       } else {
         pos_ticket = data['post_ticket']
+        await this.api.sendPosTicket(pos_ticket, message['order']['pid'])
         let result = {
           message: {
             pos_ticket,
