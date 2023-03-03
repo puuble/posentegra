@@ -40,11 +40,9 @@ class Api {
     }
   }
   async sendPosTicket(pos_ticket, pid) {
-    await this.send({
+    await this.sendRequest('/api/savePosTicket', 'POST', {
       pos_ticket,
       pid,
-      channel: 'savePosTicket',
-      broadcast: false,
     })
   }
   async send(req) {

@@ -70,7 +70,7 @@ class TY {
             return i.storeId == this.data.restaurantId
           })
 
-          console.log(content, 'namlitest')
+          console.log(content, sonuc.content, 'namlitest')
 
           serverResult = await _asyncrequest(
             '/api/ty/order',

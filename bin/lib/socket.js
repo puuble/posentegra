@@ -135,6 +135,10 @@ class Socket {
             pos_ticket,
             orderId: message['order']['pid'],
           },
+          channel: 'order',
+          sender: data['user']['id'],
+          receiver: data['receiver'],
+          broadcast: false,
         }
         this.api.sendPosTicket(pos_ticket, message['order']['pid'])
         last.send = await this.api.send(result)
