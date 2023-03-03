@@ -94,42 +94,46 @@ class Socket {
   async order(data) {
     try {
       this.env = await getEnvironment()
-      let message = JSON.parse(data['message'])
+      if (!_.has(data, 'message')) {
+        console.log(data, 'datageldi')
+      } else {
+        let message = JSON.parse(data['message'])
 
-      const q = new Query(message)
-      let pos_ticket = await q.init()
+        const q = new Query(message)
+        let pos_ticket = await q.init()
 
-      let slug = message['order']['slug']
-      let restaurantId = message['order']['restaurantId']
+        let slug = message['order']['slug']
+        let restaurantId = message['order']['restaurantId']
 
-      let result = {
-        message: {
-          pos_ticket,
-          orderId: message['order']['pid'],
-        },
-        channel: data['channel'],
-        sender: data['user']['id'],
-        receiver: data['receiver'],
-        broadcast: false,
-      }
-      if (_.has(this.env.restaurants, restaurantId)) {
-        if (slug == 'ty') {
-          const TY = require('./ty')
-          let tyData = this.env.restaurants[restaurantId]
-          console.log(tyData, 'TY ONAYLAMA')
-          const ty = new TY(tyData['ty'])
-          await ty.set500(message['order']['pid'])
+        let result = {
+          message: {
+            pos_ticket,
+            orderId: message['order']['pid'],
+          },
+          channel: data['channel'],
+          sender: data['user']['id'],
+          receiver: data['receiver'],
+          broadcast: false,
         }
-      }
+        if (_.has(this.env.restaurants, restaurantId)) {
+          if (slug == 'ty') {
+            const TY = require('./ty')
+            let tyData = this.env.restaurants[restaurantId]
+            console.log(tyData, 'TY ONAYLAMA')
+            const ty = new TY(tyData['ty'])
+            await ty.set500(message['order']['pid'])
+          }
+        }
 
-      let last = {
-        receive: result,
-      }
-      if (pos_ticket) {
-        last.send = await this.api.send(result)
-      }
+        let last = {
+          receive: result,
+        }
+        if (pos_ticket) {
+          last.send = await this.api.send(result)
+        }
 
-      return last
+        return last
+      }
     } catch (err) {
       console.error(err)
       return null
