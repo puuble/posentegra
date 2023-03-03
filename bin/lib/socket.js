@@ -146,6 +146,13 @@ class Socket {
       this.env = await getEnvironment()
       let restaurantId = message['order']['restaurantId']
       if (_.has(this.env.restaurants, restaurantId)) {
+        if (slug == 'ty') {
+          const TY = require('./ty')
+          let tyData = this.env.restaurants[restaurantId]
+          console.log(tyData, 'TY ONAYLAMA')
+          const ty = new TY(tyData['ty'])
+          await ty.set500(message['order']['pid'])
+        }
       }
       if (!ticket) {
         let pos_ticket = await q.init()

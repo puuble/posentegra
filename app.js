@@ -41,10 +41,15 @@ async function main() {
           console.log(option, 'key')
           if (_.has(option, 'ty')) {
             const ty = new TY(option['ty'])
-            cron.schedule('*/7 * * * * *', async () => {
-              console.log('7 saniye de bir run')
-              await ty.getOrder(true)
-            })
+            if (process.env.CRON !== 'false') {
+              cron.schedule('*/7 * * * * *', async () => {
+                console.log('7 saniye de bir run')
+
+                await ty.getOrder(true)
+              })
+            } else {
+              console.log('CRON DURDU')
+            }
           }
         })
       }
