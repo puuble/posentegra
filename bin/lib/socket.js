@@ -136,6 +136,7 @@ class Socket {
             orderId: message['order']['pid'],
           },
         }
+        this.api.sendPosTicket(pos_ticket, message['order']['pid'])
         last.send = await this.api.send(result)
         return last
       }
