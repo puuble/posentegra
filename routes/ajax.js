@@ -17,27 +17,26 @@ router.post('/token', async function (req, res, next) {
     {}
   ).catch((e) => {
     req.session.fail = true
-    // console.log(e)
+    //console.log(e)
     // return res.redirect(301, '/')
   })
 
   if (!trigger) {
     req.session.fail = true
+    return res.json(trigger)
   }
-  console.log(trigger, 'trg')
-  if (trigger.success) {
+
+  if (_.has(trigger, 'success')) {
     req.session.loggedin = true
     req.session.fail = false
     req.session.token = req.body.token
     db.dbToken(trigger.data['token'])
     db.enviroment(JSON.stringify(trigger.data))
-    //m_exec('pm2 restart all')
     return res.json(trigger)
   } else {
     req.session.fail = true
+    return res.json({ success: false })
   }
-
-  res.json({ success: false })
 })
 router.get('/login', async function (req, res, next) {
   let token = await db.getDBToken()
