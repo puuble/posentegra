@@ -66,12 +66,6 @@ class TY {
         let env = await getEnvironment()
         let serverResult = null
         if (sendBackend) {
-          const content = await asyncFilter(sonuc.content, async (i) => {
-            return i.storeId == this.data.restaurantId
-          })
-
-          console.log(content, sonuc.content, 'namlitest')
-
           serverResult = await _asyncrequest(
             '/api/ty/order',
             'POST',
