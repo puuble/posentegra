@@ -106,8 +106,9 @@ class Socket {
         let result = {
           message: {
             pos_ticket,
-            orderId: data['orderId'],
+            orderId: message['order']['pid'],
           },
+          type: 'messagevar',
           channel: data['channel'],
           sender: data['user']['id'],
           receiver: data['receiver'],
@@ -130,18 +131,19 @@ class Socket {
         }
       } else {
         pos_ticket = data['post_ticket']
-        await this.api.sendPosTicket(pos_ticket, message['order']['pid'])
+        await this.api.sendPosTicket(pos_ticket, data['orderId'])
         let result = {
           message: {
             pos_ticket,
-            orderId: message['order']['pid'],
+            orderId: data['orderId'],
           },
+          type: 'messageYok',
           channel: 'order',
           sender: data['user']['id'],
           receiver: data['receiver'],
           broadcast: false,
         }
-        this.api.sendPosTicket(pos_ticket, message['order']['pid'])
+        await this.api.sendPosTicket(pos_ticket, data['orderId'])
         last.send = await this.api.send(result)
         return last
       }
