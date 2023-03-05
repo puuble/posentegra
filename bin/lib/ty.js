@@ -41,8 +41,10 @@ class TY {
     var auth =
       'Basic ' + Buffer.from(apiKey + ':' + apiSecretKey).toString('base64')
 
+    let webUrl = `https://api.trendyol.com/mealgw/suppliers/${supplierId}/packages?storeId=${this.option['restaurantId']}`
+    console.log(webUrl)
     let result = await sendFormData(
-      `https://api.trendyol.com/mealgw/suppliers/${supplierId}/packages?storeId=${this.option['restaurantId']}`,
+      webUrl,
       'GET',
       {
         packageStatuses: this.status,
