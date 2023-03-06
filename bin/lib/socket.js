@@ -139,7 +139,7 @@ class Socket {
           },
           type: 'messageYok',
           channel: 'order',
-          sender: data['user']['id'],
+          sender: data['receiver'],
           receiver: data['receiver'],
           broadcast: false,
         }

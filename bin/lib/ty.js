@@ -41,17 +41,13 @@ class TY {
     var auth =
       'Basic ' + Buffer.from(apiKey + ':' + apiSecretKey).toString('base64')
 
-    let webUrl = `https://api.trendyol.com/mealgw/suppliers/${supplierId}/packages`
+    let webUrl = `https://api.trendyol.com/mealgw/suppliers/${supplierId}/packages?storeId=${this.option['restaurantId']}&packageStatuses=Created&page=0&size=1`
+    //let webUrl = `https://api.trendyol.com/mealgw/suppliers/${supplierId}/packages?storeId=${this.option['restaurantId']}&packageStatuses=Created&page=0&size=1`
     console.log(webUrl)
     let result = await sendFormData(
       webUrl,
       'GET',
-      {
-        packageStatuses: this.status,
-
-        size: this.data.size ? this.data.size : 1,
-        page: this.data.page ? this.data.page : 0,
-      },
+      {},
       {
         Authorization: auth,
         'x-agentname': 'PosEntegra',
