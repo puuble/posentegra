@@ -7,7 +7,7 @@ var router = express.Router()
 const db = new DB()
 
 router.get('/sendAgain', async function (req, res) {
-  let env = await getEnvironment()
+  let env = await getEnv()
   let sonuc = false
   if (req.query.id) {
     sonuc = await _asyncrequest(
@@ -22,6 +22,7 @@ router.get('/sendAgain', async function (req, res) {
 
   return res.json(sonuc)
 })
+
 router.get('/odemeTipiGonder', async (req, res, next) => {
   let env = await getEnv()
   let result = {
@@ -37,32 +38,12 @@ router.get('/odemeTipiGonder', async (req, res, next) => {
 
   return res.json({ success: true })
 })
-router.get('/raporGonder', async (req, res, next) => {
-  try {
-    const env = await getEnvironment()
-    let api = new Api()
-    console.log(req.query.name)
-    let frm = {
-      message: {
-        name: req.query.name,
-      },
-      channel: 'raporGonder',
-      sender: env.userId,
-      receiver: env.userId,
-      broadcast: true,
-    }
-    console.log(frm)
-    await api.send(frm)
-    return res.json({ success: true })
-  } catch (error) {
-    console.log(error)
-  }
-})
+
 router.get('/tarihGonder', async (req, res, next) => {
   let id = req.query.id
 
   if (id) {
-    const env = await getEnvironment()
+    const env = await getEnv()
     let api = new Api()
     let query = new Query()
 
@@ -91,7 +72,7 @@ router.get('/tarihGonder', async (req, res, next) => {
 
 router.get('/raporGonder', async (req, res, next) => {
   try {
-    const env = await getEnvironment()
+    const env = await getEnv()
     let api = new Api()
     console.log(req.query.name)
     let frm = {
@@ -110,34 +91,53 @@ router.get('/raporGonder', async (req, res, next) => {
     console.log(error)
   }
 })
-router.get('/tarihGonder', async (req, res, next) => {
-  let id = req.query.id
 
-  if (id) {
-    const env = await getEnvironment()
-    let api = new Api()
-    let query = new Query()
+router.post('/upload', async (req, res) => {
+  let env = await getEnv()
+  let trigger = await _asyncrequest(
+    '/api/authenticateWithToken',
+    'POST',
+    { token: env.token },
+    {}
+  ).catch((e) => {
+    req.session.fail = true
+    //console.log(e)
+    // return res.redirect(301, '/')
+  })
 
-    let frm = {
-      message: {
-        id,
-      },
-      channel: 'tarihGonder',
-      sender: env.userId,
-      receiver: env.userId,
-      broadcast: false,
-    }
-
-    let send = await api.send(frm)
-    let q = `mutation m1 {
-          postBroadcastMessage(message: "ENT- Wp Gönder - ${send.result.samba_id}") {
-            message
-          }
-        }`
-    await query.getQueryWithText(q)
-    return res.json({ success: true })
+  if (!trigger) {
+    req.session.fail = true
   }
 
-  res.json({ success: true })
+  if (trigger.success) {
+    let api = new Api()
+    let filename = ''
+    const bb = busboy({ headers: req.headers })
+    bb.on('file', async (name, file, info) => {
+      filename = info.filename
+      const saveTo = path.join(__dirname, filename)
+      file.pipe(fs.createWriteStream(saveTo))
+      console.log(filename)
+      await api.sendFile(
+        {
+          file: {
+            value: req.file,
+            options: {
+              filename: filename,
+              contentType: 'text/plain',
+            },
+          },
+        },
+        {}
+      )
+    })
+
+    req.pipe(bb)
+  } else {
+    req.session.fail = true
+  }
+
+  return res.redirect(301, '/')
 })
+
 module.exports = router
