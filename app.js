@@ -38,7 +38,7 @@ async function main() {
       if (restaurants.length > 0) {
         await asyncForEach(restaurants, async (key) => {
           let option = env.restaurants[key]
-        
+
           if (_.has(option, 'ty')) {
             const ty = new TY(option['ty'])
             if (process.env.CRON !== 'false') {

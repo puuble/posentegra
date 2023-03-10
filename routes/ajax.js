@@ -96,6 +96,12 @@ router.get('/onayla', async function (req, res, next) {
   let data = await api.onayla(id)
   res.json(data)
 })
+router.get('/sendAgain', async function (req, res, next) {
+  let id = req.query.id
+  let api = new Api()
+  let data = await api.again(id)
+  res.json(data)
+})
 router.get('/getProviders', async function (req, res, next) {
   let id = req.query.id
   let api = new Api()
