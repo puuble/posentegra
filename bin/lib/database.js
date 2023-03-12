@@ -65,7 +65,7 @@ class DB {
   addLine() {
     db.serialize(() => {
       const stmt = db.prepare(this.addLineSql)
-      stmt.run(1, null, null, null, null)
+      stmt.run(null, null, null, null, null)
       stmt.finalize()
     })
   }
@@ -79,7 +79,7 @@ class DB {
       this.createTable()
       this.createToken()
       //this.truncate()
-      //this.addLine()
+      this.addLine()
     })
   }
   access_token(token) {
