@@ -56,11 +56,11 @@ class DB {
     db.run(this.createTokenSql)
   }
   createTable() {
-   // db.run(this.createSql)
+    db.run(this.createSql)
   }
 
   truncate() {
-    //db.run(this.truncateSql)
+    db.run(this.truncateSql)
   }
   addLine() {
     db.serialize(() => {
@@ -76,10 +76,10 @@ class DB {
   dbCheck() {
     console.log('Connected to the SQLite database.')
     db.serialize(() => {
-      this.createTable()
-      this.createToken()
-      this.truncate()
-      this.addLine()
+      // this.createTable()
+      //this.createToken()
+      //this.truncate()
+      //this.addLine()
     })
   }
   access_token(token) {
