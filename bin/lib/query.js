@@ -635,12 +635,13 @@ class Query {
   }
   async postBroadcastMessage() {
     try {
+      this.accessToken = await sambapos.authCheck()
       let q = this.queries.postBroadcastMessage
 
       q = {
         query: q,
         variables: null,
-        operationName: 'm',
+        operationName: 'm2',
       }
       let message = await sambapos.query(q).catch((err) => {
         console.log('ERROR SAMBA Query', q)
