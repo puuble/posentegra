@@ -90,6 +90,7 @@ class Sambapos {
     return false
   }
   async login() {
+    console.log('LOGIN YAPIYOR')
     this.env = await db.getField('enviroment')
     this.url = `http://${this.env.pos.host}:${this.env.pos.port}`
     if (this.env) {
