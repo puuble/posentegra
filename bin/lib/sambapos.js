@@ -41,44 +41,47 @@ class Sambapos {
     return response
   }
   async refresh() {
-    console.log(this.env, 'refresh')
-    this.env = await db.getField('enviroment')
-    this.url = `http://${this.env.pos.host}:${this.env.pos.port}`
-    if (this.env) {
-      this.access_token = null
-      let url = `${this.url}/Token`
-      let response = await _asyncrequest(
-        url,
-        'POST',
-        qs.stringify({
-          grant_type: 'refresh_token',
-          username: this.env.pos.username,
-          client_id: this.env.pos.client_id,
-          refresh_token: await this.getToken('refresh_token'),
-          client_secret: 'test',
-        }),
-        { 'Content-Type': 'application/x-www-form-urlencoded' }
-      ).catch((err) => {
-        console.log(err)
-        console.log('ERROR SAMBA REFRESG')
-      })
+    try {
+      this.env = await db.getField('enviroment')
+      this.url = `http://${this.env.pos.host}:${this.env.pos.port}`
+      if (this.env) {
+        this.access_token = null
+        let url = `${this.url}/Token`
+        let response = await _asyncrequest(
+          url,
+          'POST',
+          qs.stringify({
+            grant_type: 'refresh_token',
+            username: this.env.pos.username,
+            client_id: this.env.pos.client_id,
+            refresh_token: await this.getToken('refresh_token'),
+            client_secret: this.env.pos.password,
+          }),
+          { 'Content-Type': 'application/x-www-form-urlencoded' }
+        ).catch(async (err) => {
+          this.access_token = await this.login()
+          console.log('SAMBA REFRESH YAPILIYOR')
+        })
 
-      if (response) {
-        if (_.has(response, 'access_token')) {
-          this.db.access_token(response.access_token)
-          this.access_token = response.access_token
+        if (response) {
+          if (_.has(response, 'access_token')) {
+            this.db.access_token(response.access_token)
+            this.access_token = response.access_token
+          }
+          if (_.has(response, 'refresh_token')) {
+            this.db.refresh_token(response.refresh_token)
+          }
+          if (_.has(response, 'expires_in')) {
+            this.db.expires(moment(response['.expires']).toISOString())
+          }
+        } else {
+          this.access_token = await this.login()
         }
-        if (_.has(response, 'refresh_token')) {
-          this.db.refresh_token(response.refresh_token)
-        }
-        if (_.has(response, 'expires_in')) {
-          this.db.expires(moment(response['.expires']).toISOString())
-        }
-      } else {
-        this.access_token = await this.login()
+
+        return this.access_token
       }
-
-      return this.access_token
+    } catch (error) {
+      this.access_token = await this.login()
     }
 
     return false
@@ -148,6 +151,7 @@ class Sambapos {
       await db.access_token(this.access_token)
       return this.access_token
     } else {
+      console.log('env alinmadi')
       return false
     }
   }
