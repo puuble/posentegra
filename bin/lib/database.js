@@ -76,8 +76,8 @@ class DB {
   dbCheck() {
     console.log('Connected to the SQLite database.')
     db.serialize(() => {
-      // this.createTable()
-      //this.createToken()
+      this.createTable()
+      this.createToken()
       //this.truncate()
       //this.addLine()
     })
