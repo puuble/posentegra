@@ -60,7 +60,7 @@ class DB {
   }
 
   truncate() {
-    db.run(this.truncateSql)
+    //db.run(this.truncateSql)
   }
   addLine() {
     db.serialize(() => {
@@ -125,7 +125,9 @@ class DB {
           reject(err)
         } else {
           if (row) {
-            field == 'enviroment' ? resolve(JSON.parse(row[field])) : resolve(row[field])
+            field == 'enviroment'
+              ? resolve(JSON.parse(row[field]))
+              : resolve(row[field])
           } else {
             resolve(null)
           }
