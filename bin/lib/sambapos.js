@@ -45,8 +45,10 @@ class Sambapos {
       this.env = await db.getField('enviroment')
       this.url = `http://${this.env.pos.host}:${this.env.pos.port}`
       if (this.env) {
+        console.log('REFRESH env var ')
         this.access_token = null
         let url = `${this.url}/Token`
+        console.log('REFRESH KONTROL', await this.getToken('refresh_token'))
         let response = await _asyncrequest(
           url,
           'POST',
@@ -59,6 +61,7 @@ class Sambapos {
           }),
           { 'Content-Type': 'application/x-www-form-urlencoded' }
         ).catch(async (err) => {
+          console.log('ERRor VAR ', err)
           this.access_token = await this.login()
           console.log('SAMBA REFRESH YAPILIYOR')
         })
@@ -131,10 +134,15 @@ class Sambapos {
     this.env = await db.getField('enviroment')
     this.url = `http://${this.env.pos.host}:${this.env.pos.port}`
 
+    console.log('AUTH YAPILIYOR')
     if (this.env) {
+      console.log('ENV')
       let expires = await this.getToken('expires')
+      console.log(expires, 'EXPIRES')
       this.access_token = await db.getField('access_token')
+      console.log(this.access_token, 'access_token')
       if (this.access_token == 'null') {
+        console.log('ACCESS TOKEN NULL')
         this.access_token = await this.refresh()
       }
       if (expires) {
