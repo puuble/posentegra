@@ -116,7 +116,7 @@ class Sambapos {
         }
         if (_.has(response, 'access_token')) {
           console.log(response.access_token, 'access_token')
-          this.db.refresh_token(response.access_token)
+          this.db.access_token(response.access_token)
           this.access_token = response.access_token
         }
         if (_.has(response, 'expires_in')) {
