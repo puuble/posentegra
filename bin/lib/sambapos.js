@@ -110,6 +110,7 @@ class Sambapos {
       })
 
       if (response) {
+        console.log(response, 'karakutu')
         if (_.has(response, 'refresh_token')) {
           this.db.refresh_token(response.refresh_token)
         }
