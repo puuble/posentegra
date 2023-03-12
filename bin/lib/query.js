@@ -132,7 +132,8 @@ class Query {
         operationName: '',
       }
 
-      const message = await sambapos.query(query).catch((err) => {
+      const message = await sambapos.query(query).catch(async (err) => {
+        await sambapos.refresh()
         console.log('ERROR SAMBA getQueryWithText', query)
         return null
       })
