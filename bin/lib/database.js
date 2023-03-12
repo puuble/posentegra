@@ -56,7 +56,7 @@ class DB {
     db.run(this.createTokenSql)
   }
   createTable() {
-    db.run(this.createSql)
+   // db.run(this.createSql)
   }
 
   truncate() {
