@@ -99,6 +99,7 @@ class Sambapos {
           username: this.env.pos.username,
           password: this.env.pos.password,
           client_id: this.env.pos.client_id,
+          client_secret: this.env.pos.password,
         }),
         { 'Content-Type': 'application/x-www-form-urlencoded' }
       ).catch((err) => {
