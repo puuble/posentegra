@@ -133,7 +133,7 @@ class Query {
       }
 
       const message = await sambapos.query(query).catch((err) => {
-        console.log('ERROR SAMBA Query', query)
+        console.log('ERROR SAMBA getQueryWithText', query)
         return null
       })
       return await this.getMessage(message)
@@ -641,7 +641,7 @@ class Query {
       q = {
         query: q,
         variables: null,
-        operationName: 'm2',
+        operationName: 'm',
       }
       let message = await sambapos.query(q).catch((err) => {
         console.log('ERROR SAMBA Query', q)
