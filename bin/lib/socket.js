@@ -332,6 +332,25 @@ class Socket {
     // await this.stopSound()
   }
 
+  async report(data) {
+    const q = new Query()
+    console.log(data['message']['query'])
+    let res = await q.getQueryWithText(data['message']['query'])
+
+    let result = {
+      message: {
+        result: res,
+        option: data['message']['option'],
+      },
+      sender: data['user']['id'],
+      receiver: data.receiver,
+      channel: data.channel,
+      broadcast: true,
+    }
+    console.log(result, data, 'resultoquery')
+    await this.api.send(result)
+  }
+
   async query(data) {
     const q = new Query()
     console.log(data['message']['query'])
