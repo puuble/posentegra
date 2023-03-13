@@ -1,11 +1,14 @@
 var express = require('express')
-
+const path = require('path')
 const Api = require('../bin/lib/api')
 const DB = require('../bin/lib/database')
 const { getEnv, _asyncrequest, m_exec } = require('../bin/lib/helpers')
 var router = express.Router()
 const db = new DB()
 
+router.get('/upload-panel', async function (req, res) {
+  res.sendFile(path.join(__dirname, '../dist', 'index.html'))
+})
 router.get('/sendAgain', async function (req, res) {
   let env = await getEnv()
   let sonuc = false
