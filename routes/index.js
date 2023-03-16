@@ -1,3 +1,4 @@
+const Query = require('../bin/lib/query')
 var express = require('express')
 const path = require('path')
 const Api = require('../bin/lib/api')
