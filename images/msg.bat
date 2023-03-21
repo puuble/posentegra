@@ -1,2 +1,2 @@
-NET STOP SambaPOS-MessagingServer
-NET START SambaPOS-MessagingServer
+@echo off
+NET STOP SambaPOS-MessagingServer && NET START SambaPOS-MessagingServer
