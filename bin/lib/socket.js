@@ -143,6 +143,9 @@ class Socket {
           receiver: data['receiver'],
           broadcast: false,
         }
+        let last = {
+          receive: result,
+        }
         await this.api.sendPosTicket(pos_ticket, data['orderId'])
         last.send = await this.api.send(result)
         return last
