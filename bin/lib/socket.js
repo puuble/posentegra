@@ -8,7 +8,7 @@ let p = './OnayBekliyor.wav'
 class Socket {
   constructor() {
     this.api = new Api()
-    this.sound
+    this.sound =false
     this.logSwitch = false
   }
   async log(data, key = false) {

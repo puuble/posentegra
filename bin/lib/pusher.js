@@ -41,7 +41,7 @@ class PusherClient {
           let connected = false
           let channel = `private-trigger.${this.env.userId}`
           let event = 'Trigger'
-          var channelUser = this.pusher.subscribe(channel)
+          let channelUser = this.pusher.subscribe(channel)
 
           channelUser.bind('pusher:subscription_succeeded', async () => {
             connected = true
