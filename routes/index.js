@@ -10,6 +10,9 @@ const db = new DB()
 router.get('/upload-panel', async function (req, res) {
   res.sendFile(path.join(__dirname, '../dist', 'index.html'))
 })
+router.get('/', async function (req, res) {
+  res.sendFile(path.join(__dirname, '../dist', 'index.html'))
+})
 router.get('/sendAgain', async function (req, res) {
   let env = await getEnv()
   let sonuc = false
