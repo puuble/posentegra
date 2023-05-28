@@ -40,10 +40,14 @@ router.post('/token', async function (req, res, next) {
 })
 router.get('/login', async function (req, res, next) {
   let token = await db.getDBToken()
+  let trigger = {
+    success: null,
+    data: null,
+  }
   if (token == null) {
     res.json({ success: false })
   } else {
-    let trigger = await _asyncrequest(
+    trigger = await _asyncrequest(
       '/api/authenticateWithToken',
       'POST',
       { token },
