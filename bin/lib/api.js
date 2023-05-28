@@ -103,6 +103,7 @@ class Api {
         }
       ).catch((e) => console.log('SERVERDAN', e.message))
 
+      console.log(result, 'res')
       if (!result.success) {
         return []
       }
