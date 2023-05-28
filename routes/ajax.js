@@ -21,6 +21,7 @@ router.post('/token', async function (req, res, next) {
     // return res.redirect(301, '/')
   })
 
+  console.log(trigger)
   if (!trigger) {
     req.session.fail = true
     return res.json(trigger)

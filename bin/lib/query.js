@@ -246,7 +246,7 @@ class Query {
       let q = await this.changeString(queryString, '{terminalId}', maps)
 
       q = {
-        query: q,
+        query: removeSpecialChar(d),
         variables: null,
         operationName: 'm',
       }
