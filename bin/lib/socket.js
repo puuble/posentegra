@@ -50,7 +50,7 @@ class Socket {
                 totalAmount
                 remainingAmount
                 orders {
-                   id
+                  id
                   user
                   name
                   price
