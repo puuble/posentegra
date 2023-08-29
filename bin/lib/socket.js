@@ -26,11 +26,11 @@ class Socket {
   }
   async tableDetail(data) {
     try {
-      let {message} = data;
-      let type = message.type;
-      let search = message.search;
-      let tabs = [];
-      let tickets = [];
+      let { message } = data
+      let type = message.type
+      let search = message.search
+      let tabs = []
+      let tickets = []
       let q = `{
         getEntities(type: "${type}", search: "${search}") {
           id
@@ -38,13 +38,13 @@ class Socket {
           name
         }
         
-      }`;
+      }`
 
-      let entities = await getQuery(q);
-      if (entities["getEntities"].length > 0) {
-        let table = entities["getEntities"][0];
+      let entities = await getQuery(q)
+      if (entities['getEntities'].length > 0) {
+        let table = entities['getEntities'][0]
         let q2 = `{
-            getTickets(isClosed: false,entities: {entityType: "${type}", name: "${table["name"]}"}) {
+            getTickets(isClosed: false,entities: {entityType: "${type}", name: "${table['name']}"}) {
                 id
                 uid
                 totalAmount
@@ -59,23 +59,25 @@ class Socket {
                 }
                 
               }
-        }`;
-        tickets = await getQuery(q2);
+        }`
+        tickets = await getQuery(q2)
       }
       let result = {
         message: {
           tickets,
           entities,
+          search,
         },
-        sender: data["user"]["id"],
+
+        sender: data['user']['id'],
         receiver: data.receiver,
         channel: data.channel,
         broadcast: true,
-      };
-      await this.api.send(result);
+      }
+      await this.api.send(result)
     } catch (e) {
-      console.log(e);
-      res.send(e);
+      console.log(e)
+      res.send(e)
     }
   }
   async createMenu(data) {
