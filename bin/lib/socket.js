@@ -446,24 +446,9 @@ class Socket {
       if (_.has(res['getMenu'], 'categories')) {
         if (_.isArray(res['getMenu']['categories'])) {
           let categories = res['getMenu']['categories']
-          console.log(categories)
-          await asyncForEach(categories, async (cat) => {
-            console.log(cat, 'cat')
-            if (_.has(cat['menuItems'])) {
-              await asyncForEach(cat['menuItems'], async (prod) => {
-                let productId = prod['product']['id']
-                let portion = prod['product']['id']
-                let qTag = await getQuery(
-                  `{orderTags:getOrderTagGroups(productId:${productId},portion:"${portion}",hidden:false){name,tags{name}}}`,
-                  'orderTags'
-                )
-                if (!_.hasIn(orderTags, productId)) {
-                  orderTags[productId] = []
-                }
 
-                orderTags[productId].push(qTag)
-              })
-            }
+          await asyncForEach(categories, async (cat) => {
+            console.log(cat, 'cat2')
           })
         }
       }
