@@ -460,7 +460,7 @@ class Socket {
                   orderTags[productId] = []
                 }
 
-                orderTags[productId].push(gTag)
+                orderTags[productId].push(qTag)
               })
             }
           })
