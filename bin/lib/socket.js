@@ -441,7 +441,7 @@ class Socket {
     console.log(data['message']['query'])
     let res = await q.getQueryWithText(data['message']['query'])
     console.log(res, 'test')
-    await fs.writeFileSync(data.channel + '.json', JSON.stringify(res))
+
     if (_.isArray(res)) {
       // await asyncForEach(products, async (products) => {})
     }
