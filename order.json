@@ -1,0 +1,11 @@
+{
+    "message": {
+        "pos_ticket": 460689,
+        "orderId": 33
+    },
+    "type": "messagevar",
+    "channel": "order",
+    "sender": true,
+    "receiver": "64ec61ef15371de9190c78eb",
+    "broadcast": false
+}
