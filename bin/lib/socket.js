@@ -449,7 +449,7 @@ class Socket {
 
           await asyncForEach(categories, async (cat) => {
             await asyncForEach(cat['menuItems'], async (prod) => {
-              orderTags[productId].push(prod)
+              orderTags.push(prod)
             })
           })
         }
