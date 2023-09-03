@@ -4,7 +4,6 @@ const Query = require('./query')
 const _ = require('lodash')
 const { exec } = require('child_process')
 let p = './OnayBekliyor.wav'
-let fs = require('fs')
 
 async function getQuery(qry, key = false) {
   const q = new Query()
@@ -447,16 +446,20 @@ class Socket {
       if (_.has(res['getMenu'], 'categories')) {
         if (_.isArray(res['getMenu']['categories'])) {
           let categories = res['getMenu']['categories']
-          console.log(categories[0], 'cat 0')
-          await fs.writeFileSync('test.json', JSON.stringify(categories[0]))
-          await asyncForEach(categories, async (cat, index) => {
-            await fs.writeFileSync(
-              'test-' + index + '.json',
-              JSON.stringify(cat)
-            )
 
+          await asyncForEach(categories, async (cat) => {
             await asyncForEach(cat['menuItems'], async (prod) => {
-              console.log(prod, 'prod')
+              let productId = prod['product']['id']
+              let portion = prod['product']['id']
+              let qTag = await getQuery(
+                `{orderTags:getOrderTagGroups(productId:${productId},portion:"${portion}",hidden:false){name,tags{name}}}`,
+                'orderTags'
+              )
+              if (!_.hasIn(orderTags, productId)) {
+                orderTags[productId] = []
+              }
+
+              orderTags[productId].push(qTag)
             })
           })
         }
