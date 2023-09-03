@@ -446,9 +446,8 @@ class Socket {
       if (_.has(res['getMenu'], 'categories')) {
         if (_.isArray(res['getMenu']['categories'])) {
           let categories = res['getMenu']['categories']
-
+          console.log(categories[0], 'cat 0')
           await asyncForEach(categories, async (cat) => {
-            console.log(cat, 'cat')
             if (_.has(cat['menuItems'])) {
               await asyncForEach(cat['menuItems'], async (prod) => {
                 console.log(prod, 'prod')
