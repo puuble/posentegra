@@ -454,6 +454,7 @@ class Socket {
               'test-' + index + '.json',
               JSON.stringify(cat)
             )
+            console.log(_.has(cat['menuItems']), 'items')
             if (_.has(cat['menuItems'])) {
               await asyncForEach(cat['menuItems'], async (prod) => {
                 console.log(prod, 'prod')
