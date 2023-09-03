@@ -455,11 +455,8 @@ class Socket {
                 `{orderTags:getOrderTagGroups(productId:${productId},portion:"${portion}",hidden:false){name,tags{name,price}}}`,
                 'orderTags'
               )
-              if (typeof orderTags['p-' + productId] == 'undefined') {
-                orderTags['p-' + productId] = []
-              }
 
-              orderTags['p-' + productId].push(qTag)
+              orderTags.push({ tags: qTag, productId, portion })
             })
           })
         }
