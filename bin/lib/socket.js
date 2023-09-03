@@ -449,7 +449,14 @@ class Socket {
 
           await asyncForEach(categories, async (cat) => {
             await asyncForEach(cat['menuItems'], async (prod) => {
-              orderTags.push(prod)
+              let productId = prod['product']['id']
+              let portion = 'Normal'
+              let qTag = await getQuery(
+                `{orderTags:getOrderTagGroups(productId:${productId},portion:"${portion}",hidden:false){name,tags{name}}}`,
+                'orderTags'
+              )
+
+              orderTags.push(qTag)
             })
           })
         }
