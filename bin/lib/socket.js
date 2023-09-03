@@ -448,18 +448,7 @@ class Socket {
           let categories = res['getMenu']['categories']
 
           await asyncForEach(categories, async (prod) => {
-            console.log(prod, 'prod')
-            let productId = prod['product']['id']
-            let portion = prod['product']['id']
-            let qTag = await getQuery(
-              `{orderTags:getOrderTagGroups(productId:${productId},portion:"${portion}",hidden:false){name,tags{name}}}`,
-              'orderTags'
-            )
-            if (!_.hasIn(orderTags, productId)) {
-              orderTags[productId] = []
-            }
-
-            orderTags[productId].push(qTag)
+            console.log(prod, 'cat')
           })
         }
       }
