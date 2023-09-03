@@ -441,15 +441,38 @@ class Socket {
     console.log(data['message']['query'])
     let res = await q.getQueryWithText(data['message']['query'])
     console.log(res, 'test')
+    let orderTags = []
+    if (_.has(res, 'getMenu')) {
+      if (_.has(res, 'categories')) {
+        if (_.isArray(res['getMenu']['categories'])) {
+          let categories = res['getMenu']['categories']
+          console.log(categories)
+          await asyncForEach(categories, async (cat) => {
+            if (_.has(cat['menuItems'])) {
+              await asyncForEach(cat['menuItems'], async (prod) => {
+                let productId = prod['product']['id']
+                let portion = prod['product']['id']
+                let qTag = await getQuery(
+                  `{orderTags:getOrderTagGroups(productId:${productId},portion:"${portion}",hidden:false){name,tags{name}}}`,
+                  'orderTags'
+                )
+                if (!_.hasIn(orderTags, productId)) {
+                  orderTags[productId] = []
+                }
 
-    if (_.isArray(res)) {
+                orderTags[productId].push(gTag)
+              })
+            }
+          })
+        }
+      }
       // await asyncForEach(products, async (products) => {})
     }
 
     let result = {
       message: {
         result: res,
-        message: data['message'],
+        message: orderTags,
       },
       sender: data['user']['id'],
       receiver: data.receiver,
