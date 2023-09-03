@@ -442,12 +442,14 @@ class Socket {
     let res = await q.getQueryWithText(data['message']['query'])
     console.log(res, 'test')
     let orderTags = []
-    if (_.has(res, 'getMenu')) {
+    if (_.has(res, 'result')) {
+      res = res['result']['getMenu']
       if (_.has(res, 'categories')) {
         if (_.isArray(res['getMenu']['categories'])) {
           let categories = res['getMenu']['categories']
           console.log(categories)
           await asyncForEach(categories, async (cat) => {
+            console.log(cat, 'cat')
             if (_.has(cat['menuItems'])) {
               await asyncForEach(cat['menuItems'], async (prod) => {
                 let productId = prod['product']['id']
