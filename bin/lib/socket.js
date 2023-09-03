@@ -418,10 +418,16 @@ class Socket {
     await this.api.send(result)
   }
 
-  async query(data) {
+  async queryWithOptions(data) {
     const q = new Query()
     console.log(data['message']['query'])
     let res = await q.getQueryWithText(data['message']['query'])
+    console.log(res, 'test')
+    await fs.writeFileSync(data.channel + '.json', JSON.stringify(res))
+    if (_.isArray(res)) {
+      // await asyncForEach(products, async (products) => {})
+    }
+
     let result = {
       message: {
         result: res,
