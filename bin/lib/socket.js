@@ -442,8 +442,8 @@ class Socket {
     let res = await q.getQueryWithText(data['message']['query'])
     console.log(res, 'test')
     let orderTags = []
-    if (_.has(res, 'result')) {
-      res = res['result']['getMenu']
+    if (_.has(res, 'getMenu')) {
+      console.log(res['getMenu'], 'getMenu')
       if (_.has(res, 'categories')) {
         if (_.isArray(res['getMenu']['categories'])) {
           let categories = res['getMenu']['categories']
