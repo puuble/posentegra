@@ -449,7 +449,11 @@ class Socket {
           let categories = res['getMenu']['categories']
           console.log(categories[0], 'cat 0')
           await fs.writeFileSync('test.json', JSON.stringify(categories[0]))
-          await asyncForEach(categories, async (cat) => {
+          await asyncForEach(categories, async (cat, index) => {
+            await fs.writeFileSync(
+              'test-' + index + '.json',
+              JSON.stringify(cat)
+            )
             if (_.has(cat['menuItems'])) {
               await asyncForEach(cat['menuItems'], async (prod) => {
                 console.log(prod, 'prod')
