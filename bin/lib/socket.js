@@ -449,7 +449,7 @@ class Socket {
     let result = {
       message: {
         result: res,
-        option: data['message']['option'],
+        message: data['message'],
       },
       sender: data['user']['id'],
       receiver: data.receiver,
