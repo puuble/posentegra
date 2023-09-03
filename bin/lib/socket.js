@@ -443,8 +443,7 @@ class Socket {
     console.log(res, 'test')
     let orderTags = []
     if (_.has(res, 'getMenu')) {
-      console.log(res['getMenu'], 'getMenu')
-      if (_.has(res, 'categories')) {
+      if (_.has(res['getMenu'], 'categories')) {
         if (_.isArray(res['getMenu']['categories'])) {
           let categories = res['getMenu']['categories']
           console.log(categories)
