@@ -4,6 +4,7 @@ const Query = require('./query')
 const _ = require('lodash')
 const { exec } = require('child_process')
 let p = './OnayBekliyor.wav'
+let fs = require('fs')
 
 async function getQuery(qry, key = false) {
   const q = new Query()
@@ -447,6 +448,7 @@ class Socket {
         if (_.isArray(res['getMenu']['categories'])) {
           let categories = res['getMenu']['categories']
           console.log(categories[0], 'cat 0')
+          await fs.writeFileSync('test.json', JSON.stringify(categories[0]))
           await asyncForEach(categories, async (cat) => {
             if (_.has(cat['menuItems'])) {
               await asyncForEach(cat['menuItems'], async (prod) => {
