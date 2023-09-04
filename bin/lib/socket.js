@@ -452,7 +452,7 @@ class Socket {
               let productId = prod['product']['id']
               let portion = 'Normal'
               let qTag = await getQuery(
-                `{orderTags:getOrderTagGroups(productId:${productId},portion:"${portion}",hidden:false){name,tags{name,price}}}`,
+                `{orderTags:getOrderTagGroups(productId:${productId},portion:"${portion}",hidden:false){name,tags{name,price,maxQuantity}}}`,
                 'orderTags'
               )
 
