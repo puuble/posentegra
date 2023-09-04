@@ -472,7 +472,7 @@ class Socket {
       sender: data['user']['id'],
       receiver: data.receiver,
       channel: data.channel,
-      broadcast: false,
+      broadcast: true,
     }
     console.log(result, data, 'resultoquery')
     await this.api.send(result)
