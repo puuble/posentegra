@@ -438,9 +438,9 @@ class Socket {
 
   async queryWithOptions(data) {
     const q = new Query()
-    console.log(data['message']['query'])
+
     let res = await q.getQueryWithText(data['message']['query'])
-    console.log(res, 'test')
+
     let orderTags = []
     if (_.has(res, 'getMenu')) {
       if (_.has(res['getMenu'], 'categories')) {
