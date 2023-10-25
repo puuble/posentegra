@@ -1,8 +1,13 @@
-const PusherClient = require('./bin/lib/pusher')
-const pusher = new PusherClient()
+const PusherClient = require("./bin/lib/pusher");
+const pusher = new PusherClient();
+const player = require("play-sound")();
 
 async function main() {
-  await pusher.test()
+  await pusher.playSound();
 }
 
-main()
+player.play("./images/getir.mp3", (error) => {
+  if (error) {
+    console.error("Error playing sound:", error);
+  }
+});
