@@ -111,7 +111,7 @@ router.get("/push", async (req, res, next) => {
 
     let frm = {
       message: {
-        notification: { title: req.query.title, body: req.query.body },
+        notification: { title: req.query.title, body: req.query.body, deep_link: "https://bossentegra.com/dashboard" },
         data: {
           pin: req.query.pin,
           icon: req.query.icon,
