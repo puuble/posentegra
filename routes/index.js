@@ -111,9 +111,10 @@ router.get("/push", async (req, res, next) => {
 
     let frm = {
       message: {
-        notification: { title: req.query.title, body: req.query.body, icon: req.query.icon },
+        notification: { title: req.query.title, body: req.query.body },
         data: {
           pin: req.query.pin,
+          icon: req.query.icon,
         },
       },
       channel: "notification",
