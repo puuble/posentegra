@@ -409,7 +409,7 @@ class Socket {
     let result = {
       message: {
         result: res,
-        option: data["message"]["option"],
+        //option: data["message"]["option"],
       },
       sender: data["user"]["id"],
       receiver: data.receiver,
