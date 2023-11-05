@@ -399,6 +399,8 @@ class Socket {
     // await this.stopSound()
   }
 
+  async onay(data) {}
+
   async report(data) {
     const q = new Query();
     console.log(data["message"]["query"]);
@@ -451,10 +453,7 @@ class Socket {
             await asyncForEach(cat["menuItems"], async (prod) => {
               let productId = prod["product"]["id"];
               let portion = "Normal";
-              let qTag = await getQuery(
-                `{orderTags:getOrderTagGroups(productId:${productId},portion:"${portion}",hidden:false){name, max min tags{name,price,maxQuantity}}}`,
-                "orderTags"
-              );
+              let qTag = await getQuery(`{orderTags:getOrderTagGroups(productId:${productId},portion:"${portion}",hidden:false){name, max min tags{name,price,maxQuantity}}}`, "orderTags");
 
               orderTags.push({ tags: qTag, productId, portion });
             });

@@ -104,6 +104,30 @@ router.get("/raporGonder", async (req, res, next) => {
     console.log(error);
   }
 });
+router.get("/push", async (req, res, next) => {
+  try {
+    const env = await getEnv();
+    let api = new Api();
+    console.log(req.query.name);
+    let frm = {
+      message: {
+        notification: { title: req.query.title, body: req.query.body, icon: req.query.icon },
+        data: {
+          pin: req.query.pin,
+        },
+      },
+      channel: "notification",
+      sender: env.userId,
+      receiver: env.userId,
+      broadcast: false,
+    };
+    console.log(frm);
+    await api.send(frm);
+    return res.json({ success: true });
+  } catch (error) {
+    console.log(error);
+  }
+});
 
 router.post("/upload", async (req, res) => {
   let env = await getEnv();
