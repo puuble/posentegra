@@ -108,7 +108,7 @@ router.get("/push", async (req, res, next) => {
   try {
     const env = await getEnv();
     let api = new Api();
-    console.log(req.query.name);
+
     let frm = {
       message: {
         notification: { title: req.query.title, body: req.query.body, icon: req.query.icon },
