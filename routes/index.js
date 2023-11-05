@@ -111,7 +111,13 @@ router.get("/push", async (req, res, next) => {
 
     let frm = {
       message: {
-        notification: { title: req.query.title, body: req.query.body, deep_link: "https://bossentegra.com/dashboard", hide_notification_if_site_has_focus: true },
+        notification: {
+          title: req.query.title,
+          body: req.query.body,
+          icon: "https://posentegra.com/images/logo256.png",
+          deep_link: "https://bossentegra.com/notifications",
+          hide_notification_if_site_has_focus: true,
+        },
         data: {
           pin: req.query.pin,
           icon: req.query.icon,
