@@ -36,6 +36,10 @@ router.get("/sendAgain", async function (req, res) {
   return res.json(sonuc);
 });
 
+router.get("/mc", async function (req, res) {
+  res.sendFile(path.join(__dirname, "../dist2", "index.html"));
+});
+
 router.get("/odemeTipiGonder", async (req, res, next) => {
   let env = await getEnv();
   let result = {
