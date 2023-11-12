@@ -12,6 +12,13 @@ async function getQuery(qry, key = false) {
   console.log(res, "res");
   return res;
 }
+async function getMutation(mutation, key = false) {
+  const q = new Query();
+  console.log(q, "quers");
+  let res = await q.getMutationWithText(mutation, key);
+  console.log(res, "resmutation");
+  return res;
+}
 
 class Socket {
   constructor() {
@@ -417,6 +424,24 @@ class Socket {
       broadcast: true,
     };
     console.log(result, data, "resultoquery");
+    await this.api.send(result);
+  }
+
+  async mutation(data) {
+    const q = new Query();
+    console.log(data["message"]["query"]);
+    let res = await q.getMutationWithText(data["message"]["query"]);
+    let result = {
+      message: {
+        result: res,
+        option: data["message"]["option"],
+      },
+      sender: data["user"]["id"],
+      receiver: data.receiver,
+      channel: data.channel,
+      broadcast: false,
+    };
+    console.log(result, data, "mutation");
     await this.api.send(result);
   }
 
