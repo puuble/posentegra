@@ -10,7 +10,7 @@ const SERVER = process.env.SERVER;
 class PusherClient {
   constructor() {
     this.pusher = new Pusher(process.env.PUSHER_APP_KEY, {
-      cluster: process.env.PUSHER_APP_CLUSTER,
+      cluster: "mt1",
       authEndpoint: "/api/broadcasting/auth",
       authorizer: (channel, options) => {
         return {
@@ -42,7 +42,7 @@ class PusherClient {
           let channel = `private-trigger.${this.env.userId}`;
           let event = "Trigger";
           let channelUser = this.pusher.subscribe(channel);
-
+          console.log(channel, "channel");
           channelUser.bind("pusher:subscription_succeeded", async () => {
             connected = true;
             console.log("baglandi", channel, connected);
