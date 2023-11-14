@@ -10,7 +10,7 @@ const SERVER = process.env.SERVER;
 class PusherClient {
   constructor() {
     this.pusher = new Pusher(process.env.PUSHER_APP_KEY, {
-      cluster: "eu",
+      cluster: process.env.PUSHER_APP_CLUSTER,
       authEndpoint: "/api/broadcasting/auth",
       authorizer: (channel, options) => {
         return {
