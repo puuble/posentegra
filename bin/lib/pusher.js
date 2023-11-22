@@ -12,6 +12,7 @@ class PusherClient {
     this.pusher = new Pusher(process.env.PUSHER_APP_KEY, {
       cluster: process.env.PUSHER_APP_CLUSTER,
       authEndpoint: "/api/broadcasting/auth",
+
       authorizer: (channel, options) => {
         return {
           authorize: (socketId, callback) => {

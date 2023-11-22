@@ -183,7 +183,7 @@ class Socket {
           channel: data["channel"],
           sender: data["user"]["id"],
           receiver: data["receiver"],
-          broadcast: false,
+          broadcast: true,
         };
         if (_.has(this.env.restaurants, restaurantId)) {
           if (slug == "ty") {
