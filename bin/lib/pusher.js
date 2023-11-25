@@ -53,7 +53,7 @@ class PusherClient {
           });
 
           this.pusher.connection.bind("connected", function () {
-            m_exec(`pm2 restart all`);
+            m_exec(`pm2 restart all`); //asdsad
           });
 
           channelUser.bind(event, async (data) => {
