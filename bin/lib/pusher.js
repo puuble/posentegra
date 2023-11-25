@@ -9,6 +9,8 @@ const DB = require("./database");
 const SERVER = process.env.SERVER;
 class PusherClient {
   constructor(key, cluster) {
+    this.key = key;
+    this.cluster = cluster;
     this.pusher = new Pusher(key, {
       cluster,
       authEndpoint: "/api/broadcasting/auth",
@@ -44,7 +46,7 @@ class PusherClient {
           let channelUser = this.pusher.subscribe(channel);
 
           channelUser.bind("pusher:subscription_succeeded", async () => {
-            console.log("baglandi", channel);
+            console.log("baglandi", this.key, this.cluster, channel);
             channelUser.trigger("client-connected", {
               connected: true,
             });
