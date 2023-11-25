@@ -41,6 +41,7 @@ router.get("/status", async function (req, res) {
 });
 router.post("/offline", async function (req, res) {
   m_exec(`pm2 restart all`);
+  return res.json({ success: false });
 });
 
 router.get("/odemeTipiGonder", async (req, res, next) => {
