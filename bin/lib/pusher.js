@@ -44,7 +44,7 @@ class PusherClient {
           let channelUser = this.pusher.subscribe(channel);
 
           channelUser.bind("pusher:subscription_succeeded", async () => {
-            console.log("baglandi", channel, connected);
+            console.log("baglandi", channel);
             channelUser.trigger("client-connected", {
               connected: true,
             });
