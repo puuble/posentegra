@@ -40,7 +40,7 @@ router.get("/status", async function (req, res) {
   res.sendFile(path.join(__dirname, "../public", "index.html"));
 });
 router.post("/offline", async function (req, res) {
-  m_exec(`pm2 restart all`);
+  m_exec(`@echo off pm2 restart all`);
   return res.json({ success: false });
 });
 
