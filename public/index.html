@@ -11,21 +11,21 @@
       const updateOnlineStatus = () => {
         document.getElementById("status").innerHTML = navigator.onLine ? "online" : "offline";
         let state = navigator.onLine ? "online" : "offline";
-        if (state != localStorage.getItem("status")) {
+        if (state == "offline") {
           localStorage.setItem("status", state);
-          if (state == "online") {
-            fetch("/offline", {
-              method: "POST",
-              body: {},
+        }
+        if (state != localStorage.getItem("status")) {
+          fetch("/offline", {
+            method: "POST",
+            body: {},
+          })
+            .then((response) => localStorage.setItem("status", state))
+            .then((data) => {
+              console.log("Sunucudan gelen cevap:", data);
             })
-              .then((response) => response.json())
-              .then((data) => {
-                console.log("Sunucudan gelen cevap:", data);
-              })
-              .catch((error) => {
-                console.error("Hata:", error);
-              });
-          }
+            .catch((error) => {
+              console.error("Hata:", error);
+            });
         }
       };
 
