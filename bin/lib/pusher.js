@@ -44,6 +44,13 @@ class PusherClient {
           let event = "Trigger";
           let channelUser = this.pusher.subscribe(channel);
 
+          this.pusher.connection.bind("connected", function () {
+            if (connected == false) {
+              m_exec(`pm2 restart all`);
+              connected = true;
+            }
+          });
+
           channelUser.bind("pusher:subscription_succeeded", async () => {
             connected = true;
             console.log("baglandi", channel, connected);
@@ -52,11 +59,6 @@ class PusherClient {
             });
           });
 
-          this.pusher.connection.bind("connected", function () {
-            if (connected == false) {
-              m_exec(`pm2 restart all`);
-            }
-          });
           this.pusher.connection.bind("disconnected", function () {
             connected = false;
           });
