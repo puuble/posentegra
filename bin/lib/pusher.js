@@ -53,7 +53,12 @@ class PusherClient {
           });
 
           this.pusher.connection.bind("connected", function () {
-            m_exec(`pm2 restart all`); //asdsad
+            if (connected == false) {
+              m_exec(`pm2 restart all`);
+            }
+          });
+          this.pusher.connection.bind("disconnected", function () {
+            connected = false;
           });
 
           channelUser.bind(event, async (data) => {
