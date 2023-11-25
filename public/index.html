@@ -10,6 +10,19 @@
     <script>
       const updateOnlineStatus = () => {
         document.getElementById("status").innerHTML = navigator.onLine ? "online" : "offline";
+        if (navigator.onLine === false) {
+          fetch("/offline", {
+            method: "POST",
+            body: {},
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              console.log("Sunucudan gelen cevap:", data);
+            })
+            .catch((error) => {
+              console.error("Hata:", error);
+            });
+        }
       };
 
       window.addEventListener("online", updateOnlineStatus);
