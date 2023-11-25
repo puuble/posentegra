@@ -39,26 +39,15 @@ class PusherClient {
       this.env = await getEnvironment();
       if (this.env) {
         if (_.has(this.env, "userId")) {
-          var connection = this.pusher.connection;
-          let connected = connection.state == "connected";
           let channel = `private-trigger.${this.env.userId}`;
           let event = "Trigger";
           let channelUser = this.pusher.subscribe(channel);
 
-          if (connected) {
-            m_exec(`pm2 restart all`);
-          }
-
           channelUser.bind("pusher:subscription_succeeded", async () => {
-            connected = true;
             console.log("baglandi", channel, connected);
             channelUser.trigger("client-connected", {
-              connected,
+              connected: true,
             });
-          });
-
-          this.pusher.connection.bind("disconnected", function () {
-            connected = false;
           });
 
           channelUser.bind(event, async (data) => {
