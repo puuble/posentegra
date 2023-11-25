@@ -10,18 +10,22 @@
     <script>
       const updateOnlineStatus = () => {
         document.getElementById("status").innerHTML = navigator.onLine ? "online" : "offline";
-        if (navigator.onLine === false) {
-          fetch("/offline", {
-            method: "POST",
-            body: {},
-          })
-            .then((response) => response.json())
-            .then((data) => {
-              console.log("Sunucudan gelen cevap:", data);
+        let state = navigator.onLine ? "online" : "offline";
+        if (state != localStorage.getItem("status")) {
+          localStorage.setItem("status", state);
+          if (state == "online") {
+            fetch("/offline", {
+              method: "POST",
+              body: {},
             })
-            .catch((error) => {
-              console.error("Hata:", error);
-            });
+              .then((response) => response.json())
+              .then((data) => {
+                console.log("Sunucudan gelen cevap:", data);
+              })
+              .catch((error) => {
+                console.error("Hata:", error);
+              });
+          }
         }
       };
 
