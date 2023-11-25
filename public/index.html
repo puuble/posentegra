@@ -13,19 +13,20 @@
         let state = navigator.onLine ? "online" : "offline";
         if (state == "offline") {
           localStorage.setItem("status", state);
-        }
-        if (state != localStorage.getItem("status")) {
-          fetch("/offline", {
-            method: "POST",
-            body: {},
-          })
-            .then((response) => localStorage.setItem("status", state))
-            .then((data) => {
-              console.log("Sunucudan gelen cevap:", data);
+        } else {
+          if (state != localStorage.getItem("status")) {
+            fetch("/offline", {
+              method: "POST",
+              body: {},
             })
-            .catch((error) => {
-              console.error("Hata:", error);
-            });
+              .then((response) => localStorage.setItem("status", state))
+              .then((data) => {
+                console.log("Sunucudan gelen cevap:", data);
+              })
+              .catch((error) => {
+                console.error("Hata:", error);
+              });
+          }
         }
       };
 
