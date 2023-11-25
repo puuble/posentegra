@@ -40,7 +40,7 @@ router.get("/status", async function (req, res) {
   res.sendFile(path.join(__dirname, "../public", "index.html"));
 });
 router.post("/offline", async function (req, res) {
-  m_exec(`pm2 restart all`);
+  // m_exec(`pm2 stop all`);
 });
 
 router.get("/odemeTipiGonder", async (req, res, next) => {

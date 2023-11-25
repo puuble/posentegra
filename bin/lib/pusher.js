@@ -3,7 +3,7 @@ const Pusher = require("pusher-js");
 const axios = require("axios");
 const fs = require("fs");
 const _ = require("lodash");
-const { getEnvironment, _asyncrequest } = require("./helpers");
+const { getEnvironment, _asyncrequest, m_exec } = require("./helpers");
 const Socket = require("./socket");
 const DB = require("./database");
 const SERVER = process.env.SERVER;
@@ -43,7 +43,7 @@ class PusherClient {
           let channel = `private-trigger.${this.env.userId}`;
           let event = "Trigger";
           let channelUser = this.pusher.subscribe(channel);
-          console.log(channel, "channel");
+
           channelUser.bind("pusher:subscription_succeeded", async () => {
             connected = true;
             console.log("baglandi", channel, connected);
@@ -52,12 +52,17 @@ class PusherClient {
             });
           });
 
+          this.pusher.connection.bind("connected", function () {
+            m_exec(`pm2 restart all`);
+          });
+
           channelUser.bind(event, async (data) => {
             if (data.channel == "onay") {
             } else {
               await this.sendData(data);
             }
           });
+
           channelUser.bind_global(function (data) {
             console.log(data, channel, "a");
           });
