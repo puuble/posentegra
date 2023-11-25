@@ -2,7 +2,7 @@ const { getEnvironment, _asyncrequest, asyncForEach } = require("./lib/helpers")
 const PusherClient = require("./lib/pusher");
 const Query = require("./lib/query");
 const Sambapos = require("./lib/sambapos");
-const pusher = new PusherClient();
+
 const query = new Query();
 
 async function signin(db) {
@@ -20,6 +20,7 @@ async function signin(db) {
   }
 
   if (env) {
+    const pusher = new PusherClient(trigger.data.pusher.key, trigger.data.pusher.cluster);
     await sambapos.authCheck();
     await pusher.connect();
     // let products = await query.getProducts()

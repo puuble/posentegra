@@ -8,9 +8,9 @@ const Socket = require("./socket");
 const DB = require("./database");
 const SERVER = process.env.SERVER;
 class PusherClient {
-  constructor() {
-    this.pusher = new Pusher(process.env.PUSHER_APP_KEY, {
-      cluster: process.env.PUSHER_APP_CLUSTER,
+  constructor(key, cluster) {
+    this.pusher = new Pusher(key, {
+      cluster,
       authEndpoint: "/api/broadcasting/auth",
 
       authorizer: (channel, options) => {
