@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="status"></div>
+    <script>
+      const updateOnlineStatus = () => {
+        document.getElementById("status").innerHTML = navigator.onLine ? "online" : "offline";
+      };
+
+      window.addEventListener("online", updateOnlineStatus);
+      window.addEventListener("offline", updateOnlineStatus);
+
+      updateOnlineStatus();
+    </script>
+  </body>
+</html>
