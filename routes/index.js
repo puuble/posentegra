@@ -37,7 +37,7 @@ router.get("/sendAgain", async function (req, res) {
 });
 
 router.get("/status", async function (req, res) {
-  res.sendFile(path.join(__dirname, "./public", "index.html"));
+  res.sendFile(path.join(__dirname, "../public", "index.html"));
 });
 
 router.get("/odemeTipiGonder", async (req, res, next) => {
