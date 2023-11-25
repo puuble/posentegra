@@ -45,7 +45,7 @@ class PusherClient {
           let event = "Trigger";
           let channelUser = this.pusher.subscribe(channel);
 
-          if (connected == false) {
+          if (connected) {
             m_exec(`pm2 restart all`);
           }
 
