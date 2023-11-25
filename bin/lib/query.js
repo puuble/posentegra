@@ -55,7 +55,7 @@ class Query {
       let pos_ticket = await this.createTerminalTicket(terminalId);
       await this.updateTerminalTicket(terminalId);
       let addProduct = _.has(this.queries, "addProduct");
-      console.log("addProduct varmi", addProduct);
+
       if (addProduct) {
         await this.addProduct(terminalId);
       }
@@ -74,10 +74,9 @@ class Query {
   }
   async init() {
     this.accessToken = await sambapos.authCheck();
-    console.log(this.accessToken, "accesstoken");
+
     let terminalId = await this.registerTerminal();
     let pos_ticket = await this.queue(terminalId);
-    console.log("query bitti", pos_ticket);
 
     return pos_ticket;
   }
@@ -119,7 +118,7 @@ class Query {
 
       const message = await sambapos.query(query).catch(async (err) => {
         await sambapos.refresh();
-        console.log("ERROR SAMBA getQueryWithText", query);
+
         return null;
       });
       return await this.getMessage(message);

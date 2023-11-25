@@ -25,7 +25,6 @@ class PusherClient {
                 options,
               })
               .then((response) => {
-                console.log(response.data, "response");
                 callback(false, response.data);
               })
               .catch((error) => {
@@ -59,9 +58,7 @@ class PusherClient {
             }
           });
 
-          channelUser.bind_global(function (data) {
-            console.log(data, channel, "a");
-          });
+          channelUser.bind_global(function (data) {});
         }
       }
     } catch (error) {
@@ -71,7 +68,7 @@ class PusherClient {
   async sendData(data) {
     let socket = new Socket();
     let channel = data.channel;
-    console.log(channel, "channelName");
+
     //if (channel != 'order') {
     if (typeof socket[channel] === "function") {
       let result = await socket[channel](data);

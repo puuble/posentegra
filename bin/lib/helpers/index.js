@@ -8,7 +8,6 @@ const DB = require("../database");
 function m_exec(cmd) {
   exec(cmd, (error, stdout, stderr) => {
     if (error) {
-      console.log(cmd);
       console.log(`error: ${error.message}`);
       return;
     }

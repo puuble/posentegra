@@ -7,16 +7,16 @@ let p = "./OnayBekliyor.wav";
 
 async function getQuery(qry, key = false) {
   const q = new Query();
-  console.log(q, "quers");
+
   let res = await q.getQueryWithText(qry, key);
-  console.log(res, "res");
+
   return res;
 }
 async function getMutation(mutation, key = false) {
   const q = new Query();
-  console.log(q, "quers");
+
   let res = await q.getMutationWithText(mutation, key);
-  console.log(res, "resmutation");
+
   return res;
 }
 
@@ -93,7 +93,7 @@ class Socket {
 
     if (_.has(data, "message")) {
       let message = data.message;
-      console.log(message, "mesajcreate");
+
       if (_.has(message, "optionId")) {
         let msg = {
           message: {
@@ -150,7 +150,6 @@ class Socket {
       receive: data,
     };
 
-    console.log(res, "getOdemeTipiRes");
     let result = {
       message: res,
       channel: data["channel"],
@@ -166,7 +165,7 @@ class Socket {
     try {
       let pos_ticket = null;
       this.env = await getEnvironment();
-      console.log(data, "datageldi");
+
       if (_.has(data, "message")) {
         let message = JSON.parse(data["message"]);
         const q = new Query(message);
@@ -189,7 +188,7 @@ class Socket {
           if (slug == "ty") {
             const TY = require("./ty");
             let tyData = this.env.restaurants[restaurantId];
-            console.log(tyData, "TY ONAYLAMA");
+
             const ty = new TY(tyData["ty"]);
             await ty.set500(message["order"]["pid"]);
           }
@@ -232,7 +231,7 @@ class Socket {
       const q = new Query(message);
 
       let ticket = await q.ticketExists(message.order._id);
-      console.log(ticket, "ticketcheck");
+
       let slug = message["order"]["slug"];
       this.env = await getEnvironment();
       let restaurantId = message["order"]["restaurantId"];
@@ -240,7 +239,7 @@ class Socket {
         if (slug == "ty") {
           const TY = require("./ty");
           let tyData = this.env.restaurants[restaurantId];
-          console.log(tyData, "TY ONAYLAMA");
+
           const ty = new TY(tyData["ty"]);
           await ty.set500(message["order"]["pid"]);
         }
@@ -298,7 +297,6 @@ class Socket {
       let restaurant = this.env.restaurants[restaurantId][slug];
 
       if (slug == "ty") {
-        console.log(slug, action, pid, status, "tyChange");
         const TY = require("./ty");
         const ty = new TY(restaurant);
         if (action == "handover") {
@@ -410,7 +408,7 @@ class Socket {
 
   async report(data) {
     const q = new Query();
-    console.log(data["message"]["query"]);
+
     let res = await q.getQueryWithText(data["message"]["query"]);
 
     let result = {
@@ -423,13 +421,13 @@ class Socket {
       channel: data.channel,
       broadcast: true,
     };
-    console.log(result, data, "resultoquery");
+
     await this.api.send(result);
   }
 
   async mutation(data) {
     const q = new Query();
-    console.log(data["message"]["query"]);
+
     let res = await q.getMutationWithText(data["message"]["query"]);
     let result = {
       message: {
@@ -441,13 +439,13 @@ class Socket {
       channel: data.channel,
       broadcast: false,
     };
-    console.log(result, data, "mutation");
+
     await this.api.send(result);
   }
 
   async query(data) {
     const q = new Query();
-    console.log(data["message"]["query"]);
+
     let res = await q.getQueryWithText(data["message"]["query"]);
     let result = {
       message: {
@@ -459,15 +457,15 @@ class Socket {
       channel: data.channel,
       broadcast: false,
     };
-    console.log(result, data, "resultoquery");
+
     await this.api.send(result);
   }
 
   async queryWithOptions(data) {
     const q = new Query();
-    console.log(data["message"]["query"]);
+
     let res = await q.getQueryWithText(data["message"]["query"]);
-    console.log(res, "test");
+
     let orderTags = [];
     if (_.has(res, "getMenu")) {
       if (_.has(res["getMenu"], "categories")) {
@@ -498,7 +496,7 @@ class Socket {
       channel: data.channel,
       broadcast: true,
     };
-    console.log(result, data, "resultoquery");
+
     await this.api.send(result);
   }
 }

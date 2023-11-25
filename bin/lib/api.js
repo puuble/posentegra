@@ -1,242 +1,242 @@
-const { getEnvironment, _asyncrequest, sendFileWithBody } = require('./helpers')
-const _ = require('lodash')
-const fs = require('fs')
+const { getEnvironment, _asyncrequest, sendFileWithBody } = require("./helpers");
+const _ = require("lodash");
+const fs = require("fs");
 class Api {
   constructor() {
-    this.env = null
-    this.logSwitch = false
+    this.env = null;
+    this.logSwitch = false;
   }
 
   async log(data, key = false) {
     if (this.logSwitch) {
-      console.log(data, key)
+      console.log(data, key);
     }
   }
   async sendRequest(route, req) {
     try {
-      this.env = await getEnvironment()
-      let result = await _asyncrequest(route, 'POST', req, {
-        Authorization: 'Bearer ' + this.env.token,
-      }).catch((e) => console.log('SERVERDAN', e.message))
+      this.env = await getEnvironment();
+      let result = await _asyncrequest(route, "POST", req, {
+        Authorization: "Bearer " + this.env.token,
+      }).catch((e) => console.log("SERVERDAN", e.message));
       if (!result) {
-        console.log('undefined result')
+        console.log("undefined result");
       }
-      return result
+      return result;
     } catch (error) {
-      console.log(error, 'api.sendRequest')
+      console.log(error, "api.sendRequest");
     }
   }
   async sendFile(formData, body) {
-    const SERVER = process.env.SERVER
-    let url = '/api/trigger'
+    const SERVER = process.env.SERVER;
+    let url = "/api/trigger";
 
     try {
-      this.env = await getEnvironment()
-      await sendFileWithBody(SERVER + url, 'POST', formData, body, {
-        Authorization: 'Bearer ' + this.env.token,
-      }).catch((e) => console.log('SERVERDAN', e.message))
+      this.env = await getEnvironment();
+      await sendFileWithBody(SERVER + url, "POST", formData, body, {
+        Authorization: "Bearer " + this.env.token,
+      }).catch((e) => console.log("SERVERDAN", e.message));
     } catch (error) {
-      console.log(error, 'sendFile')
+      console.log(error, "sendFile");
     }
   }
   async sendPosTicket(pos_ticket, pid) {
-    await this.sendRequest('/api/savePosTicket', 'POST', {
+    await this.sendRequest("/api/savePosTicket", "POST", {
       pos_ticket,
       pid,
-    })
+    });
   }
   async send(req) {
     try {
-      this.env = await getEnvironment()
-      fs.writeFileSync(req.channel + '.json', JSON.stringify(req))
-      let result = await _asyncrequest('/api/trigger', 'POST', req, {
-        Authorization: 'Bearer ' + this.env.token,
-      }).catch((e) => console.log('SERVERDAN', e.message))
+      this.env = await getEnvironment();
+      fs.writeFileSync(req.channel + ".json", JSON.stringify(req));
+      let result = await _asyncrequest("/api/trigger", "POST", req, {
+        Authorization: "Bearer " + this.env.token,
+      }).catch((e) => console.log("SERVERDAN", e.message));
       if (!result) {
-        console.log('undefined result')
+        console.log("undefined result");
       }
-      console.log(result, 'resultApi')
-      return result
+      console.log(result, "resultApi");
+      return result;
     } catch (error) {
-      console.log(error, 'api.send')
+      console.log(error, "api.send");
     }
   }
   async changeStatusOnServer(req) {
     try {
-      this.env = await getEnvironment()
-      let result = await _asyncrequest('/api/changeStatus', 'POST', req, {
-        Authorization: 'Bearer ' + this.env.token,
-      }).catch((e) => console.log('SERVERDAN', e.message))
-      return result
+      this.env = await getEnvironment();
+      let result = await _asyncrequest("/api/changeStatus", "POST", req, {
+        Authorization: "Bearer " + this.env.token,
+      }).catch((e) => console.log("SERVERDAN", e.message));
+      return result;
     } catch (error) {
-      console.log(error, 'api.send')
+      console.log(error, "api.send");
     }
   }
   async getRestaurants() {
     try {
-      this.env = await getEnvironment()
+      this.env = await getEnvironment();
       let result = await _asyncrequest(
-        '/api/user/restaurants',
-        'GET',
+        "/api/user/restaurants",
+        "GET",
         {},
         {
-          Authorization: 'Bearer ' + this.env.token,
+          Authorization: "Bearer " + this.env.token,
         }
-      ).catch((e) => console.log('SERVERDAN', e.message))
+      ).catch((e) => console.log("SERVERDAN", e.message));
       if (!result.success) {
-        return []
+        return [];
       }
-      return result.data
+      return result.data;
     } catch (error) {
-      console.log(error, 'api.send')
+      console.log(error, "api.send");
     }
   }
   async getOrders() {
     try {
-      this.env = await getEnvironment()
+      this.env = await getEnvironment();
       let result = await _asyncrequest(
-        '/api/orders',
-        'GET',
+        "/api/orders",
+        "GET",
         {},
         {
-          Authorization: 'Bearer ' + this.env.token,
+          Authorization: "Bearer " + this.env.token,
         }
-      ).catch((e) => console.log('SERVERDAN', e.message))
+      ).catch((e) => console.log("SERVERDAN", e.message));
 
-      console.log(result, 'res')
+      console.log(result, "res");
       if (!result.success) {
-        return []
+        return [];
       }
-      return result.data
+      return result.data;
     } catch (error) {
-      console.log(error, 'api.send')
+      console.log(error, "api.send");
     }
   }
   async loadDetail(id) {
     try {
-      this.env = await getEnvironment()
+      this.env = await getEnvironment();
       let result = await _asyncrequest(
-        '/api/orderDetail/' + id,
-        'GET',
+        "/api/orderDetail/" + id,
+        "GET",
         {},
         {
-          Authorization: 'Bearer ' + this.env.token,
+          Authorization: "Bearer " + this.env.token,
         }
-      ).catch((e) => console.log('SERVERDAN', e.message))
+      ).catch((e) => console.log("SERVERDAN", e.message));
 
-      return result
+      return result;
     } catch (error) {
-      console.log(error, 'api.send')
+      console.log(error, "api.send");
     }
   }
   async getReasons(id) {
     try {
-      this.env = await getEnvironment()
+      this.env = await getEnvironment();
       let result = await _asyncrequest(
-        '/api/getReasons/' + id,
-        'GET',
+        "/api/getReasons/" + id,
+        "GET",
         {},
         {
-          Authorization: 'Bearer ' + this.env.token,
+          Authorization: "Bearer " + this.env.token,
         }
-      ).catch((e) => console.log('SERVERDAN', e.message))
+      ).catch((e) => console.log("SERVERDAN", e.message));
 
-      return result
+      return result;
     } catch (error) {
-      console.log(error, 'api.send')
+      console.log(error, "api.send");
     }
   }
   async onayla(id) {
     try {
-      this.env = await getEnvironment()
+      this.env = await getEnvironment();
       let result = await _asyncrequest(
-        '/api/order/verify/' + id,
-        'GET',
+        "/api/order/verify/" + id,
+        "GET",
         {},
         {
-          Authorization: 'Bearer ' + this.env.token,
+          Authorization: "Bearer " + this.env.token,
         }
-      ).catch((e) => console.log('SERVERDAN', e.message))
+      ).catch((e) => console.log("SERVERDAN", e.message));
 
-      return result
+      return result;
     } catch (error) {
-      console.log(error, 'api.send')
+      console.log(error, "api.send");
     }
   }
   async again(id) {
     try {
-      this.env = await getEnvironment()
+      this.env = await getEnvironment();
       let result = await _asyncrequest(
-        '/api/again?id=' + id,
-        'GET',
+        "/api/again?id=" + id,
+        "GET",
         {},
         {
-          Authorization: 'Bearer ' + this.env.token,
+          Authorization: "Bearer " + this.env.token,
         }
-      ).catch((e) => console.log('SERVERDAN', e.message))
+      ).catch((e) => console.log("SERVERDAN", e.message));
 
-      return result
+      return result;
     } catch (error) {
-      console.log(error, 'api.send')
+      console.log(error, "api.send");
     }
   }
   async getProviders() {
     try {
-      this.env = await getEnvironment()
+      this.env = await getEnvironment();
       let result = await _asyncrequest(
-        '/api/restaurant/getProviders',
-        'GET',
+        "/api/restaurant/getProviders",
+        "GET",
         {},
         {
-          Authorization: 'Bearer ' + this.env.token,
+          Authorization: "Bearer " + this.env.token,
         }
-      ).catch((e) => console.log('SERVERDAN', e.message))
+      ).catch((e) => console.log("SERVERDAN", e.message));
 
-      return result
+      return result;
     } catch (error) {
-      console.log(error, 'api.send')
+      console.log(error, "api.send");
     }
   }
   async saveReason(reason, id) {
     try {
-      this.env = await getEnvironment()
+      this.env = await getEnvironment();
       let result = await _asyncrequest(
-        '/api/orderCancel/' + id,
-        'POST',
+        "/api/orderCancel/" + id,
+        "POST",
         {
           reason,
         },
         {
-          Authorization: 'Bearer ' + this.env.token,
+          Authorization: "Bearer " + this.env.token,
         }
-      ).catch((e) => console.log('SERVERDAN', e.message))
+      ).catch((e) => console.log("SERVERDAN", e.message));
 
-      return result
+      return result;
     } catch (error) {
-      console.log(error, 'api.send')
+      console.log(error, "api.send");
     }
   }
   async updateRestaurantStatus(providerId, status, field) {
     try {
-      this.env = await getEnvironment()
+      this.env = await getEnvironment();
       let result = await _asyncrequest(
-        '/api/restaurant/updateStatus',
-        'POST',
+        "/api/restaurant/updateStatus",
+        "POST",
         {
           providerId, //providerId
           status,
           field,
         },
         {
-          Authorization: 'Bearer ' + this.env.token,
+          Authorization: "Bearer " + this.env.token,
         }
-      ).catch((e) => console.log('SERVERDAN', e.message))
-      console.log(result, 'mm')
-      return result
+      ).catch((e) => console.log("SERVERDAN", e.message));
+
+      return result;
     } catch (error) {
-      console.log(error, 'api.send')
+      console.log(error, "api.send");
     }
   }
 }
 
-module.exports = Api
+module.exports = Api;
