@@ -235,7 +235,7 @@ class Query {
       };
 
       let queryString = await this.arrayToGraphQl(this.queries.updateTerminalTicket);
-      queryString = removeSpecialChar(queryString);
+      //queryString = removeSpecialChar(queryString);
       queryString = queryString.replace(/(^"|"$)/g, "");
       let q = await this.changeString(queryString, "{terminalId}", maps);
 
