@@ -33,6 +33,7 @@ class Sambapos {
     this.url = `http://${this.env.pos.host}:${this.env.pos.port}`;
 
     const url = `${this.url}/api/graphql`;
+    console.log(q, "q23");
     let response = await _asyncrequest(url, "POST", q, {
       "Content-Type": "application/json",
       Authorization: "Bearer " + this.access_token,
