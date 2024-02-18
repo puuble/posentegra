@@ -10,6 +10,8 @@
     <script>
       const updateOnlineStatus = () => {
         document.getElementById("status").innerHTML = navigator.onLine ? "online" : "offline";
+        var statusElement = document.getElementById("status");
+        statusElement.style.color = navigator.onLine ? "green" : "red";
         let state = navigator.onLine ? "online" : "offline";
         if (state == "offline") {
           localStorage.setItem("status", state);

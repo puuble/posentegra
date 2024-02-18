@@ -12,7 +12,7 @@ router.get("/upload-panel", async function (req, res) {
 });
 
 router.get("/", async function (req, res) {
-  res.sendFile(path.join(__dirname, "../dist", "index.html"));
+  res.sendFile(path.join(__dirname, "../public", "index.html"));
 });
 
 router.get("/onayKodu", async function (req, res) {
