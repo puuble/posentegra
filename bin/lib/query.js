@@ -20,6 +20,7 @@ async function changeNote(text) {
   return newString;
 }
 function removeSpecialChar(text) {
+  text = text.replace(/\\/g, "-");
   text = text.replace(/\\\\,/g, "\\,");
   return text.replace(/[&\/\\#,+$~%*?<>]/g, "");
 }
