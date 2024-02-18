@@ -20,8 +20,9 @@ async function changeNote(text) {
   return newString;
 }
 function removeSpecialChar(text) {
+  text.replace(/[&\/\\#,+$~%*?<>]/g, "");
   text = text.replace(/\\\\,/g, "\\,");
-  return text.replace(/[&\/\\#,+$~%*?<>]/g, "");
+  return text;
 }
 
 function convertToSlug(Text) {
@@ -236,11 +237,12 @@ class Query {
 
       let queryString = await this.arrayToGraphQl(this.queries.updateTerminalTicket);
 
+      console.log(queryString, "qrystring");
       queryString = queryString.replace(/(^"|"$)/g, "");
       let q = await this.changeString(queryString, "{terminalId}", maps);
 
       q = {
-        query: q,
+        query: removeSpecialChar(q),
         variables: null,
         operationName: "m",
       };
