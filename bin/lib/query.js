@@ -20,8 +20,6 @@ async function changeNote(text) {
   return newString;
 }
 function removeSpecialChar(text) {
-  console.log(text, "t");
-  text = text.replace(/\\/g, "");
   text = text.replace(/\\\\,/g, "\\,");
   return text.replace(/[&\/\\#,+$~%*?<>]/g, "");
 }
@@ -260,6 +258,7 @@ class Query {
     try {
       let d = this.queries.updateEntityCustomData;
 
+      console.log(d, "d23");
       if (Array.isArray(d)) {
         if (d.length > 0) {
           await asyncForEach(d, async (c) => {
