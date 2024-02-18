@@ -408,7 +408,7 @@ class Socket {
 
   async report(data) {
     const q = new Query();
-
+    console.log(data["message"]["query"], "reportquery");
     let res = await q.getQueryWithText(data["message"]["query"]);
 
     let result = {
