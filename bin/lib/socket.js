@@ -446,7 +446,7 @@ class Socket {
   async query(data) {
     const q = new Query();
 
-    console.log(data["message"]["query"]);
+    console.log(data["message"]["query"], "query2");
     let res = await q.getQueryWithText(data["message"]["query"]);
     let result = {
       message: {
@@ -464,7 +464,7 @@ class Socket {
 
   async queryWithOptions(data) {
     const q = new Query();
-    console.log(data["message"]["query"]);
+    console.log(data["message"]["query"], "query");
     let res = await q.getQueryWithText(data["message"]["query"]);
 
     let orderTags = [];
