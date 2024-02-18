@@ -427,7 +427,7 @@ class Socket {
 
   async mutation(data) {
     const q = new Query();
-
+    console.log(data["message"]["query"], "mutation");
     let res = await q.getMutationWithText(data["message"]["query"]);
     let result = {
       message: {
