@@ -86,9 +86,9 @@ router.get("/tarihGonder", async (req, res, next) => {
           message
         }
       }`;
+      await query.getQueryWithText(q);
     }
 
-    await query.getQueryWithText(q);
     return res.json({ success: true });
   }
 
