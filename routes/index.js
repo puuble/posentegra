@@ -79,11 +79,15 @@ router.get("/tarihGonder", async (req, res, next) => {
     };
 
     let send = await api.send(frm);
-    let q = `mutation m1 {
-          postBroadcastMessage(message: "ENT- Wp Gönder - ${send.result.samba_id}") {
-            message
-          }
-        }`;
+    let split = id.split(",");
+    if (split.length == 3) {
+      let q = `mutation m1 {
+        postBroadcastMessage(message: "ENT- Wp Gönder - ${send.result.samba_id}") {
+          message
+        }
+      }`;
+    }
+
     await query.getQueryWithText(q);
     return res.json({ success: true });
   }
