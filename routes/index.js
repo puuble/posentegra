@@ -62,7 +62,8 @@ router.get("/odemeTipiGonder", async (req, res, next) => {
 
 router.get("/tarihGonder", async (req, res, next) => {
   let id = req.query.id;
-
+  let env = await db.getField("enviroment");
+  console.log(env);
   if (id) {
     const env = await getEnv();
     let api = new Api();
