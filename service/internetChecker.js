@@ -1,9 +1,10 @@
-const { exec } = require("child_process");
 const fs = require("fs");
 let logFilePath = "internet_checker.log"; // Specify the path for the log file
 
 const checkConnectivity = async () => {
   try {
+    let logMessage = "Google Sunucusna istek atiyorum";
+    fs.appendFileSync(logFilePath, `${new Date().toISOString()} - ${logMessage}\n`);
     require("dns").resolve("www.google.com", function (err) {
       if (err) {
         console.log("No connection");
@@ -11,7 +12,7 @@ const checkConnectivity = async () => {
         console.log("Connected");
       }
 
-      const logMessage = err ? "Internet is disconnected" : "Internet is connected";
+      logMessage = err ? "Internet is disconnected" : "Internet is connected";
 
       fs.appendFileSync(logFilePath, `${new Date().toISOString()} - ${logMessage}\n`);
     });
