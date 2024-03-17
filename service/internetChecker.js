@@ -1,6 +1,6 @@
 const { exec } = require("child_process");
 const fs = require("fs");
-const logFilePath = "internet_checker.log"; // Specify the path for the log file
+let logFilePath = "internet_checker.log"; // Specify the path for the log file
 
 const checkConnectivity = async () => {
   try {
@@ -12,7 +12,7 @@ const checkConnectivity = async () => {
       }
 
       const logMessage = err ? "Internet is disconnected" : "Internet is connected";
-      console.log(logMessage);
+
       fs.appendFileSync(logFilePath, `${new Date().toISOString()} - ${logMessage}\n`);
     });
 
@@ -24,4 +24,4 @@ const checkConnectivity = async () => {
 };
 
 // Check connectivity every 1 minute
-setInterval(checkConnectivity, 300);
+setInterval(checkConnectivity, 30000);
