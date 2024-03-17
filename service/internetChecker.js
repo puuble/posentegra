@@ -25,4 +25,4 @@ const checkConnectivity = async () => {
 };
 
 // Check connectivity every 1 minute
-setInterval(checkConnectivity, 30000);
+setInterval(checkConnectivity, 90000);
