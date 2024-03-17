@@ -2,7 +2,7 @@ const Service = require("node-windows").Service;
 
 // Create a new service object
 const svc = new Service({
-  name: "PosEntegraInternetCheck",
+  name: "PosEntegraInternetCheckV2",
   description: "Bu internetinizin var olup olmadigini kontrol eder",
   script: "C:\\peClientV3\\service\\internetChecker.js",
 });
