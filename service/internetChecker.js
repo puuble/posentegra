@@ -6,10 +6,17 @@ const logFilePath = "internet_checker.log"; // Specify the path for the log file
 
 const checkConnectivity = async () => {
   try {
-    const online = await isOnline();
-    const logMessage = online ? "Internet is connected" : "Internet is disconnected";
-    console.log(logMessage);
-    fs.appendFileSync(logFilePath, `${new Date().toISOString()} - ${logMessage}\n`);
+    isOnline()
+      .then((online) => {
+        const logMessage = online ? "Internet is connected" : "Internet is disconnected";
+        console.log(logMessage);
+        fs.appendFileSync(logFilePath, `${new Date().toISOString()} - ${logMessage}\n`);
+        // Add your logic here to handle internet connectivity
+      })
+      .catch((error) => {
+        console.error("Error checking internet connectivity:", error);
+      });
+
     // You can add logic here to handle disconnection
   } catch (error) {
     console.error("Error checking internet connectivity:", error);
