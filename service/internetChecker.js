@@ -1,4 +1,4 @@
-const isOnline = require("is-online");
+const isOnline = await import("is-online").then((module) => module.default);
 const { exec } = require("child_process");
 const fs = require("fs");
 
