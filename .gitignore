@@ -9,3 +9,4 @@ jsconfig.json
 PosEntegraV3-out.log
 PosEntegraV3-error.log
 dist.old/*
+service/internet_checker.log

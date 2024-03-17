@@ -1,21 +1,20 @@
-const isOnline = import("is-online").then((module) => module.default);
 const { exec } = require("child_process");
 const fs = require("fs");
-
 const logFilePath = "internet_checker.log"; // Specify the path for the log file
 
 const checkConnectivity = async () => {
   try {
-    isOnline()
-      .then((online) => {
-        const logMessage = online ? "Internet is connected" : "Internet is disconnected";
-        console.log(logMessage);
-        fs.appendFileSync(logFilePath, `${new Date().toISOString()} - ${logMessage}\n`);
-        // Add your logic here to handle internet connectivity
-      })
-      .catch((error) => {
-        console.error("Error checking internet connectivity:", error);
-      });
+    require("dns").resolve("www.google.com", function (err) {
+      if (err) {
+        console.log("No connection");
+      } else {
+        console.log("Connected");
+      }
+
+      const logMessage = err ? "Internet is disconnected" : "Internet is connected";
+      console.log(logMessage);
+      fs.appendFileSync(logFilePath, `${new Date().toISOString()} - ${logMessage}\n`);
+    });
 
     // You can add logic here to handle disconnection
   } catch (error) {
@@ -25,4 +24,4 @@ const checkConnectivity = async () => {
 };
 
 // Check connectivity every 1 minute
-setInterval(checkConnectivity, 60000);
+setInterval(checkConnectivity, 300);
