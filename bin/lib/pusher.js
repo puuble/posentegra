@@ -34,6 +34,12 @@ class PusherClient {
         };
       },
     });
+    this.pusher.connection.bind("connected", function () {
+      console.log("Connected to Pusher");
+    });
+    this.pusher.connection.bind("disconnected", function () {
+      console.log("Disconnected from Pusher");
+    });
   }
   async connect() {
     try {
